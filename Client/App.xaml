@@ -4,6 +4,21 @@
              xmlns:local="clr-namespace:Client"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
-         
+        <Style x:Key="MenuStyle" TargetType="StackPanel">
+            <Setter Property="Orientation" Value="Vertical"/>
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+            <Setter Property="VerticalAlignment" Value="Top"/>
+            <Setter Property="Margin" Value="0, 48, 0, 0"/>
+            <Setter Property="Width" Value="160"/>
+        </Style>
+        <Style x:Key="TitleStyle" TargetType="TextBlock">
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+            <Setter Property="FontSize" Value="24"/>
+            <Setter Property="Margin" Value="0, 0, 0, 12"/>
+        </Style>
+        <Style TargetType="Button">
+            <Setter Property="Padding" Value="0, 4, 0, 4"/>
+            <Setter Property="Margin" Value="0, 4, 0, 4"/>
+        </Style>
     </Application.Resources>
 </Application>
