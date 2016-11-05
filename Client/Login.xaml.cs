@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Client.ViewModel;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -20,9 +21,12 @@ namespace Client
     /// </summary>
     public partial class Login : UserControl
     {
+        private LoginViewModel viewModel;
+
         public Login()
         {
             InitializeComponent();
+            viewModel = (LoginViewModel) base.DataContext;
         }
 
         private void OnClickRegistrationButton(object sender, RoutedEventArgs e)
@@ -33,8 +37,16 @@ namespace Client
 
         private void OnClickSignInButton(object sender, RoutedEventArgs e)
         {
-            NavigationService navigationService = NavigationService.GetNavigationService(this);
-            navigationService.Navigate(new MainMenu());
+            if (viewModel.CanLogin())
+            {
+                NavigationService navigationService = NavigationService.GetNavigationService(this);
+                navigationService.Navigate(new MainMenu());
+            }
+            else
+            {
+                // TODO: wrong username/password
+            }
+
         }
     }
 }

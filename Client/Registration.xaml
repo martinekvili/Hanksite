@@ -4,24 +4,30 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Client"
+             xmlns:viewmodel="clr-namespace:Client.ViewModel"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
+    <UserControl.DataContext>
+        <viewmodel:RegistrationViewModel/>
+    </UserControl.DataContext>
     <StackPanel
         Style="{StaticResource MenuStyle}">
         <TextBlock Style="{StaticResource TitleStyle}">
             Registration
         </TextBlock>
         <Label>Username</Label>
-        <TextBox/>
+        <TextBox
+            Text="{Binding Username}"/>
         <Label>Password</Label>
-        <PasswordBox/>
+        <TextBox
+            Text="{Binding Password}"/>
         <Label>Confirm password</Label>
-        <PasswordBox/>
+        <TextBox
+            Text="{Binding ConfirmedPassword}"/>
         <Button
             Margin="0, 4, 0, 4"
             Click="OnClickRegistrationButton">
             Create an account
         </Button>
-
     </StackPanel>
 </UserControl>
