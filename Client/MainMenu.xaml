@@ -9,6 +9,7 @@
     <DockPanel>
         <Image
             DockPanel.Dock="Left"
+            Width="500"
             Source="res/logo.png"
             Stretch="None"/>
         <StackPanel

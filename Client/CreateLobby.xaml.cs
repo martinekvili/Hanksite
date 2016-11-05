@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Client.ViewModel;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -20,15 +21,28 @@ namespace Client
     /// </summary>
     public partial class CreateLobby : UserControl
     {
+        private CreateLobbyViewModel viewModel;
+
         public CreateLobby()
         {
             InitializeComponent();
+            viewModel = (CreateLobbyViewModel) base.DataContext;
         }
 
         private void OnClickBackButton(object sender, RoutedEventArgs e)
         {
             NavigationService navigationService = NavigationService.GetNavigationService(this);
             navigationService.GoBack();
+        }
+
+        private void OnChangedNumberOfPlayersSelection(object sender, SelectionChangedEventArgs e)
+        {
+
+        }
+
+        private void OnClickAddBotButton(object sender, RoutedEventArgs e)
+        {
+            
         }
     }
 }

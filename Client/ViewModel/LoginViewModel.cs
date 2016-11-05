@@ -12,6 +12,8 @@ namespace Client.ViewModel
         public LoginViewModel()
         {
             accounts = new Accounts();
+            Username = "kornyek";
+            Password = "admin";
         }
 
         public bool CanLogin()
