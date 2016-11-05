@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -16,7 +17,9 @@ namespace Client.ViewModel
 
         public int[] NumberOfPlayers { get; set; }
         public List<int> NumberOfColours { get; set; }
-        public List<string> BotList { get; set; }
+        public ObservableCollection<string> BotList { get; set; }
+        public List<string> BotDifficultyList { get; set; }
+        public string SelectedBotDifficulty { get; set; }
         public List<Player> ConnectedPlayers { get; set; }
 
         public CreateLobbyViewModel()
@@ -30,18 +33,17 @@ namespace Client.ViewModel
             NumberOfColours = new List<int>();
             initNumberOfColours(2);
 
+            BotList = new ObservableCollection<string>();
+
             bots = new Dictionary<BotDifficulty, int>();
             bots.Add(BotDifficulty.EASY, 0);
             bots.Add(BotDifficulty.MEDIUM, 0);
             bots.Add(BotDifficulty.HARD, 0);
 
-            addBot(BotDifficulty.HARD);
-            addBot(BotDifficulty.EASY);
-            addBot(BotDifficulty.MEDIUM);
-            addBot(BotDifficulty.EASY);
-
-            BotList = new List<string>();
-            refreshBotList();
+            BotDifficultyList = new List<string>();
+            BotDifficultyList.Add("Easy");
+            BotDifficultyList.Add("Medium");
+            BotDifficultyList.Add("Hard");
 
             ConnectedPlayers = new List<Player>();
             ConnectedPlayers.Add(new Player() { Username = "kazsu04" });
@@ -62,6 +64,42 @@ namespace Client.ViewModel
         public void addBot(BotDifficulty difficulty)
         {
             bots[difficulty] = bots[difficulty] + 1;
+            refreshBotList();
+        }
+
+        public void addSelectedBot()
+        {
+            if (SelectedBotDifficulty == "Easy")
+            {
+                addBot(BotDifficulty.EASY);
+            }
+            else if (SelectedBotDifficulty == "Medium")
+            {
+                addBot(BotDifficulty.MEDIUM);
+            }
+            else if (SelectedBotDifficulty == "Hard")
+            {
+                addBot(BotDifficulty.HARD);
+            }
+        }
+
+        public void removeBot(string difficulty)
+        {
+            if (difficulty == "EASY")
+            {
+                bots[BotDifficulty.EASY] = bots[BotDifficulty.EASY] - 1;
+                Console.WriteLine("sasdff");
+            }
+            else if (difficulty == "MEDIUM")
+            {
+                bots[BotDifficulty.MEDIUM] = bots[BotDifficulty.MEDIUM] - 1;
+            }
+            else if (difficulty == "HARD")
+            {
+                bots[BotDifficulty.HARD] = bots[BotDifficulty.HARD] - 1;
+            }
+
+            refreshBotList();
         }
 
         private void refreshBotList()

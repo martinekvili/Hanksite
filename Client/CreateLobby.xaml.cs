@@ -42,7 +42,12 @@ namespace Client
 
         private void OnClickAddBotButton(object sender, RoutedEventArgs e)
         {
-            
+            viewModel.addSelectedBot();
+        }
+
+        private void OnClickBot(object sender, MouseButtonEventArgs e)
+        {
+            viewModel.removeBot(((Label)sender).Content.ToString());
         }
     }
 }
