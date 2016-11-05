@@ -12,9 +12,11 @@ namespace Client.ViewModel
         private const int MAX_COLOURS = 16;
         private const int MIN_PLAYER_COLOUR_DIFF = 3;
 
+        private Dictionary<BotDifficulty, int> bots;
+
         public int[] NumberOfPlayers { get; set; }
         public List<int> NumberOfColours { get; set; }
-        public SortedList<int, BotDifficulty> Bots { get; set; }
+        public List<string> Bots { get; set; }
         public List<Player> ConnectedPlayers { get; set; }
 
         public CreateLobbyViewModel()
@@ -28,7 +30,7 @@ namespace Client.ViewModel
             NumberOfColours = new List<int>();
             initNumberOfColours(2);
 
-            Bots = new SortedList<int, BotDifficulty>();
+            bots = new Dictionary<BotDifficulty, int>();
             addBot(BotDifficulty.HARD);
             addBot(BotDifficulty.EASY);
             addBot(BotDifficulty.MEDIUM);
@@ -52,7 +54,7 @@ namespace Client.ViewModel
 
         public void addBot(BotDifficulty difficulty)
         {
-            Bots.Add((int) difficulty, difficulty);
+            //bots[difficulty]++;
         }
     }
 
