@@ -33,7 +33,7 @@ namespace TestClient
 
                 IService1 proxy = new DuplexChannelFactory<IService1>(
                     new InstanceContext(new CallbackImpl()),
-                    new NetTcpBinding(),
+                    new NetTcpBinding(SecurityMode.None),
                     new EndpointAddress(new Uri($"net.tcp://{serverAddress}:8733/Service1/"))
                 ).CreateChannel();
 
