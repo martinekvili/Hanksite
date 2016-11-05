@@ -6,31 +6,38 @@
              xmlns:local="clr-namespace:Client"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
-    <StackPanel
-        Style="{StaticResource MenuStyle}">
-        <TextBlock
-            Style="{StaticResource TitleStyle}">
-            Main Menu
-        </TextBlock>
-        <Button
-            Click="OnClickCreateGameButton">
-            Create new game
-        </Button>
-        <Button
-            Click="OnClickConnectToLobbyButton">
-            Connect to a lobby
-        </Button>
-        <Button
-            Click="OnClickStatisticsButton">
-            Statistics
-        </Button>
-        <Button
-            Click="OnClickSettingsButton">
-            Settings
-        </Button>
-        <Button
-            Click="OnClickQuitButton">
-            Quit
-        </Button>
-    </StackPanel>
+    <DockPanel>
+        <Image
+            DockPanel.Dock="Left"
+            Source="res/logo.png"
+            Stretch="None"/>
+        <StackPanel
+            DockPanel.Dock="Right"
+            Style="{StaticResource MenuStyle}">
+            <TextBlock
+                Style="{StaticResource TitleStyle}">
+                Main Menu
+            </TextBlock>
+            <Button
+                Click="OnClickCreateGameButton">
+                Create new game
+            </Button>
+            <Button
+                Click="OnClickConnectToLobbyButton">
+                Connect to a lobby
+            </Button>
+            <Button
+                Click="OnClickStatisticsButton">
+                Statistics
+            </Button>
+            <Button
+                Click="OnClickSettingsButton">
+                Settings
+            </Button>
+            <Button
+                Click="OnClickQuitButton">
+                Quit
+            </Button>
+        </StackPanel>
+    </DockPanel>
 </UserControl>
