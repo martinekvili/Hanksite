@@ -16,7 +16,7 @@ namespace Client.ViewModel
 
         public int[] NumberOfPlayers { get; set; }
         public List<int> NumberOfColours { get; set; }
-        public List<string> Bots { get; set; }
+        public List<string> BotList { get; set; }
         public List<Player> ConnectedPlayers { get; set; }
 
         public CreateLobbyViewModel()
@@ -31,10 +31,17 @@ namespace Client.ViewModel
             initNumberOfColours(2);
 
             bots = new Dictionary<BotDifficulty, int>();
+            bots.Add(BotDifficulty.EASY, 0);
+            bots.Add(BotDifficulty.MEDIUM, 0);
+            bots.Add(BotDifficulty.HARD, 0);
+
             addBot(BotDifficulty.HARD);
             addBot(BotDifficulty.EASY);
             addBot(BotDifficulty.MEDIUM);
             addBot(BotDifficulty.EASY);
+
+            BotList = new List<string>();
+            refreshBotList();
 
             ConnectedPlayers = new List<Player>();
             ConnectedPlayers.Add(new Player() { Username = "kazsu04" });
@@ -54,7 +61,19 @@ namespace Client.ViewModel
 
         public void addBot(BotDifficulty difficulty)
         {
-            //bots[difficulty]++;
+            bots[difficulty] = bots[difficulty] + 1;
+        }
+
+        private void refreshBotList()
+        {
+            BotList.Clear();
+            foreach (var difficulty in bots)
+            {
+                for (int i = 0; i < difficulty.Value; i++)
+                {
+                    BotList.Add(difficulty.Key.ToString());
+                }
+            }
         }
     }
 

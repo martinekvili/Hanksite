@@ -10,13 +10,13 @@
     <UserControl.DataContext>
         <viewmodel:CreateLobbyViewModel/>
     </UserControl.DataContext>
-    <DockPanel
+    <StackPanel
+        Orientation="Horizontal"
         Margin="24">
         <StackPanel
-            Width="200"
+            Width="150"
             Margin="24"
-            Orientation="Vertical"
-            DockPanel.Dock="Left">
+            Orientation="Vertical">
             <Label>Number of players</Label>
             <ComboBox 
                 ItemsSource="{Binding NumberOfPlayers}"
@@ -27,25 +27,38 @@
                 ItemsSource="{Binding NumberOfColours}"
                 SelectedIndex="0"/>
         </StackPanel>
-        <StackPanel
-            Orientation="Vertical"
+        <DockPanel
+            Width="200"
             Margin="24">
-            <Label>Bots</Label>
-            <ListBox
-                ItemsSource="{Binding Bots}">
-                
-            </ListBox>
-            <CheckBox/>
-            <Button
-                Click="OnClickAddBotButton">
-                Add bot
-            </Button>
-        </StackPanel>
+            <StackPanel
+                DockPanel.Dock="Top"
+                Orientation="Vertical">
+                <Label>Bots</Label>
+                <ListBox
+                    Height="200"
+                    ItemsSource="{Binding BotList}">
+                </ListBox>
+            </StackPanel>
+            <DockPanel
+                VerticalAlignment="Bottom">
+                <ComboBox
+                    Width="100"
+                    SelectedIndex="0">
+                    <ComboBoxItem>Easy</ComboBoxItem>
+                    <ComboBoxItem>Medium</ComboBoxItem>
+                    <ComboBoxItem>Hard</ComboBoxItem>
+                </ComboBox>
+                <Button
+                    Click="OnClickAddBotButton"
+                    HorizontalAlignment="Right">
+                    Add bot
+                </Button>
+            </DockPanel>
+        </DockPanel>
         <StackPanel
             Margin="24"
             Orientation="Vertical"
-            DockPanel.Dock="Right"
-            Width="300">
+            Width="200">
             <Label>Connected players</Label>
             <ListBox
             ItemsSource="{Binding ConnectedPlayers}">
@@ -56,5 +69,5 @@
                 </ListBox.ItemTemplate>
             </ListBox>
         </StackPanel>
-    </DockPanel>
+    </StackPanel>
 </UserControl>
