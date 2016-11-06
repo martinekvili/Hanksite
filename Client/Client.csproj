@@ -65,12 +65,21 @@
     <Compile Include="Login.xaml.cs">
       <DependentUpon>Login.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Model\BotDifficulty.cs" />
+    <Compile Include="Model\Dummy\Lobbies.cs" />
+    <Compile Include="Model\Dummy\Players.cs" />
+    <Compile Include="Model\IAccountProvider.cs" />
+    <Compile Include="Model\IAvailableLobbyProvider.cs" />
+    <Compile Include="Model\IConnectedPlayerProvider.cs" />
+    <Compile Include="Model\Lobby.cs" />
+    <Compile Include="Model\Player.cs" />
+    <Compile Include="ViewModel\ConnectLobbyViewModel.cs" />
     <Compile Include="ViewModel\CreateLobbyViewModel.cs" />
     <Compile Include="ViewModel\LoginViewModel.cs" />
     <Compile Include="MainMenu.xaml.cs">
       <DependentUpon>MainMenu.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Model\Accounts.cs" />
+    <Compile Include="Model\Dummy\Accounts.cs" />
     <Compile Include="Registration.xaml.cs">
       <DependentUpon>Registration.xaml</DependentUpon>
     </Compile>

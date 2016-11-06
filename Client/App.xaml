@@ -17,7 +17,7 @@
             <Setter Property="Margin" Value="0, 0, 0, 12"/>
         </Style>
         <Style TargetType="Button">
-            <Setter Property="Padding" Value="0, 4, 0, 4"/>
+            <Setter Property="Padding" Value="4"/>
             <Setter Property="Margin" Value="0, 4, 0, 4"/>
         </Style>
     </Application.Resources>

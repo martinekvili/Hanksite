@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Client.Model;
+using Client.Model.Dummy;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
@@ -12,10 +14,10 @@ namespace Client.ViewModel
         private const int MIN_PLAYER_COLOUR_DIFF = 3;
 
         private Dictionary<BotDifficulty, int> bots;
+        private IConnectedPlayerProvider connectedPlayerProvider;
+        private int selectedNumberOfColours;
 
         public event PropertyChangedEventHandler PropertyChanged;
-
-        private int selectedNumberOfColours;
 
         public int[] NumberOfPlayers { get; set; }
         public string SelectedNumberOfPlayers { get; set; }
@@ -24,7 +26,8 @@ namespace Client.ViewModel
         public ObservableCollection<string> BotList { get; set; }
         public List<string> BotDifficultyList { get; set; }
         public string SelectedBotDifficulty { get; set; }
-        public List<Player> ConnectedPlayers { get; set; }
+
+        public List<Player> ConnectedPlayers { get { return connectedPlayerProvider.GetPlayers(); } }
 
         public CreateLobbyViewModel()
         {
@@ -46,10 +49,11 @@ namespace Client.ViewModel
                 BotDifficultyList.Add(difficulty.convertToString());
             }
 
-            ConnectedPlayers = new List<Player>();
-            ConnectedPlayers.Add(new Player() { Username = "kazsu04" });
-            ConnectedPlayers.Add(new Player() { Username = "jeno9000" });
-            ConnectedPlayers.Add(new Player() { Username = "dominator" });
+            connectedPlayerProvider = new Players();
+            //ConnectedPlayers = new List<Player>();
+            //ConnectedPlayers.Add(new Player() { Username = "kazsu04" });
+            //ConnectedPlayers.Add(new Player() { Username = "jeno9000" });
+            //ConnectedPlayers.Add(new Player() { Username = "dominator" });
         }
 
         private void NotifyPropertyChanged(string propertyName)
@@ -128,44 +132,10 @@ namespace Client.ViewModel
         }
     }
 
-    class Player
-    {
-        public string Username { get; set; }
-    }
+    //class Player
+    //{
+    //    public string Username { get; set; }
+    //}
 
-    enum BotDifficulty
-    {
-        EASY,
-        MEDIUM,
-        HARD
-    }
-
-    static class BotDifficultyHelper
-    {
-        public static string convertToString(this BotDifficulty difficulty)
-        {
-            switch (difficulty)
-            {
-                case BotDifficulty.EASY:
-                    return "Easy";
-                case BotDifficulty.MEDIUM:
-                    return "Medium";
-                default:
-                    return "Hard";
-            }
-        }
-
-        public static BotDifficulty convertFromString(string difficulty)
-        {
-            switch (difficulty)
-            {
-                case "Easy":
-                    return BotDifficulty.EASY;
-                case "Medium":
-                    return BotDifficulty.MEDIUM;
-                default:
-                    return BotDifficulty.HARD;
-            }
-        }
-    }
+    
 }

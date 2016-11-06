@@ -29,6 +29,5 @@ namespace Client
         {
             NavigationService navigationService = NavigationService.GetNavigationService(this);
             navigationService.GoBack();
-        }
-    }
+        }    }
 }

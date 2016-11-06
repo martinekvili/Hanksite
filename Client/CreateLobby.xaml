@@ -10,80 +10,93 @@
     <UserControl.DataContext>
         <viewmodel:CreateLobbyViewModel/>
     </UserControl.DataContext>
-    <StackPanel
-        Orientation="Horizontal"
+    <DockPanel
         Margin="24">
         <StackPanel
-            Width="150"
-            Margin="24"
-            Orientation="Vertical">
-            <Label>Number of players</Label>
-            <ComboBox 
-                ItemsSource="{Binding NumberOfPlayers}"
-                SelectedItem="{Binding SelectedNumberOfPlayers}"
-                SelectedIndex="0"
-                SelectionChanged="OnChangedNumberOfPlayersSelection"/>
-            <Label>Number of colours</Label>
-            <ComboBox
-                ItemsSource="{Binding NumberOfColours}"
-                SelectedIndex="{Binding SelectedNumberOfColours}"/>
-        </StackPanel>
-        <DockPanel
-            Width="200"
-            Margin="24">
+            DockPanel.Dock="Top"
+            Orientation="Horizontal">
             <StackPanel
-                DockPanel.Dock="Top"
+                Width="150"
+                Margin="24"
                 Orientation="Vertical">
-                <Label>Bots</Label>
-                <ListBox
-                    Height="200"
-                    ItemsSource="{Binding BotList}">
-                    <ListBox.ItemTemplate>
-                        <DataTemplate>
-                            <StackPanel
-                                VerticalAlignment="Stretch">
-                                <Label Content="{Binding}"/>
-                            </StackPanel>
-                        </DataTemplate>
-                    </ListBox.ItemTemplate>
-                    <ListBox.ItemContainerStyle>
-                        <Style TargetType="ListBoxItem">
-                            <EventSetter Event="PreviewMouseLeftButtonDown" Handler="OnClickBot"/>
-                        </Style>
-                    </ListBox.ItemContainerStyle>
-                </ListBox>
+                <Label>Name</Label>
+                <TextBox/>
+                <Label>Number of players</Label>
+                <ComboBox 
+                    ItemsSource="{Binding NumberOfPlayers}"
+                    SelectedItem="{Binding SelectedNumberOfPlayers}"
+                    SelectedIndex="0"
+                    SelectionChanged="OnChangedNumberOfPlayersSelection"/>
+                <Label>Number of colours</Label>
+                <ComboBox
+                    ItemsSource="{Binding NumberOfColours}"
+                    SelectedIndex="{Binding SelectedNumberOfColours}"/>
             </StackPanel>
             <DockPanel
-                VerticalAlignment="Bottom">
-                <ComboBox
-                    VerticalAlignment="Center"
-                    Width="100"
-                    SelectedIndex="0"
-                    ItemsSource="{Binding BotDifficultyList}"
-                    SelectedItem="{Binding SelectedBotDifficulty}">
-                </ComboBox>
-                <Button
-                    Click="OnClickAddBotButton"
-                    Padding="4"
-                    HorizontalAlignment="Right">
-                    Add bot
-                </Button>
+                Width="200"
+                Margin="24">
+                <StackPanel
+                    DockPanel.Dock="Top"
+                    Orientation="Vertical">
+                    <Label>Bots</Label>
+                    <ListBox
+                        Height="200"
+                        ItemsSource="{Binding BotList}">
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <StackPanel
+                                    VerticalAlignment="Stretch">
+                                    <Label Content="{Binding}"/>
+                                </StackPanel>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                        <ListBox.ItemContainerStyle>
+                            <Style TargetType="ListBoxItem">
+                                <EventSetter Event="PreviewMouseLeftButtonDown" Handler="OnClickBot"/>
+                            </Style>
+                        </ListBox.ItemContainerStyle>
+                    </ListBox>
+                </StackPanel>
+                <DockPanel
+                    VerticalAlignment="Bottom">
+                    <ComboBox
+                        VerticalAlignment="Center"
+                        Width="100"
+                        SelectedIndex="0"
+                        ItemsSource="{Binding BotDifficultyList}"
+                        SelectedItem="{Binding SelectedBotDifficulty}">
+                    </ComboBox>
+                    <Button
+                        Click="OnClickAddBotButton"
+                        HorizontalAlignment="Right">
+                        Add bot
+                    </Button>
+                </DockPanel>
             </DockPanel>
-        </DockPanel>
-        <StackPanel
-            Margin="24"
-            Orientation="Vertical"
-            Width="200">
-            <Label>Connected players</Label>
-            <ListBox
-                ItemsSource="{Binding ConnectedPlayers}"
-                Height="200">
-                <ListBox.ItemTemplate>
-                    <DataTemplate>
-                        <Label Content="{Binding Username}"/>
-                    </DataTemplate>
-                </ListBox.ItemTemplate>
-            </ListBox>
+            <StackPanel
+                Margin="24"
+                Orientation="Vertical"
+                Width="200">
+                <Label>Connected players</Label>
+                <ListBox
+                    ItemsSource="{Binding ConnectedPlayers}"
+                    Height="200">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <Label Content="{Binding Username}"/>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+            </StackPanel>
         </StackPanel>
-    </StackPanel>
+        <StackPanel
+            DockPanel.Dock="Bottom"
+            VerticalAlignment="Bottom">
+            <Button
+                HorizontalAlignment="Right"
+                Click="OnClickBackButton">
+                Back
+            </Button>
+        </StackPanel>
+    </DockPanel>
 </UserControl>
