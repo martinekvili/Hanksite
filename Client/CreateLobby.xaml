@@ -20,12 +20,13 @@
             <Label>Number of players</Label>
             <ComboBox 
                 ItemsSource="{Binding NumberOfPlayers}"
+                SelectedItem="{Binding SelectedNumberOfPlayers}"
                 SelectedIndex="0"
                 SelectionChanged="OnChangedNumberOfPlayersSelection"/>
             <Label>Number of colours</Label>
             <ComboBox
                 ItemsSource="{Binding NumberOfColours}"
-                SelectedIndex="0"/>
+                SelectedIndex="{Binding SelectedNumberOfColours}"/>
         </StackPanel>
         <DockPanel
             Width="200"
@@ -39,12 +40,17 @@
                     ItemsSource="{Binding BotList}">
                     <ListBox.ItemTemplate>
                         <DataTemplate>
-                            <StackPanel>
-                                <Label Content="{Binding}"
-                                       MouseUp="OnClickBot"/>
+                            <StackPanel
+                                VerticalAlignment="Stretch">
+                                <Label Content="{Binding}"/>
                             </StackPanel>
                         </DataTemplate>
                     </ListBox.ItemTemplate>
+                    <ListBox.ItemContainerStyle>
+                        <Style TargetType="ListBoxItem">
+                            <EventSetter Event="PreviewMouseLeftButtonDown" Handler="OnClickBot"/>
+                        </Style>
+                    </ListBox.ItemContainerStyle>
                 </ListBox>
             </StackPanel>
             <DockPanel

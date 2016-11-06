@@ -1,18 +1,9 @@
 ﻿using Client.ViewModel;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace Client
 {
@@ -37,7 +28,10 @@ namespace Client
 
         private void OnChangedNumberOfPlayersSelection(object sender, SelectionChangedEventArgs e)
         {
-
+            if (viewModel != null)
+            {
+                viewModel.refreshNumberOfColours();
+            }
         }
 
         private void OnClickAddBotButton(object sender, RoutedEventArgs e)
@@ -47,7 +41,12 @@ namespace Client
 
         private void OnClickBot(object sender, MouseButtonEventArgs e)
         {
-            viewModel.removeBot(((Label)sender).Content.ToString());
+            viewModel.removeBot(((ListBoxItem)sender).Content.ToString());
+        }
+
+        private void OnChangedBotSelection(object sender, SelectionChangedEventArgs e)
+        {
+            Console.WriteLine(sender);
         }
     }
 }
