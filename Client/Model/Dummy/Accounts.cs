@@ -11,6 +11,7 @@ namespace Client.Model.Dummy
         {
             accounts = new Dictionary<string, string>();
             CreateAccount("kornyek", "admin");
+            CreateAccount("meres", "LaborImage");
         }
 
         public bool CreateAccount(string username, string password)

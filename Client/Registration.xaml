@@ -24,10 +24,16 @@
         <Label>Confirm password</Label>
         <TextBox
             Text="{Binding ConfirmedPassword}"/>
+        <TextBlock
+            Text="{Binding Message}"
+            Margin="4"/>
         <Button
-            Margin="0, 4, 0, 4"
             Click="OnClickRegistrationButton">
             Create an account
+        </Button>
+        <Button
+            Click="OnClickBackButton">
+            Back
         </Button>
     </StackPanel>
 </UserControl>

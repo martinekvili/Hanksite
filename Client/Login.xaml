@@ -20,6 +20,9 @@
         <TextBox Text="{Binding Username}"/>
         <Label>Password</Label>
         <TextBox Text="{Binding Password}"/>
+        <TextBlock
+            Text="{Binding Message}"
+            Margin="4"/>
         <Button
             Click="OnClickSignInButton">
             Sign in

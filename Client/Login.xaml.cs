@@ -42,10 +42,6 @@ namespace Client
                 NavigationService navigationService = NavigationService.GetNavigationService(this);
                 navigationService.Navigate(new MainMenu());
             }
-            else
-            {
-                // TODO: wrong username/password
-            }
 
         }
     }

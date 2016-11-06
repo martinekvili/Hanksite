@@ -1,17 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Client.ViewModel;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace Client
 {
@@ -20,12 +10,24 @@ namespace Client
     /// </summary>
     public partial class Registration : UserControl
     {
+        private RegistrationViewModel viewModel;
+
         public Registration()
         {
             InitializeComponent();
+            viewModel = (RegistrationViewModel)base.DataContext;
         }
 
         private void OnClickRegistrationButton(object sender, RoutedEventArgs e)
+        {
+            if (viewModel.CreateAccount())
+            {
+                NavigationService navigationService = NavigationService.GetNavigationService(this);
+                navigationService.GoBack();
+            }
+        }
+
+        private void OnClickBackButton(object sender, RoutedEventArgs e)
         {
             NavigationService navigationService = NavigationService.GetNavigationService(this);
             navigationService.GoBack();

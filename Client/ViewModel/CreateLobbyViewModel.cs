@@ -50,10 +50,6 @@ namespace Client.ViewModel
             }
 
             connectedPlayerProvider = new Players();
-            //ConnectedPlayers = new List<Player>();
-            //ConnectedPlayers.Add(new Player() { Username = "kazsu04" });
-            //ConnectedPlayers.Add(new Player() { Username = "jeno9000" });
-            //ConnectedPlayers.Add(new Player() { Username = "dominator" });
         }
 
         private void NotifyPropertyChanged(string propertyName)
@@ -130,12 +126,5 @@ namespace Client.ViewModel
                 }
             }
         }
-    }
-
-    //class Player
-    //{
-    //    public string Username { get; set; }
-    //}
-
-    
+    } 
 }

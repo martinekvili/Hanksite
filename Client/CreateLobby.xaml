@@ -91,9 +91,14 @@
         </StackPanel>
         <StackPanel
             DockPanel.Dock="Bottom"
+            Orientation="Horizontal"
+            HorizontalAlignment="Right"
             VerticalAlignment="Bottom">
             <Button
-                HorizontalAlignment="Right"
+                Margin="4">
+                Start
+            </Button>
+            <Button
                 Click="OnClickBackButton">
                 Back
             </Button>
