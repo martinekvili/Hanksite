@@ -26,6 +26,9 @@
             Text="{Binding ConfirmedPassword}"/>
         <TextBlock
             Text="{Binding Message}"
+            TextAlignment="Center"
+            TextWrapping="Wrap"
+            Height="40"
             Margin="4"/>
         <Button
             Click="OnClickRegistrationButton">

@@ -42,7 +42,11 @@ namespace Client
                 NavigationService navigationService = NavigationService.GetNavigationService(this);
                 navigationService.Navigate(new MainMenu());
             }
+        }
 
+        private void OnClickQuitButton(object sender, RoutedEventArgs e)
+        {
+            Application.Current.Shutdown();
         }
     }
 }

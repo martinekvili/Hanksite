@@ -22,6 +22,9 @@
         <TextBox Text="{Binding Password}"/>
         <TextBlock
             Text="{Binding Message}"
+            TextWrapping="Wrap"
+            TextAlignment="Center"
+            Height="40"
             Margin="4"/>
         <Button
             Click="OnClickSignInButton">
@@ -30,6 +33,10 @@
         <Button
             Click="OnClickRegistrationButton">
             Create an account
+        </Button>
+        <Button
+            Click="OnClickQuitButton">
+            Quit
         </Button>
     </StackPanel>
 </UserControl>
