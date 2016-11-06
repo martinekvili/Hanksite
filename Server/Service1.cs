@@ -41,6 +41,7 @@ namespace Server
 
         private void InstanceContext_Closed(object sender, EventArgs e)
         {
+            Broker.Instance.RemoveCallback(callback);
             Console.WriteLine($"Client No. #{clientNum} disconnected");
         }
 

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.ServiceModel;
 using System.Text;
 using System.Threading.Tasks;
 using Common;
@@ -37,7 +38,18 @@ namespace Server
             lock (syncObject)
             {
                 foreach (var callback in callbacks)
-                    callback.Send(message);
+                {
+                    try
+                    {
+                        callback.Send(message);
+                    }
+                    catch (CommunicationException)
+                    {
+                        // The session has been closed but it has not had the time
+                        // to inform the broker about it. Skipping this client.
+                    }
+                }
+                    
             }
         }
     }
