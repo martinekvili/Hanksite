@@ -48,5 +48,16 @@ namespace Client
         {
             Console.WriteLine(sender);
         }
+
+        private void OnClickStartButton(object sender, RoutedEventArgs e)
+        {
+            NavigationService navigationService = NavigationService.GetNavigationService(this);
+            navigationService.Navigate(new GameView());
+        }
+
+        private void OnClickReadyButton(object sender, RoutedEventArgs e)
+        {
+            viewModel.ready();
+        }
     }
 }

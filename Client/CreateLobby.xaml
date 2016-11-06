@@ -20,17 +20,20 @@
                 Margin="24"
                 Orientation="Vertical">
                 <Label>Name</Label>
-                <TextBox/>
+                <TextBox
+                    IsEnabled="{Binding IsCreating}"/>
                 <Label>Number of players</Label>
                 <ComboBox 
                     ItemsSource="{Binding NumberOfPlayers}"
                     SelectedItem="{Binding SelectedNumberOfPlayers}"
                     SelectedIndex="0"
-                    SelectionChanged="OnChangedNumberOfPlayersSelection"/>
+                    SelectionChanged="OnChangedNumberOfPlayersSelection"
+                    IsEnabled="{Binding IsCreating}"/>
                 <Label>Number of colours</Label>
                 <ComboBox
                     ItemsSource="{Binding NumberOfColours}"
-                    SelectedIndex="{Binding SelectedNumberOfColours}"/>
+                    SelectedIndex="{Binding SelectedNumberOfColours}"
+                    IsEnabled="{Binding IsCreating}"/>
             </StackPanel>
             <DockPanel
                 Width="200"
@@ -41,7 +44,8 @@
                     <Label>Bots</Label>
                     <ListBox
                         Height="200"
-                        ItemsSource="{Binding BotList}">
+                        ItemsSource="{Binding BotList}"
+                        IsEnabled="{Binding IsCreating}">
                         <ListBox.ItemTemplate>
                             <DataTemplate>
                                 <StackPanel
@@ -64,11 +68,13 @@
                         Width="100"
                         SelectedIndex="0"
                         ItemsSource="{Binding BotDifficultyList}"
-                        SelectedItem="{Binding SelectedBotDifficulty}">
+                        SelectedItem="{Binding SelectedBotDifficulty}"
+                        IsEnabled="{Binding IsCreating}">
                     </ComboBox>
                     <Button
                         Click="OnClickAddBotButton"
-                        HorizontalAlignment="Right">
+                        HorizontalAlignment="Right"
+                        IsEnabled="{Binding IsCreating}">
                         Add bot
                     </Button>
                 </DockPanel>
@@ -80,7 +86,8 @@
                 <Label>Connected players</Label>
                 <ListBox
                     ItemsSource="{Binding ConnectedPlayers}"
-                    Height="200">
+                    Height="200"
+                    IsEnabled="{Binding IsReady}">
                     <ListBox.ItemTemplate>
                         <DataTemplate>
                             <Label Content="{Binding Username}"/>
@@ -95,10 +102,18 @@
             HorizontalAlignment="Right"
             VerticalAlignment="Bottom">
             <Button
-                Margin="4">
+                Margin="4"
+                Click="OnClickReadyButton">
+                Ready
+            </Button>
+            <Button
+                Margin="4"
+                IsEnabled="{Binding IsReady}"
+                Click="OnClickStartButton">
                 Start
             </Button>
             <Button
+                Margin="4"
                 Click="OnClickBackButton">
                 Back
             </Button>

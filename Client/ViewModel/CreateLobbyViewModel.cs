@@ -13,6 +13,9 @@ namespace Client.ViewModel
         private const int MAX_COLOURS = 16;
         private const int MIN_PLAYER_COLOUR_DIFF = 3;
 
+        private bool isCreating = true;
+        private bool isReady = false;
+
         private Dictionary<BotDifficulty, int> bots;
         private IConnectedPlayerProvider connectedPlayerProvider;
         private int selectedNumberOfColours;
@@ -28,6 +31,17 @@ namespace Client.ViewModel
         public string SelectedBotDifficulty { get; set; }
 
         public List<Player> ConnectedPlayers { get { return connectedPlayerProvider.GetPlayers(); } }
+
+        public bool IsCreating
+        {
+            get { return isCreating; }
+            set { isCreating = value; NotifyPropertyChanged("IsCreating"); }
+        }
+        public bool IsReady
+        {
+            get { return isReady; }
+            set { isReady = value; NotifyPropertyChanged("IsReady"); }
+        }
 
         public CreateLobbyViewModel()
         {
@@ -50,6 +64,9 @@ namespace Client.ViewModel
             }
 
             connectedPlayerProvider = new Players();
+
+            IsCreating = true;
+            IsReady = false;
         }
 
         private void NotifyPropertyChanged(string propertyName)
@@ -75,7 +92,7 @@ namespace Client.ViewModel
             {
                 setNumberOfColours(int.Parse(SelectedNumberOfPlayers));
             }
-            
+
             if (NumberOfColours.Contains(actualNumberOfColours))
             {
                 SelectedNumberOfColours = NumberOfColours.IndexOf(actualNumberOfColours);
@@ -126,5 +143,11 @@ namespace Client.ViewModel
                 }
             }
         }
-    } 
+
+        public void ready()
+        {
+            IsCreating = !IsCreating;
+            IsReady = !IsReady;
+        }
+    }
 }

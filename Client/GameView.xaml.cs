@@ -1,5 +1,4 @@
-﻿using Client.ViewModel;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -17,22 +16,17 @@ using System.Windows.Shapes;
 namespace Client
 {
     /// <summary>
-    /// Interaction logic for Settings.xaml
+    /// Interaction logic for Game.xaml
     /// </summary>
-    public partial class Settings : UserControl
+    public partial class GameView : UserControl
     {
-        private SettingsViewModel viewModel;
-
-        public Settings()
+        public GameView()
         {
             InitializeComponent();
-            viewModel = (SettingsViewModel)base.DataContext;
-        }
 
-        private void OnClickBackButton(object sender, RoutedEventArgs e)
-        {
-            NavigationService navigationService = NavigationService.GetNavigationService(this);
-            navigationService.GoBack();
+            MediaPlayer player = new MediaPlayer();
+            player.Open(new Uri(@"../../res/gaem.mp3", UriKind.Relative));
+            player.Play();
         }
     }
 }

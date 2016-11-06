@@ -62,12 +62,18 @@
     <Compile Include="CreateLobby.xaml.cs">
       <DependentUpon>CreateLobby.xaml</DependentUpon>
     </Compile>
+    <Compile Include="GameView.xaml.cs">
+      <DependentUpon>GameView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Login.xaml.cs">
       <DependentUpon>Login.xaml</DependentUpon>
     </Compile>
     <Compile Include="Model\BotDifficulty.cs" />
+    <Compile Include="Model\Dummy\GameHistory.cs" />
     <Compile Include="Model\Dummy\Lobbies.cs" />
     <Compile Include="Model\Dummy\Players.cs" />
+    <Compile Include="Model\GameInfo.cs" />
+    <Compile Include="Model\IGameInfoProvider.cs" />
     <Compile Include="Model\IAccountProvider.cs" />
     <Compile Include="Model\IAvailableLobbyProvider.cs" />
     <Compile Include="Model\IConnectedPlayerProvider.cs" />
@@ -75,6 +81,7 @@
     <Compile Include="Model\Player.cs" />
     <Compile Include="ViewModel\ConnectLobbyViewModel.cs" />
     <Compile Include="ViewModel\CreateLobbyViewModel.cs" />
+    <Compile Include="ViewModel\GameViewModel.cs" />
     <Compile Include="ViewModel\LoginViewModel.cs" />
     <Compile Include="MainMenu.xaml.cs">
       <DependentUpon>MainMenu.xaml</DependentUpon>
@@ -90,11 +97,17 @@
       <DependentUpon>Statistics.xaml</DependentUpon>
     </Compile>
     <Compile Include="ViewModel\RegistrationViewModel.cs" />
+    <Compile Include="ViewModel\SettingsViewModel.cs" />
+    <Compile Include="ViewModel\StatisticsViewModel.cs" />
     <Page Include="ConnectLobby.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="CreateLobby.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="GameView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -164,7 +177,9 @@
       <Name>Common</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Content Include="res\gaem.mp3" />
+  </ItemGroup>
   <ItemGroup>
     <Resource Include="res\logo.png" />
   </ItemGroup>
