@@ -31,11 +31,15 @@ namespace TestClient
 
                 Console.WriteLine($"Connecting to {serverAddress}. Write your messages, or write 'exit' to exit.");
 
+                var instanceContext = new InstanceContext(new CallbackImpl());
+
                 IService1 proxy = new DuplexChannelFactory<IService1>(
-                    new InstanceContext(new CallbackImpl()),
-                    new NetTcpBinding(SecurityMode.None),
+                    instanceContext,
+                    new NetTcpBinding("hanksiteBinding"),
                     new EndpointAddress(new Uri($"net.tcp://{serverAddress}:8733/Service1/"))
                 ).CreateChannel();
+
+                instanceContext.Faulted += InstanceContext_Closed;
 
                 proxy.Connect();
 
@@ -45,12 +49,19 @@ namespace TestClient
                     proxy.SendMessage(message);
                     message = Console.ReadLine().Trim();
                 }
+                Thread.Sleep(30000);
             }
             catch (CommunicationException)
             {
                 Console.WriteLine("The server is unavailable, shutting down.");
                 Console.ReadKey();
             }
+        }
+
+        private static void InstanceContext_Closed(object sender, EventArgs e)
+        {
+            Console.WriteLine("Connection lost, shutting down.");
+            Console.ReadKey();
         }
     }
 }
