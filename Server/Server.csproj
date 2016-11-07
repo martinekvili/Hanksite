@@ -71,6 +71,7 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BreadthFirstSearch.cs" />
     <Compile Include="Broker.cs" />
     <Compile Include="Hexagon.cs" />
     <Compile Include="MapBuilder.cs" />
