@@ -13,6 +13,7 @@ namespace Server
 
         public int X => x;
         public int Y => y;
+        public int Z => 0 - x - y;
 
         public Coord(int x, int y)
         {
@@ -23,6 +24,15 @@ namespace Server
         public static Coord operator +(Coord a, Coord b)
         {
             return new Coord(a.x + b.x, a.y + b.y);
+        }
+
+        public static int Distance(Coord a, Coord b)
+        {
+            int xDiff = Math.Abs(a.X - b.X);
+            int yDiff = Math.Abs(a.Y - b.Y);
+            int zDiff = Math.Abs(a.Z - b.Z);
+
+            return Math.Max(xDiff, Math.Max(yDiff, zDiff));
         }
 
         #region Equality operators
@@ -58,6 +68,9 @@ namespace Server
         public Coord Coord => coord;
         public List<Hexagon> Neighbours => neighbours;
 
+        public int OwnerID { get; set; } = -1;
+        public int Colour { get; set; } = -1;
+
         public Hexagon(Coord coord)
         {
             this.coord = coord;
@@ -70,6 +83,12 @@ namespace Server
 
         public static bool operator ==(Hexagon a, Hexagon b)
         {
+            if ((object)a == null && (object)b == null)
+                return true;
+
+            if ((object)a == null || (object)b == null)
+                return false;
+
             return a.coord == b.coord;
         }
 

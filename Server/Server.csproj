@@ -74,6 +74,7 @@
     <Compile Include="BreadthFirstSearch.cs" />
     <Compile Include="Broker.cs" />
     <Compile Include="Hexagon.cs" />
+    <Compile Include="Map.cs" />
     <Compile Include="MapBuilder.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

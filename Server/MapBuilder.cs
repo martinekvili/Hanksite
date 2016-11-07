@@ -8,9 +8,23 @@ namespace Server
 {
     public class MapBuilder
     {
-        public static List<Hexagon> CreateMap(int sideLength)
+        public static Map CreateMap(int sideLength)
         {
-            return new MapBuilder(sideLength).createMap();
+            return new Map(new MapBuilder(sideLength).createMap());
+        }
+
+        /// <summary>
+        /// Do NOT call, only used for tests.
+        /// </summary>
+        public static Map CreateMap(Hexagon[,] mapMatrix)
+        {
+            if (mapMatrix.GetLength(0) != mapMatrix.GetLength(1))
+                throw new ArgumentException("Map matrix must be a square matrix");
+
+            if (mapMatrix.GetLength(0) % 2 == 0)
+                throw new ArgumentException("Row and coloumn count of the map matrix must be an odd number");
+
+            return new Map(new MapBuilder((mapMatrix.GetLength(0) + 1) / 2, mapMatrix).createMap());
         }
 
         private readonly List<Coord> neighbourCoords = new List<Coord>
@@ -26,15 +40,19 @@ namespace Server
         private readonly int sideLength;
         private readonly Hexagon[,] mapMatrix;
 
-        private MapBuilder(int sideLength)
+        private MapBuilder(int sideLength, Hexagon[,] mapMatrix)
         {
             this.sideLength = sideLength;
-            this.mapMatrix = new Hexagon[2 * sideLength - 1, 2 * sideLength - 1];
+            this.mapMatrix = mapMatrix;
+        }
+
+        private MapBuilder(int sideLength) : this(sideLength, new Hexagon[2 * sideLength - 1, 2 * sideLength - 1])
+        {
+            fillMapMatrix();
         }
 
         private List<Hexagon> createMap()
         {
-            fillMapMatrix();
             setNeighbours();
             return createMapFromMatrix();
         }

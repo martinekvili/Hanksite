@@ -25,29 +25,9 @@ namespace UnitTests
 ";
             int sideLength = 4;
 
-            List<Hexagon> map = MapBuilder.CreateMap(sideLength);
+            Map map = MapBuilder.CreateMap(sideLength);
 
-            Assert.AreEqual(expectedMapString, createMapString(sideLength, map));
-        }
-
-        private static string createMapString(int sideLength, List<Hexagon> map)
-        {
-            Hexagon[,] mapMatrix = new Hexagon[sideLength * 2 - 1, sideLength * 2 - 1];
-            foreach (var cell in map)
-                mapMatrix[cell.Coord.X, cell.Coord.Y] = cell;
-
-            StringBuilder mapStringBuilder = new StringBuilder();
-            mapStringBuilder.AppendLine();
-
-            for (int i = 0; i < mapMatrix.GetLength(0); i++)
-            {
-                for (int j = 0; j < mapMatrix.GetLength(1); j++)
-                    mapStringBuilder.Append(mapMatrix[i, j] == null ? "." : "#");
-
-                mapStringBuilder.AppendLine();
-            }
-
-            return mapStringBuilder.ToString();
+            Assert.AreEqual(expectedMapString, map.ToMapString(cell => cell == null ? '.' : '#'));
         }
 
         [TestMethod]
@@ -60,15 +40,10 @@ namespace UnitTests
                 { 6, 7 }    // inner cells
             };
 
-            List<Hexagon> map = MapBuilder.CreateMap(3);
+            Map map = MapBuilder.CreateMap(3);
 
-            Assert.AreEqual(expectedNeighbourCounts.Values.Sum(), map.Count);
-            CollectionAssert.AreEquivalent(expectedNeighbourCounts, countNeightbours(expectedNeighbourCounts.Keys, map));
-        }
-
-        private static Dictionary<int, int> countNeightbours(IEnumerable<int> counts, List<Hexagon> map)
-        {
-            return counts.ToDictionary(count => count, count => map.Count(cell => cell.Neighbours.Count == count));
+            Assert.AreEqual(expectedNeighbourCounts.Values.Sum(), map.CellCount);
+            CollectionAssert.AreEquivalent(expectedNeighbourCounts, map.CountNeighboursByKeys(expectedNeighbourCounts.Keys));
         }
     }
 }
