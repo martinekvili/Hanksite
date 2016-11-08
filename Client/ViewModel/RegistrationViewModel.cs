@@ -1,15 +1,24 @@
-﻿using Client.Model;
+﻿using Client.Helper;
+using Client.Model;
 using Client.Model.Dummy;
 using System.ComponentModel;
+using System.Windows;
+using System.Windows.Input;
+using System.Windows.Navigation;
 
 namespace Client.ViewModel
 {
     class RegistrationViewModel : INotifyPropertyChanged
     {
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        public DependencyObject View { get; set; }
+
         private IAccountProvider accounts;
         private string message;
 
-        public event PropertyChangedEventHandler PropertyChanged;
+        public ICommand CreateAccountCommand { get; set; }
+        public ICommand BackCommand { get; set; }
 
         public string Username { get; set; }
         public string Password { get; set; }
@@ -26,24 +35,32 @@ namespace Client.ViewModel
             Username = "meres";
             Password = "LaborImage";
             ConfirmedPassword = "LaborImage";
+
+            CreateAccountCommand = new CommandHandler(CreateAccount, true);
+            BackCommand = new CommandHandler(Back, true);
         }
 
-        public bool CreateAccount()
+        private void CreateAccount()
         {
             if (Password != ConfirmedPassword)
             {
                 Message = "Password differs from confirmed password!";
-                return false;
+                return;
             }
 
             bool success = accounts.CreateAccount(Username, Password);
             if (!success)
             {
                 Message = "The given username is already exists!";
-                return false;
+                return;
             }
 
-            return true;
+            NavigationService.GetNavigationService(View).GoBack();
+        }
+
+        private void Back()
+        {
+            NavigationService.GetNavigationService(View).GoBack();
         }
 
         private void NotifyPropertyChanged(string propertyName)

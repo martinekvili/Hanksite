@@ -1,9 +1,9 @@
-﻿<UserControl x:Class="Client.CreateLobby"
+﻿<UserControl x:Class="Client.View.CreateLobby"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:Client"
+             xmlns:local="clr-namespace:Client.View"
              xmlns:viewmodel="clr-namespace:Client.ViewModel"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
@@ -28,7 +28,8 @@
                     SelectedItem="{Binding SelectedNumberOfPlayers}"
                     SelectedIndex="0"
                     SelectionChanged="OnChangedNumberOfPlayersSelection"
-                    IsEnabled="{Binding IsCreating}"/>
+                    IsEnabled="{Binding IsCreating}">
+                </ComboBox>
                 <Label>Number of colours</Label>
                 <ComboBox
                     ItemsSource="{Binding NumberOfColours}"
@@ -72,7 +73,7 @@
                         IsEnabled="{Binding IsCreating}">
                     </ComboBox>
                     <Button
-                        Click="OnClickAddBotButton"
+                        Command="{Binding AddBotCommand}"
                         HorizontalAlignment="Right"
                         IsEnabled="{Binding IsCreating}">
                         Add bot
@@ -102,19 +103,19 @@
             HorizontalAlignment="Right"
             VerticalAlignment="Bottom">
             <Button
-                Margin="4"
-                Click="OnClickReadyButton">
+                Command="{Binding ReadyCommand}"
+                Margin="4">
                 Ready
             </Button>
             <Button
+                Command="{Binding StartCommand}"
                 Margin="4"
-                IsEnabled="{Binding IsReady}"
-                Click="OnClickStartButton">
+                IsEnabled="{Binding IsReady}">
                 Start
             </Button>
             <Button
-                Margin="4"
-                Click="OnClickBackButton">
+                Command="{Binding BackCommand}"
+                Margin="4">
                 Back
             </Button>
         </StackPanel>

@@ -1,16 +1,27 @@
 ﻿using Client.Model;
 using Client.Model.Dummy;
 using System.ComponentModel;
+using System.Windows.Input;
+using System.Windows.Navigation;
+using System.Windows;
+using Client.View;
+using Client.Helper;
 
 namespace Client.ViewModel
 {
-    public class LoginViewModel : INotifyPropertyChanged
+    class LoginViewModel : INotifyPropertyChanged
     {
-        private IAccountProvider accounts;
-        private string message;
-
         public event PropertyChangedEventHandler PropertyChanged;
 
+        public DependencyObject View { get; set; }
+
+        private IAccountProvider accounts;
+        private string message;
+        
+        public ICommand SignInCommand { get; set; }
+        public ICommand CreateAccountCommand { get; set; }
+        public ICommand QuitCommand { get; set; }
+        
         public string Username { get; set; }
         public string Password { get; set; }
         public string Message
@@ -24,22 +35,32 @@ namespace Client.ViewModel
             accounts = new Accounts();
             Username = "kornyek";
             Password = "admin";
+
+            SignInCommand = new CommandHandler(SignIn, true);
+            CreateAccountCommand = new CommandHandler(CreateAccount, true);
+            QuitCommand = new CommandHandler(Quit, true);
         }
 
-        public bool CanLogin()
+        private void SignIn()
         {
-            if (Username == null || Password == null)
+            if (accounts.IsAccountValid(Username, Password))
             {
-                return false;
+                NavigationService.GetNavigationService(View).Navigate(new MainMenu());
             }
-
-            if (!accounts.IsAccountValid(Username, Password))
+            else
             {
                 Message = "Wrong username or password!";
-                return false;
             }
+        }
 
-            return true;
+        private void CreateAccount()
+        {
+            NavigationService.GetNavigationService(View).Navigate(new Registration());
+        }
+
+        private void Quit()
+        {
+            Application.Current.Shutdown();
         }
 
         private void NotifyPropertyChanged(string propertyName)
