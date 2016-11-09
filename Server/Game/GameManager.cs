@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Server.Game.Board;
+using Server.Utils;
 
 
 namespace Server.Game
@@ -20,25 +21,9 @@ namespace Server.Game
         public GameManager(List<PlayerBase> players)
         {
             this.players = players;
-            shufflePlayers();
+            players.Shuffle();
 
             this.nextPlayer = 0;
-        }
-
-        // Uses the Fisher-Yates shuffle algorithm.
-        // See: https://en.wikipedia.org/wiki/Fisher%E2%80%93Yates_shuffle
-        private void shufflePlayers()
-        {
-            Random random = new Random();
-
-            for (int i = players.Count - 1; i > 1; i--)
-            {
-                int j = random.Next(i + 1);
-
-                PlayerBase temp = players[i];
-                players[i] = players[j];
-                players[j] = temp;
-            }
         }
 
         private void stepNextPlayer()

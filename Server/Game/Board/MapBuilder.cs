@@ -8,9 +8,30 @@ namespace Server.Game.Board
 {
     public class MapBuilder
     {
+        public static Map CreateMap(List<int> playerIds)
+        {
+            if (playerIds.Count < 2)
+                throw new ArgumentException("Too few players");
+
+            int sideLength;
+            if (playerIds.Count <= 6)
+                sideLength = 7;
+            else
+                sideLength = playerIds.Count + 1;
+
+            MapBuilder mapBuilder = new MapBuilder(sideLength);
+            mapBuilder.createMap();
+            mapBuilder.distributePlayersOnMap(playerIds);
+
+            return mapBuilder.Map;
+        }
+
         public static Map CreateMap(int sideLength)
         {
-            return new Map(new MapBuilder(sideLength).createMap());
+            MapBuilder mapBuilder = new MapBuilder(sideLength);
+            mapBuilder.createMap();
+
+            return mapBuilder.Map;
         }
 
         /// <summary>
@@ -24,7 +45,10 @@ namespace Server.Game.Board
             if (mapMatrix.GetLength(0) % 2 == 0)
                 throw new ArgumentException("Row and coloumn count of the map matrix must be an odd number");
 
-            return new Map(new MapBuilder((mapMatrix.GetLength(0) + 1) / 2, mapMatrix).createMap());
+            MapBuilder mapBuilder = new MapBuilder((mapMatrix.GetLength(0) + 1) / 2, mapMatrix);
+            mapBuilder.createMap();
+
+            return mapBuilder.Map;
         }
 
         private readonly List<Coord> neighbourCoords = new List<Coord>
@@ -39,6 +63,9 @@ namespace Server.Game.Board
 
         private readonly int sideLength;
         private readonly Hexagon[,] mapMatrix;
+        private List<Hexagon> map;
+
+        public Map Map => new Map(map);
 
         private MapBuilder(int sideLength, Hexagon[,] mapMatrix)
         {
@@ -54,7 +81,9 @@ namespace Server.Game.Board
         private List<Hexagon> createMap()
         {
             setNeighbours();
-            return createMapFromMatrix();
+            createMapFromMatrix();
+
+            return map;
         }
 
         private void fillMapMatrix()
@@ -101,9 +130,9 @@ namespace Server.Game.Board
         }
 
 
-        private List<Hexagon> createMapFromMatrix()
+        private void createMapFromMatrix()
         {
-            List<Hexagon> map = new List<Hexagon>(mapMatrix.GetLength(0) * mapMatrix.GetLength(1));
+            map = new List<Hexagon>(mapMatrix.GetLength(0) * mapMatrix.GetLength(1));
 
             for (int i = 0; i < mapMatrix.GetLength(0); i++)
             {
@@ -113,8 +142,74 @@ namespace Server.Game.Board
                         map.Add(mapMatrix[i, j]);
                 }              
             }
-
-            return map;
         }
+
+        private void distributePlayersOnMap(List<int> playerIds)
+        {
+            List<Hexagon> outerRim = getSortedOuterRimOfMap();
+
+            for (int i = 0; i < playerIds.Count; i++)
+            {
+                int playerCellNum = (int)Math.Round((double)(i * outerRim.Count) / playerIds.Count);
+                Hexagon playerCell = outerRim[playerCellNum];
+
+                playerCell.OwnerID = playerIds[i];
+                playerCell.Colour = i;
+            }
+        }
+
+        private List<Hexagon> getSortedOuterRimOfMap()
+        {
+            Coord center = new Coord(sideLength - 1, sideLength - 1);
+
+            return map
+                .Where(cell => Coord.Distance(cell.Coord, center) == sideLength - 1)
+                .OrderBy(cell => cell.Coord - center, new OuterRimSortComparer(sideLength))
+                .ToList();
+        }
+
+        #region Outer rim sort comparer
+        private class OuterRimSortComparer : IComparer<Coord>
+        {
+            private readonly int sideLength;
+            private readonly Coord firstInOrder;
+
+            public OuterRimSortComparer(int sideLength)
+            {
+                this.sideLength = sideLength;
+                this.firstInOrder = new Coord(-sideLength + 1, sideLength - 1);
+            }
+
+            public int Compare(Coord a, Coord b)
+            {
+                if (a == b)
+                    return 0;
+
+                if (a == firstInOrder)  // a is the one we choose to be the first one in order
+                    return -1;
+                if (b == firstInOrder)  // b is the one we choose to be the first one in order
+                    return 1;
+
+                int aSign = Math.Sign(a.Z);
+                int bSign = Math.Sign(b.Z);
+                if (aSign != bSign)         // they have different Z signs, this tells the order
+                    return aSign - bSign;
+
+                int xDiff = a.X - b.X;
+                int yDiff = a.Y - b.Y;
+
+                if (aSign == -1)            // they have the same Z sign, the furter ordering depends on that
+                {
+                    xDiff *= -1;
+                    yDiff *= -1;
+                }
+
+                if (xDiff != 0)             // first the difference between the x coords chooses
+                    return -xDiff;
+
+                return yDiff;               // then the difference between the y coords
+            }
+        }
+        #endregion
     }
 }

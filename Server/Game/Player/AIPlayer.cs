@@ -10,9 +10,9 @@ namespace Server.Game.Player
     {
         private readonly AIStrategy strategy;
 
-        public AIPlayer(int id, GameManager game) : base(id, game)
+        public AIPlayer(int id, AIStrategyType type, GameManager game) : base(id, game)
         {
-            this.strategy = new HardAIStrategy();
+            this.strategy = AIStrategyFactory.CreateAIStrategy(type);
         }
 
         public override void DoNextStep(GameSnapshotForNextPlayer snapshot)

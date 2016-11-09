@@ -26,6 +26,11 @@ namespace Server.Game.Board
             return new Coord(a.x + b.x, a.y + b.y);
         }
 
+        public static Coord operator -(Coord a, Coord b)
+        {
+            return new Coord(a.x - b.x, a.y - b.y);
+        }
+
         public static int Distance(Coord a, Coord b)
         {
             int xDiff = Math.Abs(a.X - b.X);
