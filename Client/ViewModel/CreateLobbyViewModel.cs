@@ -1,6 +1,7 @@
 ﻿using Client.Helper;
 using Client.Model;
 using Client.Model.Dummy;
+using Client.View;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -17,32 +18,40 @@ namespace Client.ViewModel
 
         public DependencyObject View { get; set; }
 
+        public ICommand AddBotCommand { get; set; }
+        public ICommand ReadyCommand { get; set; }
+        public ICommand StartCommand { get; set; }
+        public ICommand BackCommand { get; set; }
+        public ICommand RemoveBotCommand { get; set; }
+
         private const int MAX_PLAYERS = 8;
         private const int MAX_COLOURS = 16;
         private const int MIN_PLAYER_COLOUR_DIFF = 3;
 
         private bool isCreating = true;
         private bool isReady = false;
-
+        
+        private string selectedNumberOfPlayers;
+        private int selectedNumberOfColours;
         private Dictionary<BotDifficulty, int> bots;
         private IConnectedPlayerProvider connectedPlayerProvider;
-        private int selectedNumberOfColours;
-
-        public ICommand AddBotCommand { get; set; }
-        public ICommand ReadyCommand { get; set; }
-        public ICommand StartCommand { get; set; }
-        public ICommand BackCommand { get; set; }
-
-        public ICommand RemoveBotCommand { get; set; }
-
 
         public int[] NumberOfPlayers { get; set; }
-        public string SelectedNumberOfPlayers { get; set; }
+        public string SelectedNumberOfPlayers
+        {
+            get { return selectedNumberOfPlayers; }
+            set { selectedNumberOfPlayers = value; RefreshNumberOfColours(); }
+        }
         public ObservableCollection<int> NumberOfColours { get; set; }
-        public int SelectedNumberOfColours { get { return selectedNumberOfColours; } set { selectedNumberOfColours = value; NotifyPropertyChanged("SelectedNumberOfColours"); } }
+        public int SelectedNumberOfColours
+        {
+            get { return selectedNumberOfColours; }
+            set { selectedNumberOfColours = value; NotifyPropertyChanged("SelectedNumberOfColours"); }
+        }
         public ObservableCollection<string> BotList { get; set; }
         public List<string> BotDifficultyList { get; set; }
         public string SelectedBotDifficulty { get; set; }
+        public string BotToRemove { get; set; }
 
         public List<Player> ConnectedPlayers { get { return connectedPlayerProvider.GetPlayers(); } }
 
@@ -59,22 +68,25 @@ namespace Client.ViewModel
 
         public CreateLobbyViewModel()
         {
+            NumberOfColours = new ObservableCollection<int>();
+            SetNumberOfColours(2);
+
             NumberOfPlayers = new int[MAX_PLAYERS - 1];
             for (int i = 0; i < MAX_PLAYERS - 1; i++)
             {
                 NumberOfPlayers[i] = i + 2;
             }
 
-            NumberOfColours = new ObservableCollection<int>();
-            SetNumberOfColours(2);
-
             BotList = new ObservableCollection<string>();
             bots = new Dictionary<BotDifficulty, int>();
             BotDifficultyList = new List<string>();
             foreach (BotDifficulty difficulty in Enum.GetValues(typeof(BotDifficulty)))
             {
-                bots.Add(difficulty, 0);
-                BotDifficultyList.Add(difficulty.convertToString());
+                if (difficulty != BotDifficulty.INVALID)
+                {
+                    bots.Add(difficulty, 0);
+                    BotDifficultyList.Add(difficulty.convertToString());
+                }
             }
 
             connectedPlayerProvider = new Players();
@@ -86,6 +98,7 @@ namespace Client.ViewModel
             ReadyCommand = new CommandHandler(Ready, true);
             StartCommand = new CommandHandler(Start, true);
             BackCommand = new CommandHandler(Back, true);
+            RemoveBotCommand = new CommandHandler(RemoveBot, true);
         }
 
         private void AddSelectedBot()
@@ -125,10 +138,17 @@ namespace Client.ViewModel
         {
             NavigationService.GetNavigationService(View).GoBack();
         }
-
-        private void NotifyPropertyChanged(string propertyName)
+        
+        private void RefreshBotList()
         {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+            BotList.Clear();
+            foreach (var difficulty in bots)
+            {
+                for (int i = 0; i < difficulty.Value; i++)
+                {
+                    BotList.Add(difficulty.Key.convertToString());
+                }
+            }
         }
 
         private void SetNumberOfColours(int selectedNumberOfPlayers)
@@ -141,9 +161,9 @@ namespace Client.ViewModel
             }
         }
 
-        public void RefreshNumberOfColours()
+        private void RefreshNumberOfColours()
         {
-            int actualNumberOfColours = NumberOfColours[selectedNumberOfColours];
+            int actualNumberOfColours = NumberOfColours[SelectedNumberOfColours];
 
             if (SelectedNumberOfPlayers != null)
             {
@@ -160,23 +180,20 @@ namespace Client.ViewModel
             }
         }
 
-        public void RemoveBot(string difficultyName)
+        private void NotifyPropertyChanged(string propertyName)
         {
-            BotDifficulty difficulty = BotDifficultyHelper.convertFromString(difficultyName);
-            bots[difficulty] = bots[difficulty] - 1;
-            RefreshBotList();
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
-        private void RefreshBotList()
+        private void RemoveBot()
         {
-            BotList.Clear();
-            foreach (var difficulty in bots)
+            BotDifficulty difficulty = BotDifficultyHelper.convertFromString(BotToRemove);
+            Console.WriteLine(difficulty);
+            if (difficulty != BotDifficulty.INVALID)
             {
-                for (int i = 0; i < difficulty.Value; i++)
-                {
-                    BotList.Add(difficulty.Key.convertToString());
-                }
+                bots[difficulty] = bots[difficulty] - 1;
             }
+            RefreshBotList();
         }
     }
 }

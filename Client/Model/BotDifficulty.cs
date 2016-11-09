@@ -1,16 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Client.Model
+﻿namespace Client.Model
 {
     enum BotDifficulty
     {
         EASY,
         MEDIUM,
-        HARD
+        HARD,
+        INVALID
     }
 
     static class BotDifficultyHelper
@@ -23,8 +18,10 @@ namespace Client.Model
                     return "Easy";
                 case BotDifficulty.MEDIUM:
                     return "Medium";
-                default:
+                case BotDifficulty.HARD:
                     return "Hard";
+                default:
+                    return "";
             }
         }
 
@@ -36,8 +33,10 @@ namespace Client.Model
                     return BotDifficulty.EASY;
                 case "Medium":
                     return BotDifficulty.MEDIUM;
-                default:
+                case "Hard":
                     return BotDifficulty.HARD;
+                default:
+                    return BotDifficulty.INVALID;
             }
         }
     }

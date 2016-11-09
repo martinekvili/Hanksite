@@ -3,6 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
              xmlns:local="clr-namespace:Client.View"
              xmlns:viewmodel="clr-namespace:Client.ViewModel"
              mc:Ignorable="d" 
@@ -27,9 +28,7 @@
                     ItemsSource="{Binding NumberOfPlayers}"
                     SelectedItem="{Binding SelectedNumberOfPlayers}"
                     SelectedIndex="0"
-                    SelectionChanged="OnChangedNumberOfPlayersSelection"
-                    IsEnabled="{Binding IsCreating}">
-                </ComboBox>
+                    IsEnabled="{Binding IsCreating}"/>
                 <Label>Number of colours</Label>
                 <ComboBox
                     ItemsSource="{Binding NumberOfColours}"
@@ -44,22 +43,28 @@
                     Orientation="Vertical">
                     <Label>Bots</Label>
                     <ListBox
+                        Name="BotList"
                         Height="200"
+                        HorizontalContentAlignment="Stretch"
                         ItemsSource="{Binding BotList}"
+                        SelectedItem="{Binding BotToRemove}"
                         IsEnabled="{Binding IsCreating}">
                         <ListBox.ItemTemplate>
                             <DataTemplate>
-                                <StackPanel
-                                    VerticalAlignment="Stretch">
-                                    <Label Content="{Binding}"/>
-                                </StackPanel>
+                                <DockPanel
+                                    VerticalAlignment="Stretch"
+                                    HorizontalAlignment="Stretch">
+                                    <Label
+                                        Name="BotLabel"
+                                        Content="{Binding}"/>
+                                </DockPanel>
                             </DataTemplate>
                         </ListBox.ItemTemplate>
-                        <ListBox.ItemContainerStyle>
-                            <Style TargetType="ListBoxItem">
-                                <EventSetter Event="PreviewMouseLeftButtonDown" Handler="OnClickBot"/>
-                            </Style>
-                        </ListBox.ItemContainerStyle>
+                        <i:Interaction.Triggers>
+                            <i:EventTrigger EventName="MouseLeftButtonUp">
+                                <i:InvokeCommandAction Command="{Binding RemoveBotCommand}"/>
+                            </i:EventTrigger>
+                        </i:Interaction.Triggers>
                     </ListBox>
                 </StackPanel>
                 <DockPanel
