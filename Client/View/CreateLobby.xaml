@@ -12,7 +12,8 @@
         <viewmodel:CreateLobbyViewModel/>
     </UserControl.DataContext>
     <DockPanel
-        Margin="24">
+        Margin="24"
+        HorizontalAlignment="Center">
         <StackPanel
             DockPanel.Dock="Top"
             Orientation="Horizontal">

@@ -1,38 +1,47 @@
-﻿<UserControl x:Class="Client.View.GameView"
-             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:Client.View"
-             xmlns:viewmodel="clr-namespace:Client.ViewModel"
-             mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="300">
+﻿<UserControl
+    x:Class="Client.View.GameView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:Client.View"
+    xmlns:viewmodel="clr-namespace:Client.ViewModel"
+    mc:Ignorable="d"
+    d:DesignHeight="300"
+    d:DesignWidth="300">
     <UserControl.DataContext>
-        <viewmodel:GameViewModel/>
+        <viewmodel:GameViewModel />
     </UserControl.DataContext>
     <Grid>
         <ItemsControl
-        ItemsSource="{Binding Map}"
-        Margin="12">
+            HorizontalAlignment="Center"
+            VerticalAlignment="Center"
+            ItemsSource="{Binding Map}"
+            Margin="12">
             <ItemsControl.ItemsPanel>
                 <ItemsPanelTemplate>
-                    <Canvas/>
+                    <Canvas />
                 </ItemsPanelTemplate>
             </ItemsControl.ItemsPanel>
             <ItemsControl.ItemContainerStyle>
-                <Style TargetType="ContentPresenter">
-                    <Setter Property="Canvas.Left" Value="{Binding X}"/>
-                    <Setter Property="Canvas.Top" Value="{Binding Y}"/>
+                <Style
+                    TargetType="ContentPresenter">
+                    <Setter
+                        Property="Canvas.Left"
+                        Value="{Binding X}" />
+                    <Setter
+                        Property="Canvas.Top"
+                        Value="{Binding Y}" />
                 </Style>
             </ItemsControl.ItemContainerStyle>
             <ItemsControl.ItemTemplate>
                 <DataTemplate>
-                    <Path 
-                    Fill="{Binding Colour}"
-                    Width="{Binding Width}"
-                    Height="{Binding Height}" 
-                    Stretch="Fill" 
-                    Data="M8.660254,0 L17.320508,5 17.320508,15 8.660254,20 0,15 0,5 8.660254,0 z"/>
+                    <Path
+                        Fill="{Binding Colour}"
+                        Width="{Binding Width}"
+                        Height="{Binding Height}"
+                        Stretch="Fill"
+                        Data="M8.660254,0 L17.320508,5 17.320508,15 8.660254,20 0,15 0,5 8.660254,0 z" />
                 </DataTemplate>
             </ItemsControl.ItemTemplate>
         </ItemsControl>

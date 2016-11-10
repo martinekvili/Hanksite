@@ -6,6 +6,6 @@
         xmlns:local="clr-namespace:Client"
         mc:Ignorable="d"
         Title="Hanksite" Height="720" Width="1280"
-        ResizeMode="NoResize">
+        ResizeMode="CanResize">
     <Frame Source="View/Login.xaml" NavigationUIVisibility="Hidden"/>
 </Window>
