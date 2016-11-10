@@ -14,7 +14,7 @@ namespace Server.Game
     {
         private readonly object syncObject = new object();
 
-        private int nextPlayer;
+        private int currentPlayerNum;
         private readonly List<PlayerBase> players;
         private readonly Map map;
 
@@ -23,7 +23,7 @@ namespace Server.Game
             this.players = players;
             players.Shuffle();
 
-            this.nextPlayer = 0;
+            this.currentPlayerNum = 0;
         }
 
         private void stepNextPlayer()
@@ -41,31 +41,31 @@ namespace Server.Game
 
             do
             {
-                nextPlayerCandidate = (nextPlayer + 1) % players.Count;
+                nextPlayerCandidate = (currentPlayerNum + 1) % players.Count;
 
                 if (!players[nextPlayerCandidate].CanDoStep)
                     continue;
 
                 selectableCells = map.GetSelectableCellsForPlayer(players[nextPlayerCandidate].ID).ToList();
 
-            } while ((!players[nextPlayerCandidate].CanDoStep || selectableCells.Count == 0) && nextPlayerCandidate != nextPlayer);
+            } while ((!players[nextPlayerCandidate].CanDoStep || selectableCells.Count == 0) && nextPlayerCandidate != currentPlayerNum);
 
-            if (nextPlayerCandidate == nextPlayer) // there's noone who could move
+            if (nextPlayerCandidate == currentPlayerNum) // there's noone who could move
             {
                 gameOver();
                 return;
             }
 
-            nextPlayer = nextPlayerCandidate;
+            currentPlayerNum = nextPlayerCandidate;
 
             GameSnapshot snapshot = new GameSnapshot(players, map);
             for (int i = 0; i < players.Count; i++)
             {
-                if (i != nextPlayer)
+                if (i != currentPlayerNum)
                     players[i].SendGameSnapshot(snapshot);
             }
 
-            players[nextPlayer].DoNextStep(new GameSnapshotForNextPlayer(players, map, selectableCells));
+            players[currentPlayerNum].DoNextStep(new GameSnapshotForNextPlayer(players, map, selectableCells));
         }
 
         private void gameOver()
@@ -86,6 +86,30 @@ namespace Server.Game
                 player.Points = map.SetPlayerColour(player.ID, colour);
 
                 stepNextPlayerNoLock();
+            }
+        }
+
+        public void DisconnectPlayer(PlayerBase player)
+        {
+            lock (syncObject)
+            {
+                int playerNum = players.FindIndex(p => p.ID == player.ID);
+
+                if (playerNum == -1)
+                    return;
+
+                players[playerNum] = new DisconnectedPlayer(player.ID, this);
+
+                if (playerNum == currentPlayerNum)
+                    stepNextPlayerNoLock();
+            }
+        }
+
+        public bool IsPlayerInGame(int playerId)
+        {
+            lock (syncObject)
+            {
+                return players.FindIndex(player => player.ID == playerId) != -1;
             }
         }
     }

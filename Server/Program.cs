@@ -15,7 +15,7 @@ namespace Server
             //Uri baseAddress = new Uri("http://localhost:8080/hello");
 
             // Create the ServiceHost.
-            using (ServiceHost host = new ServiceHost(typeof(Service1)))
+            using (ServiceHost host = new ServiceHost(typeof(HanksiteSession)))
             {
                 // Open the ServiceHost to start listening for messages. Since
                 // no endpoints are explicitly configured, the runtime will create

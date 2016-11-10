@@ -14,20 +14,20 @@ namespace Server
         public static Broker Instance => instance;
 
         private object syncObject = new object();
-        private HashSet<IService1DuplexCallback> callbacks;
+        private HashSet<IHanksiteServiceCallback> callbacks;
 
         public Broker()
         {
-            callbacks = new HashSet<IService1DuplexCallback>();
+            callbacks = new HashSet<IHanksiteServiceCallback>();
         }
 
-        public void AddCallback(IService1DuplexCallback callback)
+        public void AddCallback(IHanksiteServiceCallback callback)
         {
             lock(syncObject)
                 callbacks.Add(callback);
         }
 
-        public void RemoveCallback(IService1DuplexCallback callback)
+        public void RemoveCallback(IHanksiteServiceCallback callback)
         {
             lock (syncObject)
                 callbacks.Remove(callback);

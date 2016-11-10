@@ -4,30 +4,24 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Server.Utils;
+using Common.Game;
 
 namespace Server.Game.Player
 {
-    public enum AIStrategyType
-    {
-        Hard, 
-        Medium,
-        Easy
-    }
-
     public static class AIStrategyFactory
     {
-        public static AIStrategy CreateAIStrategy(AIStrategyType type)
+        public static AIStrategy CreateAIStrategy(AIDifficulty type)
         {
             switch (type)
             {
-                case AIStrategyType.Easy:
+                case AIDifficulty.Easy:
                     return new EasyAIStrategy();
-                case AIStrategyType.Medium:
+                case AIDifficulty.Medium:
                     return new MediumAIStrategy();
-                case AIStrategyType.Hard:
+                case AIDifficulty.Hard:
                     return new HardAIStrategy();
                 default:
-                    throw new ArgumentException("Not recognized AIStrategyType");
+                    throw new ArgumentException("Not recognized AIDifficulty");
             }
         }
     }

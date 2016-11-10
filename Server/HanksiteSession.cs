@@ -9,19 +9,18 @@ using System.Threading;
 
 namespace Server
 {
-    // NOTE: You can use the "Rename" command on the "Refactor" menu to change the class name "Service1" in both code and config file together.
     [ServiceBehavior(InstanceContextMode = InstanceContextMode.PerSession)]
-    public class Service1 : IService1
+    public class HanksiteSession : IHanksiteService
     {
         private static int clientCounter = 0;
 
         private int clientNum;
-        private IService1DuplexCallback callback;
+        private IHanksiteServiceCallback callback;
 
-        public Service1()
+        public HanksiteSession()
         {
             clientNum = Interlocked.Increment(ref clientCounter);
-            callback = OperationContext.Current.GetCallbackChannel<IService1DuplexCallback>();
+            callback = OperationContext.Current.GetCallbackChannel<IHanksiteServiceCallback>();
 
             OperationContext.Current.InstanceContext.Closed += InstanceContext_Closed;
         }

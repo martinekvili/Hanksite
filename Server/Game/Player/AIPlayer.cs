@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Common.Game;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,7 +11,7 @@ namespace Server.Game.Player
     {
         private readonly AIStrategy strategy;
 
-        public AIPlayer(int id, AIStrategyType type, GameManager game) : base(id, game)
+        public AIPlayer(int id, AIDifficulty type, GameManager game) : base(id, game)
         {
             this.strategy = AIStrategyFactory.CreateAIStrategy(type);
         }

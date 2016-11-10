@@ -10,7 +10,7 @@ using System.Threading;
 
 namespace TestClient
 {
-    class CallbackImpl : IService1DuplexCallback
+    class CallbackImpl : IHanksiteServiceCallback
     {
         public void Send(string message)
         {
@@ -33,10 +33,10 @@ namespace TestClient
 
                 var instanceContext = new InstanceContext(new CallbackImpl());
 
-                IService1 proxy = new DuplexChannelFactory<IService1>(
+                IHanksiteService proxy = new DuplexChannelFactory<IHanksiteService>(
                     instanceContext,
                     new NetTcpBinding("hanksiteBinding"),
-                    new EndpointAddress(new Uri($"net.tcp://{serverAddress}:8733/Service1/"))
+                    new EndpointAddress(new Uri($"net.tcp://{serverAddress}:8733/HanksiteService/"))
                 ).CreateChannel();
 
                 instanceContext.Faulted += InstanceContext_Closed;
@@ -49,7 +49,6 @@ namespace TestClient
                     proxy.SendMessage(message);
                     message = Console.ReadLine().Trim();
                 }
-                Thread.Sleep(30000);
             }
             catch (CommunicationException)
             {
