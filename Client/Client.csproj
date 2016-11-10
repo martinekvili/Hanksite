@@ -59,6 +59,11 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Helper\CommandHandler.cs" />
+    <Compile Include="Model\DrawableField.cs" />
+    <Compile Include="Model\Field.cs" />
+    <Compile Include="Model\Dummy\MapProvider.cs" />
+    <Compile Include="Model\IMapProvider.cs" />
+    <Compile Include="Model\MapConverter.cs" />
     <Compile Include="View\ConnectLobby.xaml.cs">
       <DependentUpon>ConnectLobby.xaml</DependentUpon>
     </Compile>

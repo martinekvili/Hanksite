@@ -180,20 +180,19 @@ namespace Client.ViewModel
             }
         }
 
-        private void NotifyPropertyChanged(string propertyName)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
-
         private void RemoveBot()
         {
             BotDifficulty difficulty = BotDifficultyHelper.convertFromString(BotToRemove);
-            Console.WriteLine(difficulty);
             if (difficulty != BotDifficulty.INVALID)
             {
                 bots[difficulty] = bots[difficulty] - 1;
             }
             RefreshBotList();
+        }
+
+        private void NotifyPropertyChanged(string propertyName)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 }
