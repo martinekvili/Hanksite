@@ -7,14 +7,20 @@ using System.Text;
 using System.Threading.Tasks;
 using Common;
 using System.Threading;
+using Common.Lobby;
 
 namespace TestClient
 {
     class CallbackImpl : IHanksiteServiceCallback
     {
-        public void Send(string message)
+        public void SendLobbyClosed()
         {
-            Console.WriteLine($"Message received: {message}");
+            Console.WriteLine("Disconnected from lobby.");
+        }
+
+        public void SendLobbyMembersSnapshot(LobbyMembersSnapshot lobbySnapshot)
+        {
+            Console.WriteLine($"Members: {string.Join(" ", lobbySnapshot.LobbyMembers.Select(member => member.UserName))}");
         }
     }
 
@@ -29,7 +35,7 @@ namespace TestClient
                 if (serverAddress == string.Empty)
                     serverAddress = "localhost";
 
-                Console.WriteLine($"Connecting to {serverAddress}. Write your messages, or write 'exit' to exit.");
+                Console.WriteLine($"Connecting to {serverAddress}.");
 
                 var instanceContext = new InstanceContext(new CallbackImpl());
 
@@ -39,15 +45,46 @@ namespace TestClient
                     new EndpointAddress(new Uri($"net.tcp://{serverAddress}:8733/HanksiteService/"))
                 ).CreateChannel();
 
-                instanceContext.Faulted += InstanceContext_Closed;
+                Console.WriteLine("Enter username");
+                proxy.Connect(Console.ReadLine().Trim());
 
-                proxy.Connect();
 
-                string message = Console.ReadLine().Trim();
-                while (message != "exit")
+                while (true)
                 {
-                    proxy.SendMessage(message);
-                    message = Console.ReadLine().Trim();
+                    string[] message = Console.ReadLine().Split(new string[] { " " }, StringSplitOptions.RemoveEmptyEntries);
+
+                    if (message[0] == "create")
+                    {
+                        proxy.CreateLobby(new LobbySettings
+                        {
+                            Name = message[1],
+                            NumberOfPlayers = int.Parse(message[2]),
+                            BotNumbers = new LobbySettingsBotNumber[] { }
+                        });
+                    }
+                    else if (message[0] == "list")
+                    {
+                        var lobbies = proxy.ListLobbies();
+                        foreach (var lobby in lobbies)
+                        {
+                            Console.WriteLine(lobby.Name);
+                        }
+                    }
+                    else if (message[0] == "connect")
+                    {
+                        if (proxy.ConnectToLobby(message[1]) == null)
+                            Console.WriteLine("Connect unsuccesful.");
+                        else
+                            Console.WriteLine("Connect succesful.");
+                    }
+                    else if (message[0] == "disconnect")
+                    {
+                        proxy.DisconnectFromLobby();
+                    }
+                    else if (message[0] == "exit")
+                    {
+                        break;
+                    }
                 }
             }
             catch (CommunicationException)
@@ -55,12 +92,6 @@ namespace TestClient
                 Console.WriteLine("The server is unavailable, shutting down.");
                 Console.ReadKey();
             }
-        }
-
-        private static void InstanceContext_Closed(object sender, EventArgs e)
-        {
-            Console.WriteLine("Connection lost, shutting down.");
-            Console.ReadKey();
         }
     }
 }

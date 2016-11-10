@@ -13,27 +13,35 @@ namespace Server.Lobby
         private readonly HanksiteSession session;
         private readonly LobbyManager lobby;
 
-        public User User;
+        public User User => session.User;
+        public HanksiteSession Session => session;
 
         public LobbyMember(HanksiteSession session, LobbyManager lobby)
         {
             this.session = session;
             this.lobby = lobby;
+
+            this.session.LobbyMember = this;
         }
 
-        public void SendLobbyMembers(LobbyMembersSnapshot lobbyMembersSnapshot)
+        public void SendLobbyMembersSnapshot(LobbyMembersSnapshot lobbyMembersSnapshot)
         {
-            throw new NotImplementedException();
+            session.SendLobbyMembersSnapshot(lobbyMembersSnapshot);
         }
 
-        public void SendDisconnect()
+        public void SendLobbyClosed()
         {
-            throw new NotImplementedException();
+            session.SendLobbyClosed();
         }
 
         public void DisconnectFromLobby()
         {
             lobby.DisconnectPlayer(this);
+        }
+
+        public void StartGame()
+        {
+            lobby.StartGame();
         }
     }
 }

@@ -22,7 +22,7 @@ namespace Server.Lobby
             lobbyManagers = new List<LobbyManager>();
         }
 
-        public bool CreateNewLobby(HanksiteSession ownerSession, LobbySettings settings)
+        public bool CreateLobby(HanksiteSession ownerSession, LobbySettings settings)
         {
             lock (syncObject)
             {
@@ -39,6 +39,29 @@ namespace Server.Lobby
             lock (syncObject)
             {
                 return lobbyManagers.Select(manager => manager.Snapshot).ToList();
+            }
+        }
+
+        public LobbySettingsWithMembersSnapshot ConnectToLobby(HanksiteSession playerSession, string lobbyName)
+        {
+            lock (syncObject)
+            {
+                LobbyManager lobbyManager = lobbyManagers.SingleOrDefault(lobby => lobby.Name == lobbyName);
+                if (lobbyManager == null)
+                    return null;
+
+                if (!lobbyManager.ConnectPlayer(playerSession))
+                    return null;
+
+                return lobbyManager.Snapshot;
+            }
+        }
+
+        public void RemoveLobbyManager(LobbyManager lobbyManager)
+        {
+            lock (syncObject)
+            {
+                lobbyManagers.Remove(lobbyManager);
             }
         }
     }

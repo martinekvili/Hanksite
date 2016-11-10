@@ -1,6 +1,7 @@
 ﻿using Common.Lobby;
 using System;
 using System.Collections.Generic;
+using System.IO.Ports;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -45,7 +46,10 @@ namespace Server.Lobby
                 if (connectedPlayers.Count == numberOfPlayers)
                     return false;
 
-                connectedPlayers.Add(new LobbyMember(playerSession, this));
+                LobbyMember newMember = new LobbyMember(playerSession, this);
+                connectedPlayers.Add(newMember);
+
+                sendMembersSnapshot(newMember);
                 return true;
             }
         }
@@ -57,25 +61,38 @@ namespace Server.Lobby
                 if (member != owner)
                 {
                     connectedPlayers.Remove(member);
-
-                    var lobbyMembersSnapshot = new LobbyMembersSnapshot
-                    {
-                        LobbyMembers = connectedPlayers.Select(player => player.User).ToArray()
-                    };
-
-                    foreach (var connectedPlayer in connectedPlayers)
-                        connectedPlayer.SendLobbyMembers(lobbyMembersSnapshot);
+                    sendMembersSnapshot();
                 }
                 else
                 {
-                    foreach (var connectedPlayer in connectedPlayers)
-                    {
-                        if (connectedPlayer != member)
-                            connectedPlayer.SendDisconnect();
-                    }
+                    sendMessage(player => player.SendLobbyClosed(), member);
+                    LobbyManagerPool.Instance.RemoveLobbyManager(this);
                 }
             }
         }
 
+        private void sendMembersSnapshot(LobbyMember excludedMember = null)
+        {
+            var lobbyMembersSnapshot = new LobbyMembersSnapshot
+            {
+                LobbyMembers = connectedPlayers.Select(player => player.User).ToArray()
+            };
+
+            sendMessage(player => player.SendLobbyMembersSnapshot(lobbyMembersSnapshot), excludedMember);
+        }
+
+        private void sendMessage(Action<LobbyMember> send, LobbyMember excludedMember)
+        {
+            foreach (var connectedPlayer in connectedPlayers)
+            {
+                if (connectedPlayer != excludedMember)
+                    send(connectedPlayer);
+            }
+        }
+
+        public void StartGame()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

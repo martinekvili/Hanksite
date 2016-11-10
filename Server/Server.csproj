@@ -72,7 +72,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Game\Board\BreadthFirstSearch.cs" />
-    <Compile Include="Broker.cs" />
     <Compile Include="Game\GameManager.cs" />
     <Compile Include="Game\Board\Coord.cs" />
     <Compile Include="Game\Board\Hexagon.cs" />
@@ -83,6 +82,7 @@
     <Compile Include="Game\Player\AIStrategy.cs" />
     <Compile Include="Game\Player\DisconnectedPlayer.cs" />
     <Compile Include="Game\Player\PlayerBase.cs" />
+    <Compile Include="HanksiteSession.Lobby.cs" />
     <Compile Include="Lobby\LobbyManager.cs" />
     <Compile Include="Lobby\LobbyManagerPool.cs" />
     <Compile Include="Lobby\LobbyMember.cs" />

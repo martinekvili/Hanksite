@@ -6,44 +6,40 @@ using System.Runtime.Serialization;
 using System.ServiceModel;
 using System.Text;
 using System.Threading;
+using Common.Lobby;
+using Common.Users;
 
 namespace Server
 {
     [ServiceBehavior(InstanceContextMode = InstanceContextMode.PerSession)]
-    public class HanksiteSession : IHanksiteService
+    public partial class HanksiteSession : IHanksiteService
     {
-        private static int clientCounter = 0;
+        private readonly IHanksiteServiceCallback callback;
 
-        private int clientNum;
-        private IHanksiteServiceCallback callback;
+        private User user;
+        public User User => user;
 
         public HanksiteSession()
         {
-            clientNum = Interlocked.Increment(ref clientCounter);
             callback = OperationContext.Current.GetCallbackChannel<IHanksiteServiceCallback>();
 
             OperationContext.Current.InstanceContext.Closed += InstanceContext_Closed;
         }
 
-        public void Connect()
+        public bool Connect(string userName)
         {
-            Broker.Instance.AddCallback(callback);
+            Console.WriteLine($"Client '{userName}' connected");
+            user = new User { ID = 0, UserName = userName };
 
-            Console.WriteLine($"Client No. #{clientNum} connected");
-            callback.Send($"Congrats, you are the client No. #{clientNum}");
-        }
-
-        public void SendMessage(string message)
-        {
-            Broker.Instance.SendMessage(message);
+            return true;
         }
 
         private void InstanceContext_Closed(object sender, EventArgs e)
         {
-            Broker.Instance.RemoveCallback(callback);
-            Console.WriteLine($"Client No. #{clientNum} disconnected");
+            Console.WriteLine($"Client '{user.UserName}' disconnected");
+
+            if (LobbyMember != null)
+                LobbyMember.DisconnectFromLobby();
         }
-
-
     }
 }

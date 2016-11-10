@@ -4,24 +4,18 @@ using System.Linq;
 using System.Runtime.Serialization;
 using System.ServiceModel;
 using System.Text;
+using Common.Lobby;
 
 namespace Common
 {
     [ServiceContract(CallbackContract = typeof(IHanksiteServiceCallback))]
-    public interface IHanksiteService
+    public interface IHanksiteService : ILobbyService
     {
-        [OperationContract(IsOneWay = true)]
-        void Connect();
-
-        [OperationContract(IsOneWay = true)]
-        void SendMessage(string message);
-
-        // TODO: Add your service operations here
+        [OperationContract(IsOneWay = false)]
+        bool Connect(string userName);
     }
 
-    public interface IHanksiteServiceCallback
+    public interface IHanksiteServiceCallback : ILobbyServiceCallback
     {
-        [OperationContract(IsOneWay = true)]
-        void Send(string message);
     }
 }
