@@ -92,7 +92,15 @@ namespace Server.Lobby
 
         public void StartGame()
         {
-            throw new NotImplementedException();
+            lock (syncObject)
+            {
+                foreach (var player in connectedPlayers)
+                    player.Session.LobbyMember = null;
+
+                LobbyManagerPool.Instance.RemoveLobbyManager(this);
+
+                throw new NotImplementedException();
+            }
         }
     }
 }

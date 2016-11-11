@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Common.Lobby;
 using Server.Game.Board;
 using Server.Utils;
 
@@ -18,12 +19,31 @@ namespace Server.Game
         private readonly List<PlayerBase> players;
         private readonly Map map;
 
-        public GameManager(List<PlayerBase> players)
+        public GameManager(List<HanksiteSession> realPlayers, LobbySettings settings)
         {
-            this.players = players;
-            players.Shuffle();
+            this.players = new List<PlayerBase>();
+            initializePlayers(realPlayers, settings);
+
+            this.map = MapBuilder.CreateMap(players.Select(player => player.ID).ToList());
 
             this.currentPlayerNum = 0;
+        }
+
+        private void initializePlayers(List<HanksiteSession> realPlayers, LobbySettings settings)
+        {
+            players.AddRange(realPlayers.Select(realPlayer => new RealPlayer(realPlayer, this)));
+
+            int aiPlayerCount = 0;
+            foreach (var botNumber in settings.BotNumbers)
+            {
+                for (int i = 0; i < botNumber.Number; i++)
+                {
+                    players.Add(new AIPlayer(aiPlayerCount, botNumber.Difficulty, this));
+                    aiPlayerCount++;
+                }             
+            }
+
+            players.Shuffle();
         }
 
         private void stepNextPlayer()

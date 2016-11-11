@@ -77,11 +77,14 @@
     <Compile Include="Game\Board\Hexagon.cs" />
     <Compile Include="Game\Board\Map.cs" />
     <Compile Include="Game\Board\MapBuilder.cs" />
+    <Compile Include="Game\GameManagerPool.cs" />
     <Compile Include="Game\GameSnapshot.cs" />
     <Compile Include="Game\Player\AIPlayer.cs" />
     <Compile Include="Game\Player\AIStrategy.cs" />
     <Compile Include="Game\Player\DisconnectedPlayer.cs" />
     <Compile Include="Game\Player\PlayerBase.cs" />
+    <Compile Include="Game\Player\RealPlayer.cs" />
+    <Compile Include="HanksiteSession.Game.cs" />
     <Compile Include="HanksiteSession.Lobby.cs" />
     <Compile Include="Lobby\LobbyManager.cs" />
     <Compile Include="Lobby\LobbyManagerPool.cs" />

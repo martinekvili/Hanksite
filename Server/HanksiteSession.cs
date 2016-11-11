@@ -39,7 +39,7 @@ namespace Server
             Console.WriteLine($"Client '{user.UserName}' disconnected");
 
             if (LobbyMember != null)
-                LobbyMember.DisconnectFromLobby();
+                DisconnectFromLobby();
         }
     }
 }

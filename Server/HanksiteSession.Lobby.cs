@@ -30,6 +30,8 @@ namespace Server
         public void DisconnectFromLobby()
         {
             LobbyMember.DisconnectFromLobby();
+
+            LobbyMember = null;
         }
 
         public void StartGame()
