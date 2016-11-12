@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Client.Model.Interfaces;
+using System;
 using System.Collections.Generic;
 
 namespace Client.Model.Dummy

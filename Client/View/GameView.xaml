@@ -21,7 +21,7 @@
             Margin="12">
             <ItemsControl.ItemsPanel>
                 <ItemsPanelTemplate>
-                    <Canvas />
+                    <Canvas Name="Hexa"/>
                 </ItemsPanelTemplate>
             </ItemsControl.ItemsPanel>
             <ItemsControl.ItemContainerStyle>
@@ -38,26 +38,23 @@
             <ItemsControl.ItemTemplate>
                 <DataTemplate>
                     <Path
+                        MouseUp="OnClickHexa"
                         Fill="{Binding Colour}"
                         Width="{Binding Width}"
                         Height="{Binding Height}"
                         Stretch="Fill"
                         Data="M8.660254,0 L17.320508,5 17.320508,15 8.660254,20 0,15 0,5 8.660254,0 z">
-                        <!--<Path.InputBindings>
-                            <MouseBinding
-                                MouseAction="LeftClick"
-                                Command="{Binding Path=TestCommand}" />
-                        </Path.InputBindings>-->
                     </Path>
                 </DataTemplate>
             </ItemsControl.ItemTemplate>
-            <i:Interaction.Triggers>
+            <!--<i:Interaction.Triggers>
                 <i:EventTrigger
                     EventName="MouseLeftButtonUp">
                     <i:InvokeCommandAction
-                        Command="{Binding TestCommand}" CommandParameter="{Binding RelativeSource={RelativeSource TemplatedParent}}"/>
+                        Command="{Binding TestCommand}"
+                    CommandParameter="{Binding RelativeSource={RelativeSource }}"/>
                 </i:EventTrigger>
-            </i:Interaction.Triggers>
+            </i:Interaction.Triggers>-->
         </ItemsControl>
     </Grid>
 </UserControl>

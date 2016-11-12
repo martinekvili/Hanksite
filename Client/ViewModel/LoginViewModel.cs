@@ -6,6 +6,7 @@ using System.Windows.Navigation;
 using System.Windows;
 using Client.View;
 using Client.Helper;
+using Client.Model.Interfaces;
 
 namespace Client.ViewModel
 {
@@ -31,9 +32,22 @@ namespace Client.ViewModel
             set { message = value; NotifyPropertyChanged("Message"); }
         }
 
+        internal IAccountProvider Accounts
+        {
+            get
+            {
+                return accounts;
+            }
+
+            set
+            {
+                accounts = value;
+            }
+        }
+
         public LoginViewModel()
         {
-            accounts = new Accounts();
+            Accounts = new Accounts();
             Username = "kornyek";
             Password = "admin";
 
@@ -44,7 +58,7 @@ namespace Client.ViewModel
 
         private void SignIn()
         {
-            if (accounts.IsAccountValid(Username, Password))
+            if (Accounts.IsAccountValid(Username, Password))
             {
                 NavigationService.GetNavigationService(View).Navigate(new MainMenu());
             }

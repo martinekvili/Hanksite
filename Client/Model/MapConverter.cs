@@ -1,14 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Windows.Media;
 
 namespace Client.Model
 {
     class MapConverter
     {
         private const float FIELD_WIDTH = 50;
+        private Dictionary<int, Color> colours;
 
         public List<DrawableField> ConvertToDrawable(List<Field> map)
         {
+            colours = new ColourProvider().Colours;
+
             List<DrawableField> drawableMap = new List<DrawableField>();
 
             float fieldHeight = (float)(FIELD_WIDTH * Math.Sqrt(4f / 3f));
@@ -22,7 +26,7 @@ namespace Client.Model
             {
                 float x = (item.X * FIELD_WIDTH) + item.Y * (FIELD_WIDTH / 2) - centerPositionX;
                 float y = item.Y * fieldHeight - (item.Y * (fieldHeight / 4f)) - centerPositionY;
-                drawableMap.Add(new DrawableField(x, y, FIELD_WIDTH, fieldHeight, item.Colour));
+                drawableMap.Add(new DrawableField(x, y, FIELD_WIDTH, fieldHeight, new SolidColorBrush(colours[item.Colour])));
             }
 
             return drawableMap;

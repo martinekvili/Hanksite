@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Client.Model
+namespace Client.Model.Interfaces
 {
     interface IMapProvider
     {

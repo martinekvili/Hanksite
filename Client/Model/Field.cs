@@ -6,9 +6,9 @@ namespace Client.Model
     {
         public int X { get; }
         public int Y { get; }
-        public Brush Colour { get; }
+        public int Colour { get; }
 
-        public Field(int x, int y, Brush colour)
+        public Field(int x, int y, int colour)
         {
             X = x;
             Y = y;

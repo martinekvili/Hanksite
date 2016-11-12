@@ -1,9 +1,17 @@
 ﻿using Client.Helper;
 using Client.Model;
 using Client.Model.Dummy;
+using Client.Model.Interfaces;
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Interactivity;
+using System.Windows.Media;
+using System.Windows.Shapes;
+using System.Linq;
 
 namespace Client.ViewModel
 {
@@ -13,25 +21,28 @@ namespace Client.ViewModel
         public ICommand TestCommand { get; set; }
 
         private IMapProvider mapProvider;
+        private Dictionary<int, Color> colours;
 
         public GameViewModel()
         {
             mapProvider = new MapProvider();
+            colours = new ColourProvider().Colours;
 
             MapConverter converter = new MapConverter();
             Map = new ObservableCollection<DrawableField>(converter.ConvertToDrawable(mapProvider.GetMap()));
-            
-            //foreach (var item in Map)
-            //{
-            //    Console.WriteLine(item.X + "-" + item.Y + " " + item.Width + "-" + item.Height);
-            //}
 
-            TestCommand = new CommandHandler(Test, true);
+            TestCommand = new ParameterizedCommandHandler(Test, true);
         }
 
-        private void Test()
+        private void Test(object parameter)
         {
-            Console.WriteLine("yáy");
+            UIElement e = parameter as UIElement;
+            Console.WriteLine(parameter);
+        }
+
+        public void GetColorNumber(Brush brush)
+        {
+            Console.WriteLine(colours.FirstOrDefault(x => x.Value == ((SolidColorBrush)brush).Color));
         }
     }
 }

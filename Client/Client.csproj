@@ -59,10 +59,12 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Helper\CommandHandler.cs" />
+    <Compile Include="Helper\ParameterizedCommandHandler.cs" />
+    <Compile Include="Model\ColourProvider.cs" />
     <Compile Include="Model\DrawableField.cs" />
     <Compile Include="Model\Field.cs" />
     <Compile Include="Model\Dummy\MapProvider.cs" />
-    <Compile Include="Model\IMapProvider.cs" />
+    <Compile Include="Model\Interfaces\IMapProvider.cs" />
     <Compile Include="Model\MapConverter.cs" />
     <Compile Include="View\ConnectLobby.xaml.cs">
       <DependentUpon>ConnectLobby.xaml</DependentUpon>
@@ -82,10 +84,10 @@
     <Compile Include="Model\Dummy\Lobbies.cs" />
     <Compile Include="Model\Dummy\Players.cs" />
     <Compile Include="Model\GameInfo.cs" />
-    <Compile Include="Model\IGameInfoProvider.cs" />
-    <Compile Include="Model\IAccountProvider.cs" />
-    <Compile Include="Model\IAvailableLobbyProvider.cs" />
-    <Compile Include="Model\IConnectedPlayerProvider.cs" />
+    <Compile Include="Model\Interfaces\IGameInfoProvider.cs" />
+    <Compile Include="Model\Interfaces\IAccountProvider.cs" />
+    <Compile Include="Model\Interfaces\IAvailableLobbyProvider.cs" />
+    <Compile Include="Model\Interfaces\IConnectedPlayerProvider.cs" />
     <Compile Include="Model\Lobby.cs" />
     <Compile Include="Model\Player.cs" />
     <Compile Include="ViewModel\ConnectLobbyViewModel.cs" />
@@ -185,9 +187,6 @@
       <Project>{69bfd5b6-64ac-46a4-9b76-9c1af711f8c8}</Project>
       <Name>Common</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Resources\gaem.mp3" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\logo.png" />
