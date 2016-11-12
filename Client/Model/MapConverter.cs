@@ -17,7 +17,7 @@ namespace Client.Model
 
             float centerPositionX = ((mapSize * 0.75f) + 0.5f) * FIELD_WIDTH;
             float centerPositionY = ((mapSize / 2) + 0.5f) * (fieldHeight * 0.75f);
-
+            
             foreach (var item in map)
             {
                 float x = (item.X * FIELD_WIDTH) + item.Y * (FIELD_WIDTH / 2) - centerPositionX;

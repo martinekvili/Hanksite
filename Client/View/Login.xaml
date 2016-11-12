@@ -21,6 +21,9 @@
         <TextBox Text="{Binding Username}"/>
         <Label>Password</Label>
         <TextBox Text="{Binding Password}"/>
+        <Label>Server</Label>
+        <TextBox
+            Text="{Binding Server}" />
         <TextBlock
             Text="{Binding Message}"
             TextWrapping="Wrap"

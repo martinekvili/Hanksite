@@ -4,6 +4,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
     xmlns:local="clr-namespace:Client.View"
     xmlns:viewmodel="clr-namespace:Client.ViewModel"
     mc:Ignorable="d"
@@ -41,9 +42,22 @@
                         Width="{Binding Width}"
                         Height="{Binding Height}"
                         Stretch="Fill"
-                        Data="M8.660254,0 L17.320508,5 17.320508,15 8.660254,20 0,15 0,5 8.660254,0 z" />
+                        Data="M8.660254,0 L17.320508,5 17.320508,15 8.660254,20 0,15 0,5 8.660254,0 z">
+                        <!--<Path.InputBindings>
+                            <MouseBinding
+                                MouseAction="LeftClick"
+                                Command="{Binding Path=TestCommand}" />
+                        </Path.InputBindings>-->
+                    </Path>
                 </DataTemplate>
             </ItemsControl.ItemTemplate>
+            <i:Interaction.Triggers>
+                <i:EventTrigger
+                    EventName="MouseLeftButtonUp">
+                    <i:InvokeCommandAction
+                        Command="{Binding TestCommand}" CommandParameter="{Binding RelativeSource={RelativeSource TemplatedParent}}"/>
+                </i:EventTrigger>
+            </i:Interaction.Triggers>
         </ItemsControl>
     </Grid>
 </UserControl>
