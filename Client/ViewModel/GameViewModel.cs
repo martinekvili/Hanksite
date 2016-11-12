@@ -40,7 +40,7 @@ namespace Client.ViewModel
             Console.WriteLine(parameter);
         }
 
-        public void GetColorNumber(Brush brush)
+        public void DecodeColor(Brush brush)
         {
             Console.WriteLine(colours.FirstOrDefault(x => x.Value == ((SolidColorBrush)brush).Color));
         }

@@ -23,18 +23,19 @@
                 Orientation="Vertical">
                 <Label>Name</Label>
                 <TextBox
-                    IsEnabled="{Binding IsCreating}"/>
+                    Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}"
+                    IsEnabled="{Binding IsCanceled}"/>
                 <Label>Number of players</Label>
                 <ComboBox 
                     ItemsSource="{Binding NumberOfPlayers}"
                     SelectedItem="{Binding SelectedNumberOfPlayers}"
                     SelectedIndex="0"
-                    IsEnabled="{Binding IsCreating}"/>
+                    IsEnabled="{Binding IsCanceled}"/>
                 <Label>Number of colours</Label>
                 <ComboBox
                     ItemsSource="{Binding NumberOfColours}"
                     SelectedIndex="{Binding SelectedNumberOfColours}"
-                    IsEnabled="{Binding IsCreating}"/>
+                    IsEnabled="{Binding IsCanceled}"/>
             </StackPanel>
             <DockPanel
                 Width="200"
@@ -49,7 +50,7 @@
                         HorizontalContentAlignment="Stretch"
                         ItemsSource="{Binding BotList}"
                         SelectedItem="{Binding BotToRemove}"
-                        IsEnabled="{Binding IsCreating}">
+                        IsEnabled="{Binding IsCanceled}">
                         <ListBox.ItemTemplate>
                             <DataTemplate>
                                 <DockPanel
@@ -76,12 +77,12 @@
                         SelectedIndex="0"
                         ItemsSource="{Binding BotDifficultyList}"
                         SelectedItem="{Binding SelectedBotDifficulty}"
-                        IsEnabled="{Binding IsCreating}">
+                        IsEnabled="{Binding IsCanceled}">
                     </ComboBox>
                     <Button
                         Command="{Binding AddBotCommand}"
                         HorizontalAlignment="Right"
-                        IsEnabled="{Binding IsCreating}">
+                        IsEnabled="{Binding IsCanceled}">
                         Add bot
                     </Button>
                 </DockPanel>
@@ -109,19 +110,28 @@
             HorizontalAlignment="Right"
             VerticalAlignment="Bottom">
             <Button
-                Command="{Binding ReadyCommand}"
-                Margin="4">
+                Margin="4"
+                IsEnabled="{Binding IsReadyEnabled}"
+                Visibility="{Binding IsCanceled, Converter={StaticResource BooleanToVisibility}}"
+                Command="{Binding ReadyCommand}">
                 Ready
             </Button>
             <Button
-                Command="{Binding StartCommand}"
                 Margin="4"
-                IsEnabled="{Binding IsReady}">
+                Visibility="{Binding IsReady, Converter={StaticResource BooleanToVisibility}}"
+                Command="{Binding CancelCommand}">
+                Cancel
+            </Button>
+            <Button
+                Margin="4"
+                Visibility="{Binding IsReady, Converter={StaticResource BooleanToVisibility}}"
+                Command="{Binding StartCommand}">
                 Start
             </Button>
             <Button
-                Command="{Binding BackCommand}"
-                Margin="4">
+                Margin="4"
+                Visibility="{Binding IsCanceled, Converter={StaticResource BooleanToVisibility}}"
+                Command="{Binding BackCommand}">
                 Back
             </Button>
         </StackPanel>

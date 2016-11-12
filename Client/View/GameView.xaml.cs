@@ -20,7 +20,7 @@ namespace Client.View
         private void OnClickHexa(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
             Path p = sender as Path;
-            viewModel.GetColorNumber(p.Fill);
+            viewModel.DecodeColor(p.Fill);
         }
     }
 }

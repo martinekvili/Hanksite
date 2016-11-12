@@ -21,6 +21,7 @@ namespace Client.ViewModel
 
         public ICommand AddBotCommand { get; set; }
         public ICommand ReadyCommand { get; set; }
+        public ICommand CancelCommand { get; set; }
         public ICommand StartCommand { get; set; }
         public ICommand BackCommand { get; set; }
         public ICommand RemoveBotCommand { get; set; }
@@ -29,13 +30,28 @@ namespace Client.ViewModel
         private const int MAX_COLOURS = 16;
         private const int MIN_PLAYER_COLOUR_DIFF = 3;
 
-        private bool isCreating = true;
-        private bool isReady = false;
-        
         private string selectedNumberOfPlayers;
         private int selectedNumberOfColours;
         private Dictionary<BotDifficulty, int> bots;
         private IConnectedPlayerProvider connectedPlayerProvider;
+
+        private string name;
+        public string Name
+        {
+            set
+            {
+                name = value;
+
+                if (name != "")
+                {
+                    IsReadyEnabled = true;
+                }
+                else
+                {
+                    IsReadyEnabled = false;
+                }
+            }
+        }
 
         public int[] NumberOfPlayers { get; set; }
         public string SelectedNumberOfPlayers
@@ -55,16 +71,24 @@ namespace Client.ViewModel
         public string BotToRemove { get; set; }
 
         public List<Player> ConnectedPlayers { get { return connectedPlayerProvider.GetPlayers(); } }
-
-        public bool IsCreating
+        
+        private bool isReadyEnabled = false;
+        public bool IsReadyEnabled
         {
-            get { return isCreating; }
-            set { isCreating = value; NotifyPropertyChanged("IsCreating"); }
+            get { return isReadyEnabled; }
+            set { isReadyEnabled = value; NotifyPropertyChanged("IsReadyEnabled"); }
         }
+
+        private bool isReady = false;
         public bool IsReady
         {
             get { return isReady; }
-            set { isReady = value; NotifyPropertyChanged("IsReady"); }
+            set { isReady = value; NotifyPropertyChanged("IsReady"); NotifyPropertyChanged("IsCanceled"); }
+        }
+        public bool IsCanceled
+        {
+            get { return !isReady; }
+            set { isReady = !value; NotifyPropertyChanged("IsReady"); NotifyPropertyChanged("IsCanceled"); }
         }
 
         public CreateLobbyViewModel()
@@ -92,11 +116,9 @@ namespace Client.ViewModel
 
             connectedPlayerProvider = new Players();
 
-            IsCreating = true;
-            IsReady = false;
-
             AddBotCommand = new CommandHandler(AddSelectedBot, true);
             ReadyCommand = new CommandHandler(Ready, true);
+            CancelCommand = new CommandHandler(Cancel, true);
             StartCommand = new CommandHandler(Start, true);
             BackCommand = new CommandHandler(Back, true);
             RemoveBotCommand = new CommandHandler(RemoveBot, true);
@@ -126,8 +148,12 @@ namespace Client.ViewModel
 
         private void Ready()
         {
-            IsCreating = !IsCreating;
-            IsReady = !IsReady;
+            IsReady = true;
+        }
+
+        private void Cancel()
+        {
+            IsReady = false;
         }
 
         private void Start()
@@ -139,7 +165,7 @@ namespace Client.ViewModel
         {
             NavigationService.GetNavigationService(View).GoBack();
         }
-        
+
         private void RefreshBotList()
         {
             BotList.Clear();
