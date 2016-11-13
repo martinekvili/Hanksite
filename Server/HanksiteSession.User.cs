@@ -4,6 +4,7 @@ using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
+using Common.Game;
 using Server.DAL;
 using User = Common.Users.User;
 
@@ -58,6 +59,11 @@ namespace Server
 
             user = new User { ID = id, UserName = userName };
             return true;
+        }
+
+        public PlayedGameInfo[] GetPlayedGames()
+        {
+            return HanksiteDAL.GetPlayedGamesForUser(user.ID).ToArray();
         }
     }
 }

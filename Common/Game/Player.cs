@@ -23,20 +23,24 @@ namespace Common.Game
     }
 
     [DataContract]
-    [KnownType(typeof(AIPlayer))]
-    public class Player
+    public class PlayerCore
     {
         [DataMember]
         public User User;
 
         [DataMember]
+        public int Position;
+    }
+
+    [DataContract]
+    [KnownType(typeof(AIPlayer))]
+    public class Player : PlayerCore
+    {
+        [DataMember]
         public int Colour;
 
         [DataMember]
         public int Points;
-
-        [DataMember]
-        public int Position;
 
         [DataMember]
         public PlayerType Type;

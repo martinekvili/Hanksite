@@ -110,6 +110,15 @@ namespace TestClient
                         else
                             Console.WriteLine("Invalid username or password.");
                     }
+                    if (message[0] == "getplayedgames")
+                    {
+                        var playedGames = proxy.GetPlayedGames();
+                        foreach (var playedGameInfo in playedGames)
+                        {
+                            Console.WriteLine(
+                                $"Game: {playedGameInfo.Name}, Position: {playedGameInfo.Position}, Duration: {playedGameInfo.Duration.Seconds} seconds");
+                        }
+                    }
                     if (message[0] == "create")
                     {
                         proxy.CreateLobby(new LobbySettings

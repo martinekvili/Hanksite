@@ -38,6 +38,37 @@ namespace Server.DAL
             }
         }
 
+        public static List<PlayedGameInfo> GetPlayedGamesForUser(long userId)
+        {
+            using (var db = new HanksiteEntities())
+            {
+                var qUserGames = from userGame in db.GameUsers.Include("Game").Include("Game.GameUsers").Include("Game.GameUsers.User")
+                                 where userGame.UserID == userId
+                                 select userGame;
+
+                List<PlayedGameInfo> playedGames = new List<PlayedGameInfo>();
+                foreach (var userGame in qUserGames)
+                {
+                    playedGames.Add(new PlayedGameInfo
+                    {
+                        Position = (int)userGame.Position,
+                        Name = userGame.Game.Name,
+                        StartTime = userGame.Game.StartTime,
+                        Duration = userGame.Game.EndTime - userGame.Game.StartTime,
+                        Enemies = (from user in userGame.Game.GameUsers
+                                   where user.UserID != userId
+                                   select new PlayerCore
+                                   {
+                                       User = new Common.Users.User { ID = user.UserID, UserName = user.User.UserName },
+                                       Position = (int)user.Position
+                                   }).ToArray()
+                    });
+                }
+
+                return playedGames;
+            }
+        }
+
         public static void StoreGame(GameSnapshot snapshot, DateTime startTime)
         {
             using (var db = new HanksiteEntities())
