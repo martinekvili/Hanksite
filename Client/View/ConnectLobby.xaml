@@ -15,10 +15,12 @@
         <StackPanel
             Margin="24"
             Orientation="Vertical"
-            DockPanel.Dock="Top">
+            Width="600"
+            DockPanel.Dock="Top"
+            Visibility="{Binding IsDisconnected, Converter={StaticResource BooleanToVisibility}}">
             <Label>Available lobbies</Label>
             <ListView
-                Height="200"
+                Height="300"
                 ItemsSource="{Binding AvailableLobbies}">
                 <ListView.View>
                     <GridView>
@@ -69,15 +71,42 @@
             </ListView>
         </StackPanel>
         <StackPanel
+            Margin="24"
+            Visibility="{Binding IsConnected, Converter={StaticResource BooleanToVisibility}}"
+            Orientation="Vertical"
+            DockPanel.Dock="Top">
+            <TextBlock
+                Style="{StaticResource TitleStyle}"
+                HorizontalAlignment="Center">
+                Adatok jól
+            </TextBlock>
+        </StackPanel>
+        <StackPanel
             DockPanel.Dock="Bottom"
             Orientation="Horizontal"
             HorizontalAlignment="Right"
             VerticalAlignment="Bottom">
             <Button
-                Margin="4">
+                Margin="4"
+                Visibility="{Binding IsDisconnected, Converter={StaticResource BooleanToVisibility}}"
+                Command="{Binding RefreshCommand}">
+                Refresh
+            </Button>
+            <Button
+                Margin="4"
+                Visibility="{Binding IsDisconnected, Converter={StaticResource BooleanToVisibility}}"
+                Command="{Binding ConnectCommand}">
                 Connect
             </Button>
             <Button
+                Margin="4"
+                Visibility="{Binding IsConnected, Converter={StaticResource BooleanToVisibility}}"
+                Command="{Binding DisconnectCommand}">
+                Disconnect
+            </Button>
+            <Button
+                Margin="4"
+                Visibility="{Binding IsDisconnected, Converter={StaticResource BooleanToVisibility}}"
                 Command="{Binding BackCommand}">
                 Back
             </Button>
