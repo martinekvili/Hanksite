@@ -16,10 +16,13 @@ namespace Server.Game
 {
     public class GameManager
     {
+        private static readonly TimeSpan timeOutForPlayerChoice = TimeSpan.FromSeconds(15);
+
         private static int gameManagerCounter = 0;
 
         private readonly int id;
         private readonly string name;
+        private Timer playerTimeoutTimer;
         private readonly object syncObject = new object();
 
         private bool isGameOver = false;
@@ -69,7 +72,7 @@ namespace Server.Game
             players.Shuffle();
 
             for (int i = 0; i < players.Count; i++)
-                players[i].CurrentColour = i;
+                players[i].Colour = i;
         }
 
         private void stepNextPlayer()
@@ -82,8 +85,43 @@ namespace Server.Game
 
         private void stepNextPlayerNoLock()
         {
-            List<Hexagon> selectableCells = null;
+            playerTimeoutTimer?.Dispose();
+            playerTimeoutTimer = null;
+
+            List<Hexagon> selectableCells;
+            List<int> skippedPlayers;
+            if (!getNextPlayerCandidate(out selectableCells, out skippedPlayers))
+                return;
+
+            foreach (var playerNum in skippedPlayers)
+                players[playerNum].DoNextStep(null);
+
+            sendToAllPlayers(player => player.SendGameSnapshot(), players[currentPlayerNum]);
+            players[currentPlayerNum].DoNextStep(selectableCells);
+
+            if (players[currentPlayerNum] is RealPlayer)
+                playerTimeoutTimer = new Timer(playerTimeoutCallback, currentPlayerNum, timeOutForPlayerChoice, Timeout.InfiniteTimeSpan);
+        }
+
+        private void playerTimeoutCallback(object playerNumObj)
+        {
+            lock (syncObject)
+            {
+                int playerNum = (int)playerNumObj;
+
+                if (currentPlayerNum != playerNum)
+                    return;
+
+                players[currentPlayerNum].SendTimedOut();
+                stepNextPlayerNoLock();
+            }
+        }
+
+        private bool getNextPlayerCandidate(out List<Hexagon> selectableCells, out List<int> skippedPlayers)
+        {
             int nextPlayerCandidate = currentPlayerNum;
+            selectableCells = null;
+            skippedPlayers = new List<int>();
 
             do
             {
@@ -92,20 +130,21 @@ namespace Server.Game
                 if (!players[nextPlayerCandidate].CanDoStep)
                     continue;
 
-                selectableCells = map.GetSelectableCellsForPlayer(players[nextPlayerCandidate].ID, players.Select(player => player.CurrentColour)).ToList();
+                selectableCells = map.GetSelectableCellsForPlayer(players[nextPlayerCandidate].ID, players.Select(player => player.Colour)).ToList();
+
+                if (selectableCells.Count == 0)
+                    skippedPlayers.Add(nextPlayerCandidate);
 
             } while ((!players[nextPlayerCandidate].CanDoStep || selectableCells.Count == 0) && nextPlayerCandidate != currentPlayerNum);
 
             if (nextPlayerCandidate == currentPlayerNum) // there's noone who could move
             {
                 gameOver();
-                return;
+                return false;
             }
 
             currentPlayerNum = nextPlayerCandidate;
-
-            sendToAllPlayers(player => player.SendGameSnapshot(), players[currentPlayerNum]);
-            players[currentPlayerNum].DoNextStep(selectableCells);
+            return true;
         }
 
         private void gameOver()
@@ -121,7 +160,7 @@ namespace Server.Game
         {
             lock (syncObject)
             {
-                player.CurrentColour = colour;
+                player.Colour = colour;
                 player.Points = map.SetPlayerColour(player.ID, colour);
                 calculatePositions();
 
@@ -142,7 +181,7 @@ namespace Server.Game
                     lastPoints = player.Points;
                 }
 
-                player.CurrentPosition = lastPosition;
+                player.Position = lastPosition;
             }
         }
 

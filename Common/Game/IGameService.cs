@@ -29,6 +29,9 @@ namespace Common.Game
         void DoNextStep(GameSnapshotForNextPlayer snapshot);
 
         [OperationContract(IsOneWay = true)]
+        void SendTimedOut();
+
+        [OperationContract(IsOneWay = true)]
         void SendGameOver(GameSnapshot snapshot);
     }
 }

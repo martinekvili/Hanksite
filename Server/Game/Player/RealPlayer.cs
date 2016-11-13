@@ -18,6 +18,13 @@ namespace Server.Game.Player
             session.RealPlayer = this;
         }
 
+        public RealPlayer(HanksiteSession session, DisconnectedPlayer player) : base(player)
+        {
+            this.session = session;
+
+            session.RealPlayer = this;
+        }
+
         public void ChooseColour(int colour)
         {
             game.ChooseColour(this, colour);
@@ -36,7 +43,7 @@ namespace Server.Game.Player
             {
                 Map = snapshot.Map,
                 Players = snapshot.Players,
-                AvailableCells = availableCells.Select(cell => cell.Coord.ToDto()).ToArray()
+                AvailableCells = availableCells?.Select(cell => cell.Coord.ToDto()).ToArray()
             });
         }
 
@@ -50,15 +57,20 @@ namespace Server.Game.Player
             session.SendGameSnapshot(game.GameSnapshot);
         }
 
+        public override void SendTimedOut()
+        {
+            session.SendTimedOut();
+        }
+
         public override Common.Game.Player ToDto()
         {
             return new Common.Game.Player
             {
                 User = user,
                 Type = Common.Game.PlayerType.RealPlayer,
-                Colour = CurrentColour,
+                Colour = Colour,
                 Points = Points,
-                Position = CurrentPosition
+                Position = Position
             };
         }
     }

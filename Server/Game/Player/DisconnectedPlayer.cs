@@ -13,6 +13,9 @@ namespace Server.Game.Player
         public DisconnectedPlayer(User user, GameManager game) : base(user, game)
         { }
 
+        public DisconnectedPlayer(RealPlayer player) : base(player)
+        { }
+
         public override bool CanDoStep => false;
 
         public override void DoNextStep(List<Hexagon> availableCells)
@@ -30,10 +33,13 @@ namespace Server.Game.Player
             {
                 User = user,
                 Type = Common.Game.PlayerType.DisconnectedPlayer,
-                Colour = CurrentColour,
+                Colour = Colour,
                 Points = Points,
-                Position = CurrentPosition
+                Position = Position
             };
         }
+
+        public override void SendTimedOut()
+        { }
     }
 }

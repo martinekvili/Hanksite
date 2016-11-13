@@ -16,24 +16,38 @@ namespace TestClient
     {
         public void DoNextStep(GameSnapshotForNextPlayer snapshot)
         {
-            var avaliableColours = snapshot.Map
-                .Where(cell => snapshot.AvailableCells.Any(coord => coord.X == cell.Coord.X && coord.Y == cell.Coord.Y))
-                .Select(cell => cell.Colour)
-                .Distinct();
+            writeStandings(snapshot.Players, player => player.Points);
 
-            Console.WriteLine($"Available colours: {string.Join(" ", avaliableColours)}");
+            if (snapshot.AvailableCells == null)
+            {
+                Console.WriteLine("No available cells to select...");
+            }
+            else
+            {
+                var avaliableColours = snapshot.Map
+                 .Where(cell => snapshot.AvailableCells.Any(coord => coord.X == cell.Coord.X && coord.Y == cell.Coord.Y))
+                 .Select(cell => cell.Colour)
+                 .Distinct();
+
+                Console.WriteLine($"Available colours: {string.Join(" ", avaliableColours)}");
+            }    
         }
 
         public void SendGameOver(GameSnapshot snapshot)
         {
-            Console.WriteLine(
-                $"Game is over, standings: {string.Join("; ", snapshot.Players.Select(player => $"{player.User.UserName} - {player.Position}"))}");
+            Console.WriteLine("Game is over!");
+            writeStandings(snapshot.Players, player => player.Position);
         }
 
         public void SendGameSnapshot(GameSnapshot snapshot)
         {
+            writeStandings(snapshot.Players, player => player.Points);
+        }
+
+        private void writeStandings(Player[] players, Func<Player, int> what)
+        {
             Console.WriteLine(
-                $"Standings: {string.Join("; ", snapshot.Players.Select(player => $"{player.User.UserName} - {player.Points}"))}");
+                $"Standings: {string.Join("; ", players.Select(player => $"{player.User.UserName} - {what(player)}"))}");
         }
 
         public void SendLobbyClosed()
@@ -49,6 +63,11 @@ namespace TestClient
         public void SendNotEnoughPlayers()
         {
             Console.WriteLine("Game not started, not enough players.");
+        }
+
+        public void SendTimedOut()
+        {
+            Console.WriteLine("You didn't choose fast enough!");
         }
     }
 

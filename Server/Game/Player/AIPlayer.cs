@@ -19,6 +19,9 @@ namespace Server.Game.Player
 
         public override void DoNextStep(List<Board.Hexagon> availableCells)
         {
+            if (availableCells == null)
+                return;
+
             Task.Factory.StartNew(() =>
             {
                 var acquirableCellCounts = game.Map.GetAcquirableCellCountsForPlayer(ID,
@@ -34,6 +37,9 @@ namespace Server.Game.Player
         public override void SendGameSnapshot()
         { }
 
+        public override void SendTimedOut()
+        { }
+
         public override Common.Game.Player ToDto()
         {
             return new Common.Game.AIPlayer
@@ -41,9 +47,9 @@ namespace Server.Game.Player
                 Type = PlayerType.AI,
                 User = user,
                 Difficulty = strategy.Difficulty,
-                Colour = CurrentColour,
+                Colour = Colour,
                 Points = Points,
-                Position = CurrentPosition
+                Position = Position
             };
         }
     }

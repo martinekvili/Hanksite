@@ -19,6 +19,9 @@ namespace Server.Game.Board
             while (bfsQueue.Count != 0)
             {
                 Hexagon cell = bfsQueue.Dequeue();
+                if (alreadyVisited.Contains(cell))
+                    continue;
+
                 alreadyVisited.Add(cell);
 
                 if (!isCellMatching(cell))
@@ -33,12 +36,7 @@ namespace Server.Game.Board
                     matchingCells.Add(cell);
 
                 foreach (var neighbour in cell.Neighbours)
-                {
-                    if (alreadyVisited.Contains(neighbour))
-                        continue;
-
                     bfsQueue.Enqueue(neighbour);
-                }
             }
 
             return matchingCells;

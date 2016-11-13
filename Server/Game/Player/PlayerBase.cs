@@ -18,8 +18,8 @@ namespace Server.Game.Player
         public int ID => user.ID;
 
         public int Points { get; set; }
-        public int CurrentColour { get; set; }
-        public int CurrentPosition { get; set; } = 1;
+        public int Colour { get; set; }
+        public int Position { get; set; }
 
         public PlayerBase(User user, GameManager game)
         {
@@ -27,12 +27,23 @@ namespace Server.Game.Player
             this.game = game;
 
             this.Points = 1;
+            this.Position = 1;
+        }
+
+        public PlayerBase(PlayerBase other)
+        {
+            this.user = other.user;
+            this.game = other.game;
+            this.Points = other.Points;
+            this.Colour = other.Colour;
+            this.Position = other.Position;
         }
 
         public virtual bool CanDoStep => true;
 
         public abstract void SendGameSnapshot();
         public abstract void DoNextStep(List<Hexagon> availableCells);
+        public abstract void SendTimedOut();
         public abstract void SendGameOver();
         public abstract Common.Game.Player ToDto();
     }

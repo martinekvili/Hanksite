@@ -46,6 +46,11 @@ namespace Server
             callback.DoNextStep(snapshot);
         }
 
+        public void SendTimedOut()
+        {
+            callback.SendTimedOut();
+        }
+
         public void SendGameOver(GameSnapshot snapshot)
         {
             callback.SendGameOver(snapshot);
