@@ -44,6 +44,11 @@ namespace Server
             callback.SendLobbyMembersSnapshot(lobbyMembersSnapshot);
         }
 
+        public void SendNotEnoughPlayers()
+        {
+            callback.SendNotEnoughPlayers();
+        }
+
         public void SendLobbyClosed()
         {
             callback.SendLobbyClosed();

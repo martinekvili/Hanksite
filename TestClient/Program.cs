@@ -8,11 +8,34 @@ using System.Threading.Tasks;
 using Common;
 using System.Threading;
 using Common.Lobby;
+using Common.Game;
 
 namespace TestClient
 {
     class CallbackImpl : IHanksiteServiceCallback
     {
+        public void DoNextStep(GameSnapshotForNextPlayer snapshot)
+        {
+            var avaliableColours = snapshot.Map
+                .Where(cell => snapshot.AvailableCells.Any(coord => coord.X == cell.Coord.X && coord.Y == cell.Coord.Y))
+                .Select(cell => cell.Colour)
+                .Distinct();
+
+            Console.WriteLine($"Available colours: {string.Join(" ", avaliableColours)}");
+        }
+
+        public void SendGameOver(GameSnapshot snapshot)
+        {
+            Console.WriteLine(
+                $"Game is over, standings: {string.Join("; ", snapshot.Players.Select(player => $"{player.User.UserName} - {player.Position}"))}");
+        }
+
+        public void SendGameSnapshot(GameSnapshot snapshot)
+        {
+            Console.WriteLine(
+                $"Standings: {string.Join("; ", snapshot.Players.Select(player => $"{player.User.UserName} - {player.Points}"))}");
+        }
+
         public void SendLobbyClosed()
         {
             Console.WriteLine("Disconnected from lobby.");
@@ -21,6 +44,11 @@ namespace TestClient
         public void SendLobbyMembersSnapshot(LobbyMembersSnapshot lobbySnapshot)
         {
             Console.WriteLine($"Members: {string.Join(" ", lobbySnapshot.LobbyMembers.Select(member => member.UserName))}");
+        }
+
+        public void SendNotEnoughPlayers()
+        {
+            Console.WriteLine("Game not started, not enough players.");
         }
     }
 
@@ -57,9 +85,10 @@ namespace TestClient
                     {
                         proxy.CreateLobby(new LobbySettings
                         {
+                            NumberOfColours = 8,
                             Name = message[1],
                             NumberOfPlayers = int.Parse(message[2]),
-                            BotNumbers = new LobbySettingsBotNumber[] { }
+                            BotNumbers = new LobbySettingsBotNumber[] { new LobbySettingsBotNumber { Difficulty = AIDifficulty.Hard, Number = int.Parse(message[3]) } }
                         });
                     }
                     else if (message[0] == "list")
@@ -77,9 +106,25 @@ namespace TestClient
                         else
                             Console.WriteLine("Connect succesful.");
                     }
-                    else if (message[0] == "disconnect")
+                    else if (message[0] == "disclobby")
                     {
                         proxy.DisconnectFromLobby();
+                    }
+                    else if (message[0] == "startgame")
+                    {
+                        proxy.StartGame();
+                    }
+                    else if (message[0] == "choosecolour")
+                    {
+                        proxy.ChooseColour(int.Parse(message[1]));
+                    }
+                    else if (message[0] == "discgame")
+                    {
+                        proxy.DisconnectFromGame();
+                    }
+                    else if (message[0] == "reconnectgame")
+                    {
+                        proxy.ReconnectToGame(int.Parse(message[1]));
                     }
                     else if (message[0] == "exit")
                     {

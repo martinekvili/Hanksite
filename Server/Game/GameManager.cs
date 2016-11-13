@@ -3,30 +3,53 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
+using Common.Game;
 using Common.Lobby;
 using Server.Game.Board;
 using Server.Utils;
-
+using AIPlayer = Server.Game.Player.AIPlayer;
+using Hexagon = Server.Game.Board.Hexagon;
 
 namespace Server.Game
 {
     public class GameManager
     {
+        private static int gameManagerCounter = 0;
+
+        private readonly int id;
+        private readonly string name;
         private readonly object syncObject = new object();
+
+        private bool isGameOver = false;
 
         private int currentPlayerNum;
         private readonly List<PlayerBase> players;
         private readonly Map map;
 
+        public int ID => id;
+
+        public Map Map => map;
+
+        public GameSnapshot GameSnapshot => new GameSnapshot
+        {
+            Map = map.ToDto(),
+            Players = players.Select(player => player.ToDto()).ToArray()
+        };
+
         public GameManager(List<HanksiteSession> realPlayers, LobbySettings settings)
         {
+            this.id = Interlocked.Increment(ref gameManagerCounter);
+            this.name = settings.Name;
+
             this.players = new List<PlayerBase>();
             initializePlayers(realPlayers, settings);
 
-            this.map = MapBuilder.CreateMap(players.Select(player => player.ID).ToList());
+            this.map = MapBuilder.CreateMap(players.Select(player => player.ID).ToList(), settings.NumberOfColours);
 
-            this.currentPlayerNum = 0;
+            this.currentPlayerNum = -1;
+            stepNextPlayer();
         }
 
         private void initializePlayers(List<HanksiteSession> realPlayers, LobbySettings settings)
@@ -44,6 +67,9 @@ namespace Server.Game
             }
 
             players.Shuffle();
+
+            for (int i = 0; i < players.Count; i++)
+                players[i].CurrentColour = i;
         }
 
         private void stepNextPlayer()
@@ -57,16 +83,16 @@ namespace Server.Game
         private void stepNextPlayerNoLock()
         {
             List<Hexagon> selectableCells = null;
-            int nextPlayerCandidate;
+            int nextPlayerCandidate = currentPlayerNum;
 
             do
             {
-                nextPlayerCandidate = (currentPlayerNum + 1) % players.Count;
+                nextPlayerCandidate = (nextPlayerCandidate + 1) % players.Count;
 
                 if (!players[nextPlayerCandidate].CanDoStep)
                     continue;
 
-                selectableCells = map.GetSelectableCellsForPlayer(players[nextPlayerCandidate].ID).ToList();
+                selectableCells = map.GetSelectableCellsForPlayer(players[nextPlayerCandidate].ID, players.Select(player => player.CurrentColour)).ToList();
 
             } while ((!players[nextPlayerCandidate].CanDoStep || selectableCells.Count == 0) && nextPlayerCandidate != currentPlayerNum);
 
@@ -78,34 +104,45 @@ namespace Server.Game
 
             currentPlayerNum = nextPlayerCandidate;
 
-            GameSnapshot snapshot = new GameSnapshot(players, map);
-            for (int i = 0; i < players.Count; i++)
-            {
-                if (i != currentPlayerNum)
-                    players[i].SendGameSnapshot(snapshot);
-            }
-
-            players[currentPlayerNum].DoNextStep(new GameSnapshotForNextPlayer(players, map, selectableCells));
+            sendToAllPlayers(player => player.SendGameSnapshot(), players[currentPlayerNum]);
+            players[currentPlayerNum].DoNextStep(selectableCells);
         }
 
         private void gameOver()
         {
-            GameSnapshot snapshot = new GameSnapshot(players, map);
+            isGameOver = true;
 
-            foreach (var player in players)
-            {
+            GameManagerPool.Instance.RemoveGame(this);
 
-                player.SendGameOver(snapshot);
-            }
+            sendToAllPlayers(player => player.SendGameOver());
         }
 
         public void ChooseColour(PlayerBase player, int colour)
         {
             lock (syncObject)
             {
+                player.CurrentColour = colour;
                 player.Points = map.SetPlayerColour(player.ID, colour);
+                calculatePositions();
 
                 stepNextPlayerNoLock();
+            }
+        }
+
+        private void calculatePositions()
+        {
+            int lastPosition = 1;
+            int lastPoints = players.Max(player => player.Points);
+
+            foreach (var player in players.OrderByDescending(player => player.Points))
+            {
+                if (player.Points != lastPoints)
+                {
+                    lastPosition++;
+                    lastPoints = player.Points;
+                }
+
+                player.CurrentPosition = lastPosition;
             }
         }
 
@@ -118,10 +155,17 @@ namespace Server.Game
                 if (playerNum == -1)
                     return;
 
-                players[playerNum] = new DisconnectedPlayer(player.ID, this);
+                players[playerNum] = new DisconnectedPlayer(player.User, this);
+                calculatePositions();
 
                 if (playerNum == currentPlayerNum)
+                {
                     stepNextPlayerNoLock();
+                }
+                else
+                {
+                    sendToAllPlayers(p => p.SendGameSnapshot());
+                }    
             }
         }
 
@@ -130,6 +174,35 @@ namespace Server.Game
             lock (syncObject)
             {
                 return players.FindIndex(player => player.ID == playerId) != -1;
+            }
+        }
+
+        public GameSnapshot ReconnectToGame(HanksiteSession hanksiteSession)
+        {
+            lock (syncObject)
+            {
+                if (isGameOver)
+                    return null;
+
+                int playerNum = players.FindIndex(player => player.ID == hanksiteSession.User.ID);
+
+                if (playerNum == -1)
+                    return null;
+
+                players[playerNum] = new RealPlayer(hanksiteSession, this);
+                calculatePositions();
+                sendToAllPlayers(player => player.SendGameSnapshot(), players[playerNum]);
+
+                return GameSnapshot;
+            }
+        }
+
+        private void sendToAllPlayers(Action<PlayerBase> message, PlayerBase excludedPlayer = null)
+        {
+            foreach (var player in players)
+            {
+                if (player != excludedPlayer)
+                    message(player);
             }
         }
     }

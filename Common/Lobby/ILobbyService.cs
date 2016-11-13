@@ -33,5 +33,8 @@ namespace Common.Lobby
 
         [OperationContract(IsOneWay = true)]
         void SendLobbyClosed();
+
+        [OperationContract(IsOneWay = true)]
+        void SendNotEnoughPlayers();
     }
 }

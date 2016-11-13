@@ -3,12 +3,29 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Server.Utils;
 
 namespace Server.Game.Board
 {
     public class MapBuilder
     {
+        public static Map CreateMap(List<int> playerIds, int numberOfColours)
+        {
+            var builder = createMapBuilderForPlayers(playerIds);
+            builder.fillWithColours(numberOfColours);
+
+            return builder.Map;
+        }
+
+        /// <summary>
+        /// Do NOT call, only used for tests.
+        /// </summary>
         public static Map CreateMap(List<int> playerIds)
+        {
+            return createMapBuilderForPlayers(playerIds).Map;
+        }
+
+        private static MapBuilder createMapBuilderForPlayers(List<int> playerIds)
         {
             if (playerIds.Count < 2)
                 throw new ArgumentException("Too few players");
@@ -23,9 +40,12 @@ namespace Server.Game.Board
             mapBuilder.createMap();
             mapBuilder.distributePlayersOnMap(playerIds);
 
-            return mapBuilder.Map;
+            return mapBuilder;
         }
 
+        /// <summary>
+        /// Do NOT call, only used for tests.
+        /// </summary>
         public static Map CreateMap(int sideLength)
         {
             MapBuilder mapBuilder = new MapBuilder(sideLength);
@@ -63,14 +83,16 @@ namespace Server.Game.Board
 
         private readonly int sideLength;
         private readonly Hexagon[,] mapMatrix;
+        private readonly Dictionary<int, Hexagon> playerBases;
         private List<Hexagon> map;
 
-        public Map Map => new Map(map);
+        public Map Map => new Map(map, playerBases);
 
         private MapBuilder(int sideLength, Hexagon[,] mapMatrix)
         {
             this.sideLength = sideLength;
             this.mapMatrix = mapMatrix;
+            this.playerBases = new Dictionary<int, Hexagon>();
         }
 
         private MapBuilder(int sideLength) : this(sideLength, new Hexagon[2 * sideLength - 1, 2 * sideLength - 1])
@@ -153,6 +175,8 @@ namespace Server.Game.Board
                 int playerCellNum = (int)Math.Round((double)(i * outerRim.Count) / playerIds.Count);
                 Hexagon playerCell = outerRim[playerCellNum];
 
+                playerBases.Add(playerIds[i], playerCell);
+
                 playerCell.OwnerID = playerIds[i];
                 playerCell.Colour = i;
             }
@@ -211,5 +235,20 @@ namespace Server.Game.Board
             }
         }
         #endregion
+
+        private void fillWithColours(int numberOfColours)
+        {
+            foreach (var playerBase in playerBases.Values)
+            {
+                foreach (var playerBaseNeighbour in playerBase.Neighbours)
+                    playerBaseNeighbour.Colour = RandomUtils.NextExcluding(numberOfColours, playerBase.Colour);
+            }
+
+            foreach (var cell in map)
+            {
+                if (cell.Colour == -1)
+                    cell.Colour = RandomUtils.Next(numberOfColours);
+            }
+        }
     }
 }

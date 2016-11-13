@@ -10,16 +10,23 @@ namespace Server.Game.Board
     public class Map : IEnumerable<Hexagon>
     {
         private readonly List<Hexagon> cells;
+        private readonly Dictionary<int, Hexagon> playerBases;
 
         public int CellCount => cells.Count;
+
+        public Common.Game.Hexagon[] ToDto()
+        {
+            return cells.Select(cell => cell.ToDto()).ToArray();
+        }
 
         /// <summary>
         /// Do NOT call directly, use <see cref="MapBuilder"/> instead!
         /// </summary>
         /// <param name="cells"></param>
-        public Map(List<Hexagon> cells)
+        public Map(List<Hexagon> cells, Dictionary<int, Hexagon> playerBases)
         {
             this.cells = cells;
+            this.playerBases = playerBases;
         }
 
         public IEnumerator<Hexagon> GetEnumerator()
@@ -34,7 +41,7 @@ namespace Server.Game.Board
 
         public Dictionary<int, int> GetAcquirableCellCountsForPlayer(int playerId, IEnumerable<int> availableColours)
         {
-            Hexagon startCell = cells.First(cell => cell.OwnerID == playerId);
+            Hexagon startCell = playerBases[playerId];
 
             return availableColours.ToDictionary(
                 colour => colour,
@@ -50,7 +57,7 @@ namespace Server.Game.Board
 
         public int SetPlayerColour(int playerId, int colour)
         {
-            Hexagon startCell = cells.First(cell => cell.OwnerID == playerId);
+            Hexagon startCell = playerBases[playerId];
 
             List<Hexagon> newlyOwnedCells = BreadthFirstSearch.Search(
                 startCell,
@@ -66,15 +73,17 @@ namespace Server.Game.Board
             return newlyOwnedCells.Count;
         }
 
-        public IEnumerable<Hexagon> GetSelectableCellsForPlayer(int playerId)
+        public IEnumerable<Hexagon> GetSelectableCellsForPlayer(int playerId, IEnumerable<int> currentPlayerColours)
         {
-            Hexagon startCell = cells.First(cell => cell.OwnerID == playerId);
+            HashSet<int> playerColoursSet = new HashSet<int>(currentPlayerColours);
+
+            Hexagon startCell = playerBases[playerId];
 
             return BreadthFirstSearch.Search(
                     startCell,
                     cell => cell.OwnerID == playerId,
                     true)
-                .Where(cell => cell.OwnerID == -1);
+                .Where(cell => !playerColoursSet.Contains(cell.Colour));
         }
     }
 }

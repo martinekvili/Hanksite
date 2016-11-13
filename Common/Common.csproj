@@ -56,7 +56,10 @@
     <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Game\AIDifficulty.cs" />
+    <Compile Include="Game\Player.cs" />
+    <Compile Include="Game\GameSnapshot.cs" />
+    <Compile Include="Game\Hexagon.cs" />
+    <Compile Include="Game\IGameService.cs" />
     <Compile Include="IHanksiteService.cs" />
     <Compile Include="Lobby\ILobbyService.cs" />
     <Compile Include="Lobby\LobbySettings.cs" />

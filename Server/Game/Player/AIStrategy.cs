@@ -29,10 +29,13 @@ namespace Server.Game.Player
     public interface AIStrategy
     {
         int ChooseColour(Dictionary<int, int> acquirableCellCounts);
+        AIDifficulty Difficulty { get; }
     }
 
     public class HardAIStrategy : AIStrategy
     {
+        public AIDifficulty Difficulty => AIDifficulty.Hard;
+
         public int ChooseColour(Dictionary<int, int> acquirableCellCounts)
         {
             return (from cellCount in acquirableCellCounts
@@ -46,6 +49,8 @@ namespace Server.Game.Player
     {
         private static List<int> possibilities = new List<int> { 50, 25, 15, 5, 5 };
 
+        public AIDifficulty Difficulty => AIDifficulty.Medium;
+
         public int ChooseColour(Dictionary<int, int> acquirableCellCounts)
         {
             return (from cellCount in acquirableCellCounts
@@ -58,6 +63,8 @@ namespace Server.Game.Player
 
     public class EasyAIStrategy : AIStrategy
     {
+        public AIDifficulty Difficulty => AIDifficulty.Easy;
+
         public int ChooseColour(Dictionary<int, int> acquirableCellCounts)
         {
             return acquirableCellCounts.Keys.ToList().GetRandomElement();

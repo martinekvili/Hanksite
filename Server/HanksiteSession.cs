@@ -29,7 +29,7 @@ namespace Server
         public bool Connect(string userName)
         {
             Console.WriteLine($"Client '{userName}' connected");
-            user = new User { ID = 0, UserName = userName };
+            user = new User { ID = userName.GetHashCode() % 2000 + 20, UserName = userName };
 
             return true;
         }
@@ -40,6 +40,9 @@ namespace Server
 
             if (LobbyMember != null)
                 DisconnectFromLobby();
+
+            if (RealPlayer != null)
+                DisconnectFromGame();
         }
     }
 }

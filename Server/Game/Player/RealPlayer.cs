@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Server.Game.Board;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,26 +11,55 @@ namespace Server.Game.Player
     {
         private readonly HanksiteSession session;
 
-        public RealPlayer(HanksiteSession session, GameManager game) : base(session.User.ID, game)
+        public RealPlayer(HanksiteSession session, GameManager game) : base(session.User, game)
         {
             this.session = session;
 
             session.RealPlayer = this;
         }
 
-        public override void DoNextStep(GameSnapshotForNextPlayer snapshot)
+        public void ChooseColour(int colour)
         {
-            throw new NotImplementedException();
+            game.ChooseColour(this, colour);
         }
 
-        public override void SendGameOver(GameSnapshot snapshot)
+        public void DisconnectFromGame()
         {
-            throw new NotImplementedException();
+            game.DisconnectPlayer(this);
         }
 
-        public override void SendGameSnapshot(GameSnapshot snapshot)
+        public override void DoNextStep(List<Hexagon> availableCells)
         {
-            throw new NotImplementedException();
+            var snapshot = game.GameSnapshot;
+
+            session.DoNextStep(new Common.Game.GameSnapshotForNextPlayer
+            {
+                Map = snapshot.Map,
+                Players = snapshot.Players,
+                AvailableCells = availableCells.Select(cell => cell.Coord.ToDto()).ToArray()
+            });
+        }
+
+        public override void SendGameOver()
+        {
+            session.SendGameOver(game.GameSnapshot);
+        }
+
+        public override void SendGameSnapshot()
+        {
+            session.SendGameSnapshot(game.GameSnapshot);
+        }
+
+        public override Common.Game.Player ToDto()
+        {
+            return new Common.Game.Player
+            {
+                User = user,
+                Type = Common.Game.PlayerType.RealPlayer,
+                Colour = CurrentColour,
+                Points = Points,
+                Position = CurrentPosition
+            };
         }
     }
 }

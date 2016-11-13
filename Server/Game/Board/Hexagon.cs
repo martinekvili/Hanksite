@@ -23,6 +23,16 @@ namespace Server.Game.Board
             this.neighbours = new List<Hexagon>();
         }
 
+        public Common.Game.Hexagon ToDto()
+        {
+            return new Common.Game.Hexagon
+            {
+                Coord = coord.ToDto(),
+                OwnerID = OwnerID,
+                Colour = Colour
+            };
+        }
+
         // Equality operators check the equality of the coords, because we know that they are unique regarding cells in the same map,
         // and checking equality only makes sense for cells in the same map.
         #region Equality operators

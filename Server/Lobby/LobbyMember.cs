@@ -43,5 +43,10 @@ namespace Server.Lobby
         {
             lobby.StartGame();
         }
+
+        public void SendNotEnoughPlayers()
+        {
+            session.SendNotEnoughPlayers();
+        }
     }
 }

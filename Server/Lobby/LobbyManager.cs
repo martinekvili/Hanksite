@@ -5,6 +5,7 @@ using System.IO.Ports;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Server.Game;
 
 namespace Server.Lobby
 {
@@ -94,12 +95,18 @@ namespace Server.Lobby
         {
             lock (syncObject)
             {
+                if (connectedPlayers.Count != numberOfPlayers)
+                {
+                    owner.SendNotEnoughPlayers();
+                    return;
+                }
+
                 foreach (var player in connectedPlayers)
                     player.Session.LobbyMember = null;
 
                 LobbyManagerPool.Instance.RemoveLobbyManager(this);
 
-                throw new NotImplementedException();
+                GameManagerPool.Instance.CreateGame(connectedPlayers.Select(player => player.Session).ToList(), settings);
             }
         }
     }

@@ -8,7 +8,18 @@ namespace Server.Utils
 {
     public static class RandomUtils
     {
-        [ThreadStatic] private static Random random = new Random();
+        [ThreadStatic] private static Random _random;
+
+        private static Random random
+        {
+            get
+            {
+                if (_random == null)
+                    _random = new Random();
+
+                return _random;
+            }
+        }
 
         /// <summary>
         /// Uses the Fisher-Yates shuffle algorithm.
@@ -48,6 +59,20 @@ namespace Server.Utils
             }
 
             return list.Last();
+        }
+
+        public static int Next(int maxValue)
+        {
+            return random.Next(maxValue);
+        }
+
+        public static int NextExcluding(int maxValue, int excluded)
+        {
+            if (excluded >= maxValue)
+                throw new ArgumentException("Excluded number is out of the boundaries");
+
+            int randomNum = random.Next(maxValue - 1);
+            return randomNum == excluded ? maxValue - 1 : randomNum;
         }
     }
 }

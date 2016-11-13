@@ -1,22 +1,29 @@
-﻿using System;
+﻿using Server.Game.Board;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Common.Users;
 
 namespace Server.Game.Player
 {
     public abstract class PlayerBase
     {
-        private readonly int id;
+        protected readonly User user;
         protected readonly GameManager game;
 
-        public int ID => id;
-        public int Points { get; set; }
+        public User User => user;
 
-        public PlayerBase(int id, GameManager game)
+        public int ID => user.ID;
+
+        public int Points { get; set; }
+        public int CurrentColour { get; set; }
+        public int CurrentPosition { get; set; } = 1;
+
+        public PlayerBase(User user, GameManager game)
         {
-            this.id = id;
+            this.user = user;
             this.game = game;
 
             this.Points = 1;
@@ -24,8 +31,9 @@ namespace Server.Game.Player
 
         public virtual bool CanDoStep => true;
 
-        public abstract void SendGameSnapshot(GameSnapshot snapshot);
-        public abstract void DoNextStep(GameSnapshotForNextPlayer snapshot);
-        public abstract void SendGameOver(GameSnapshot snapshot);
+        public abstract void SendGameSnapshot();
+        public abstract void DoNextStep(List<Hexagon> availableCells);
+        public abstract void SendGameOver();
+        public abstract Common.Game.Player ToDto();
     }
 }

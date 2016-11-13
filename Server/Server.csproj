@@ -78,7 +78,6 @@
     <Compile Include="Game\Board\Map.cs" />
     <Compile Include="Game\Board\MapBuilder.cs" />
     <Compile Include="Game\GameManagerPool.cs" />
-    <Compile Include="Game\GameSnapshot.cs" />
     <Compile Include="Game\Player\AIPlayer.cs" />
     <Compile Include="Game\Player\AIStrategy.cs" />
     <Compile Include="Game\Player\DisconnectedPlayer.cs" />

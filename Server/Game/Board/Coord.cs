@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Common.Game;
 
 namespace Server.Game.Board
 {
@@ -19,6 +20,15 @@ namespace Server.Game.Board
         {
             this.x = x;
             this.y = y;
+        }
+
+        public Common.Game.Coord ToDto()
+        {
+            return new Common.Game.Coord
+            {
+                X = x,
+                Y = y
+            };
         }
 
         public static Coord operator +(Coord a, Coord b)
