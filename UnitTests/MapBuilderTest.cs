@@ -58,10 +58,10 @@ namespace UnitTests
         #region Player distribution test rows
         public class PlayerDistributionTestRow
         {
-            public List<int> PlayerIDs;
+            public List<long> PlayerIDs;
             public string expectedMap;
 
-            public PlayerDistributionTestRow(List<int> playerIds, string expectedMap)
+            public PlayerDistributionTestRow(List<long> playerIds, string expectedMap)
             {
                 this.PlayerIDs = playerIds;
                 this.expectedMap = expectedMap;
@@ -73,7 +73,7 @@ namespace UnitTests
             return new List<PlayerDistributionTestRow>
             {
                  new PlayerDistributionTestRow(
-                    new List<int> { 0, 1, 2 },
+                    new List<long> { 0, 1, 2 },
                     @"
 ............A
 .............
@@ -92,7 +92,7 @@ C............
                     ),
 
                 new PlayerDistributionTestRow(
-                    new List<int> { 0, 1, 2, 3 },
+                    new List<long> { 0, 1, 2, 3 },
                     @"
 ............A
 .............
@@ -111,7 +111,7 @@ C............
                     ),
 
                 new PlayerDistributionTestRow(
-                    new List<int> { 0, 1, 2, 3, 4 },
+                    new List<long> { 0, 1, 2, 3, 4 },
                     @"
 ............A
 .....E.......
@@ -130,7 +130,7 @@ D............
                     ),
 
                 new PlayerDistributionTestRow(
-                    new List<int> { 0, 1, 2, 3, 4, 5, 6 },
+                    new List<long> { 0, 1, 2, 3, 4, 5, 6 },
                     @"
 ........G.....A
 ...............

@@ -11,7 +11,7 @@ namespace Common.Users
     public class User
     {
         [DataMember]
-        public int ID;
+        public long ID;
 
         [DataMember]
         public string UserName;

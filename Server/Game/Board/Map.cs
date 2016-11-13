@@ -10,7 +10,7 @@ namespace Server.Game.Board
     public class Map : IEnumerable<Hexagon>
     {
         private readonly List<Hexagon> cells;
-        private readonly Dictionary<int, Hexagon> playerBases;
+        private readonly Dictionary<long, Hexagon> playerBases;
 
         public int CellCount => cells.Count;
 
@@ -23,7 +23,7 @@ namespace Server.Game.Board
         /// Do NOT call directly, use <see cref="MapBuilder"/> instead!
         /// </summary>
         /// <param name="cells"></param>
-        public Map(List<Hexagon> cells, Dictionary<int, Hexagon> playerBases)
+        public Map(List<Hexagon> cells, Dictionary<long, Hexagon> playerBases)
         {
             this.cells = cells;
             this.playerBases = playerBases;
@@ -39,7 +39,7 @@ namespace Server.Game.Board
             return cells.GetEnumerator();
         }
 
-        public Dictionary<int, int> GetAcquirableCellCountsForPlayer(int playerId, IEnumerable<int> availableColours)
+        public Dictionary<int, int> GetAcquirableCellCountsForPlayer(long playerId, IEnumerable<int> availableColours)
         {
             Hexagon startCell = playerBases[playerId];
 
@@ -55,7 +55,7 @@ namespace Server.Game.Board
                 });
         }
 
-        public int SetPlayerColour(int playerId, int colour)
+        public int SetPlayerColour(long playerId, int colour)
         {
             Hexagon startCell = playerBases[playerId];
 
@@ -73,7 +73,7 @@ namespace Server.Game.Board
             return newlyOwnedCells.Count;
         }
 
-        public IEnumerable<Hexagon> GetSelectableCellsForPlayer(int playerId, IEnumerable<int> currentPlayerColours)
+        public IEnumerable<Hexagon> GetSelectableCellsForPlayer(long playerId, IEnumerable<int> currentPlayerColours)
         {
             HashSet<int> playerColoursSet = new HashSet<int>(currentPlayerColours);
 

@@ -7,6 +7,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Common.Game;
 using Common.Lobby;
+using Server.DAL;
 using Server.Game.Board;
 using Server.Utils;
 using AIPlayer = Server.Game.Player.AIPlayer;
@@ -21,6 +22,7 @@ namespace Server.Game
         private static int gameManagerCounter = 0;
 
         private readonly int id;
+        private readonly DateTime startTime;
         private readonly string name;
         private Timer playerTimeoutTimer;
         private readonly object syncObject = new object();
@@ -37,6 +39,7 @@ namespace Server.Game
 
         public GameSnapshot GameSnapshot => new GameSnapshot
         {
+            Name = name,
             Map = map.ToDto(),
             Players = players.Select(player => player.ToDto()).ToArray()
         };
@@ -44,6 +47,7 @@ namespace Server.Game
         public GameManager(List<HanksiteSession> realPlayers, LobbySettings settings)
         {
             this.id = Interlocked.Increment(ref gameManagerCounter);
+            this.startTime = DateTime.Now;
             this.name = settings.Name;
 
             this.players = new List<PlayerBase>();
@@ -153,6 +157,8 @@ namespace Server.Game
 
             GameManagerPool.Instance.RemoveGame(this);
 
+            HanksiteDAL.StoreGame(GameSnapshot, startTime);
+
             sendToAllPlayers(player => player.SendGameOver());
         }
 
@@ -208,7 +214,7 @@ namespace Server.Game
             }
         }
 
-        public bool IsPlayerInGame(int playerId)
+        public bool IsPlayerInGame(long playerId)
         {
             lock (syncObject)
             {

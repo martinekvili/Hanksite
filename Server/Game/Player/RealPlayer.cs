@@ -41,6 +41,7 @@ namespace Server.Game.Player
 
             session.DoNextStep(new Common.Game.GameSnapshotForNextPlayer
             {
+                Name = snapshot.Name,
                 Map = snapshot.Map,
                 Players = snapshot.Players,
                 AvailableCells = availableCells?.Select(cell => cell.Coord.ToDto()).ToArray()

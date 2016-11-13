@@ -23,7 +23,7 @@ namespace Common.Game
         public Coord Coord;
 
         [DataMember]
-        public int OwnerID;
+        public long OwnerID;
 
         [DataMember]
         public int Colour;

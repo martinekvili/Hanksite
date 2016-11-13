@@ -31,7 +31,7 @@ namespace Server.Game
             }
         }
 
-        public GameSnapshot[] GetGamesForPlayer(int playerId)
+        public GameSnapshot[] GetGamesForPlayer(long playerId)
         {
             lock (syncObject)
             {

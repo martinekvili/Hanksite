@@ -15,7 +15,7 @@ namespace Server.Game.Player
 
         public User User => user;
 
-        public int ID => user.ID;
+        public long ID => user.ID;
 
         public int Points { get; set; }
         public int Colour { get; set; }

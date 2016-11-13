@@ -14,7 +14,7 @@ namespace Server.Game.Board
         public Coord Coord => coord;
         public List<Hexagon> Neighbours => neighbours;
 
-        public int OwnerID { get; set; } = -1;
+        public long OwnerID { get; set; } = -1;
         public int Colour { get; set; } = -1;
 
         public Hexagon(Coord coord)

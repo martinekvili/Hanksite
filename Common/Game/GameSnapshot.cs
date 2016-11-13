@@ -12,6 +12,9 @@ namespace Common.Game
     public class GameSnapshot
     {
         [DataMember]
+        public string Name;
+
+        [DataMember]
         public Player[] Players;
 
         [DataMember]
@@ -30,6 +33,9 @@ namespace Common.Game
     {
         [DataMember]
         public int ID;
+
+        [DataMember]
+        public string Name;
 
         [DataMember]
         public User[] Players;

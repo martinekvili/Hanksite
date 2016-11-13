@@ -92,14 +92,24 @@ namespace TestClient
                     new EndpointAddress(new Uri($"net.tcp://{serverAddress}:8733/HanksiteService/"))
                 ).CreateChannel();
 
-                Console.WriteLine("Enter username");
-                proxy.Connect(Console.ReadLine().Trim());
-
-
                 while (true)
                 {
                     string[] message = Console.ReadLine().Split(new string[] { " " }, StringSplitOptions.RemoveEmptyEntries);
 
+                    if (message[0] == "register")
+                    {
+                        if (proxy.RegisterUser(message[1], message[2]))
+                            Console.WriteLine("Congrats, you have registered.");
+                        else
+                            Console.WriteLine("user already exists");
+                    }
+                    if (message[0] == "login")
+                    {
+                        if (proxy.ConnectUser(message[1], message[2]))
+                            Console.WriteLine("Congrats, you have logged in.");
+                        else
+                            Console.WriteLine("Invalid username or password.");
+                    }
                     if (message[0] == "create")
                     {
                         proxy.CreateLobby(new LobbySettings

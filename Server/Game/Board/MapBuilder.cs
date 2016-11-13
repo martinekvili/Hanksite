@@ -9,7 +9,7 @@ namespace Server.Game.Board
 {
     public class MapBuilder
     {
-        public static Map CreateMap(List<int> playerIds, int numberOfColours)
+        public static Map CreateMap(List<long> playerIds, int numberOfColours)
         {
             var builder = createMapBuilderForPlayers(playerIds);
             builder.fillWithColours(numberOfColours);
@@ -20,12 +20,12 @@ namespace Server.Game.Board
         /// <summary>
         /// Do NOT call, only used for tests.
         /// </summary>
-        public static Map CreateMap(List<int> playerIds)
+        public static Map CreateMap(List<long> playerIds)
         {
             return createMapBuilderForPlayers(playerIds).Map;
         }
 
-        private static MapBuilder createMapBuilderForPlayers(List<int> playerIds)
+        private static MapBuilder createMapBuilderForPlayers(List<long> playerIds)
         {
             if (playerIds.Count < 2)
                 throw new ArgumentException("Too few players");
@@ -83,7 +83,7 @@ namespace Server.Game.Board
 
         private readonly int sideLength;
         private readonly Hexagon[,] mapMatrix;
-        private readonly Dictionary<int, Hexagon> playerBases;
+        private readonly Dictionary<long, Hexagon> playerBases;
         private List<Hexagon> map;
 
         public Map Map => new Map(map, playerBases);
@@ -92,7 +92,7 @@ namespace Server.Game.Board
         {
             this.sideLength = sideLength;
             this.mapMatrix = mapMatrix;
-            this.playerBases = new Dictionary<int, Hexagon>();
+            this.playerBases = new Dictionary<long, Hexagon>();
         }
 
         private MapBuilder(int sideLength) : this(sideLength, new Hexagon[2 * sideLength - 1, 2 * sideLength - 1])
@@ -166,7 +166,7 @@ namespace Server.Game.Board
             }
         }
 
-        private void distributePlayersOnMap(List<int> playerIds)
+        private void distributePlayersOnMap(List<long> playerIds)
         {
             List<Hexagon> outerRim = getSortedOuterRimOfMap();
 
