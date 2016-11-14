@@ -110,6 +110,13 @@ namespace TestClient
                         else
                             Console.WriteLine("Invalid username or password.");
                     }
+                    if (message[0] == "pwd")
+                    {
+                        if (proxy.ChangePassword(message[1], message[2]))
+                            Console.WriteLine("Congrats, you have changed your password.");
+                        else
+                            Console.WriteLine("Wrong password.");
+                    }
                     if (message[0] == "getplayedgames")
                     {
                         var playedGames = proxy.GetPlayedGames();
@@ -123,7 +130,7 @@ namespace TestClient
                     {
                         proxy.CreateLobby(new LobbySettings
                         {
-                            NumberOfColours = 8,
+                            NumberOfColours = int.Parse(message[2]) + 4,
                             Name = message[1],
                             NumberOfPlayers = int.Parse(message[2]),
                             BotNumbers = new LobbySettingsBotNumber[] { new LobbySettingsBotNumber { Difficulty = AIDifficulty.Hard, Number = int.Parse(message[3]) } }
@@ -159,6 +166,20 @@ namespace TestClient
                     else if (message[0] == "discgame")
                     {
                         proxy.DisconnectFromGame();
+                    }
+                    else if (message[0] == "getrunninggames")
+                    {
+                        var runningGames = proxy.GetRunningGames();
+                        if (runningGames.Length == 0)
+                            Console.WriteLine("none");
+                        else
+                        {
+                            foreach (var gameSnapshotForDisconnected in runningGames)
+                            {
+                                Console.WriteLine(
+                                    $"ID: {gameSnapshotForDisconnected.ID}, Name: {gameSnapshotForDisconnected.Name}");
+                            }
+                        }
                     }
                     else if (message[0] == "reconnectgame")
                     {

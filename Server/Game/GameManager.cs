@@ -37,11 +37,18 @@ namespace Server.Game
 
         public Map Map => map;
 
-        public GameSnapshot GameSnapshot => new GameSnapshot
+        public GameSnapshot Snapshot => new GameSnapshot
         {
             Name = name,
             Map = map.ToDto(),
             Players = players.Select(player => player.ToDto()).ToArray()
+        };
+
+        public GameSnapshotForDisconnected SnapshotForDisconnected => new GameSnapshotForDisconnected
+        {
+            ID = id,
+            Name = name,
+            Players = players.Select(player => player.User).ToArray()
         };
 
         public GameManager(List<HanksiteSession> realPlayers, LobbySettings settings)
@@ -157,7 +164,7 @@ namespace Server.Game
 
             GameManagerPool.Instance.RemoveGame(this);
 
-            HanksiteDAL.StoreGame(GameSnapshot, startTime);
+            GameDAL.StoreGame(Snapshot, startTime);
 
             sendToAllPlayers(player => player.SendGameOver());
         }
@@ -191,7 +198,7 @@ namespace Server.Game
             }
         }
 
-        public void DisconnectPlayer(PlayerBase player)
+        public void DisconnectPlayer(RealPlayer player)
         {
             lock (syncObject)
             {
@@ -200,8 +207,7 @@ namespace Server.Game
                 if (playerNum == -1)
                     return;
 
-                players[playerNum] = new DisconnectedPlayer(player.User, this);
-                calculatePositions();
+                players[playerNum] = new DisconnectedPlayer(player);
 
                 if (playerNum == currentPlayerNum)
                 {
@@ -234,11 +240,10 @@ namespace Server.Game
                 if (playerNum == -1)
                     return null;
 
-                players[playerNum] = new RealPlayer(hanksiteSession, this);
-                calculatePositions();
+                players[playerNum] = new RealPlayer(hanksiteSession, players[playerNum] as DisconnectedPlayer);
                 sendToAllPlayers(player => player.SendGameSnapshot(), players[playerNum]);
 
-                return GameSnapshot;
+                return Snapshot;
             }
         }
 

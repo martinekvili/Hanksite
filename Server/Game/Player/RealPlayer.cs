@@ -37,7 +37,7 @@ namespace Server.Game.Player
 
         public override void DoNextStep(List<Hexagon> availableCells)
         {
-            var snapshot = game.GameSnapshot;
+            var snapshot = game.Snapshot;
 
             session.DoNextStep(new Common.Game.GameSnapshotForNextPlayer
             {
@@ -50,12 +50,12 @@ namespace Server.Game.Player
 
         public override void SendGameOver()
         {
-            session.SendGameOver(game.GameSnapshot);
+            session.SendGameOver(game.Snapshot);
         }
 
         public override void SendGameSnapshot()
         {
-            session.SendGameSnapshot(game.GameSnapshot);
+            session.SendGameSnapshot(game.Snapshot);
         }
 
         public override void SendTimedOut()

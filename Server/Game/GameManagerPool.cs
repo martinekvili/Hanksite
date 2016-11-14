@@ -31,11 +31,11 @@ namespace Server.Game
             }
         }
 
-        public GameSnapshot[] GetGamesForPlayer(long playerId)
+        public GameSnapshotForDisconnected[] GetGamesForPlayer(long playerId)
         {
             lock (syncObject)
             {
-                return gameManagers.Where(game => game.IsPlayerInGame(playerId)).Select(game => game.GameSnapshot).ToArray();
+                return gameManagers.Where(game => game.IsPlayerInGame(playerId)).Select(game => game.SnapshotForDisconnected).ToArray();
             }
         }
 

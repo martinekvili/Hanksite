@@ -65,7 +65,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="HanksiteDAL.cs" />
+    <Compile Include="GameDAL.cs" />
+    <Compile Include="UserDAL.cs" />
     <Compile Include="Game.cs">
       <DependentUpon>HanksiteModel.tt</DependentUpon>
     </Compile>

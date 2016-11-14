@@ -17,6 +17,9 @@ namespace Common.Game
         void DisconnectFromGame();
 
         [OperationContract(IsOneWay = false)]
+        GameSnapshotForDisconnected[] GetRunningGames();
+
+        [OperationContract(IsOneWay = false)]
         GameSnapshot ReconnectToGame(int gameId);
     }
 

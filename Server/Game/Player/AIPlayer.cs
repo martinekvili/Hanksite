@@ -12,7 +12,7 @@ namespace Server.Game.Player
     {
         private readonly AIStrategy strategy;
 
-        public AIPlayer(int botNumber, AIDifficulty type, GameManager game) : base(new User { ID = botNumber, UserName = $"AI{botNumber}" }, game)
+        public AIPlayer(int botNumber, AIDifficulty type, GameManager game) : base(new User { ID = botNumber, UserName = $"AI{botNumber + 1}" }, game)
         {
             this.strategy = AIStrategyFactory.CreateAIStrategy(type);
         }

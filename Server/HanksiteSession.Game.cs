@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Common.Game;
 using Server.Game.Player;
 using Server.Game;
 using GameSnapshot = Common.Game.GameSnapshot;
@@ -24,6 +25,11 @@ namespace Server
             RealPlayer.DisconnectFromGame();
 
             RealPlayer = null;
+        }
+
+        public GameSnapshotForDisconnected[] GetRunningGames()
+        {
+            return GameManagerPool.Instance.GetGamesForPlayer(user.ID);
         }
 
         public GameSnapshot ReconnectToGame(int gameId)

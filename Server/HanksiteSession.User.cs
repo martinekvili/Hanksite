@@ -1,69 +1,65 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 using Common.Game;
 using Server.DAL;
-using User = Common.Users.User;
+using Server.Utils;
 
 namespace Server
 {
     public partial class HanksiteSession
     {
-        private static readonly int iterationNumber = 10000;
-
-        private User user;
-        public User User => user;
+        private Common.Users.User user;
+        public Common.Users.User User => user;
 
         public bool ConnectUser(string userName, string password)
         {
-            var dbUser = HanksiteDAL.GetUser(userName);
+            var dbUser = UserDAL.GetUserByName(userName);
             
-            if (dbUser == null)
+            if (dbUser == null || !dbUser.IsPasswordForUser(password))
                 return false;
 
-            byte[] saltBytes = Convert.FromBase64String(dbUser.PasswordSalt);
-            Rfc2898DeriveBytes crypto = new Rfc2898DeriveBytes(password, saltBytes, iterationNumber);
-            string passwordString = Convert.ToBase64String(crypto.GetBytes(32));
-
-            if (passwordString != dbUser.Password)
-                return false;
-
-            user = new User { ID = dbUser.ID, UserName = userName };
+            user = new Common.Users.User { ID = dbUser.ID, UserName = userName };
             return true;
         }
 
         public bool RegisterUser(string userName, string password)
         {
-            byte[] saltBytes = new byte[16];
-            using (var rngCsp = new RNGCryptoServiceProvider())
-            {
-                rngCsp.GetBytes(saltBytes);
-            }
-
-            Rfc2898DeriveBytes crypto = new Rfc2898DeriveBytes(password, saltBytes, iterationNumber);
-            byte[] passwordBytes = crypto.GetBytes(32);
-
-            long id;
             try
             {
-                id = HanksiteDAL.RegisterUser(userName, Convert.ToBase64String(saltBytes),
-                    Convert.ToBase64String(passwordBytes));
+                string passwordSalt, encryptedPassword;
+                EncryptionUtils.EncryptPassword(password, out passwordSalt, out encryptedPassword);
+
+                long id = UserDAL.RegisterUser(userName, passwordSalt, encryptedPassword);
+
+                user = new Common.Users.User { ID = id, UserName = userName };
+                return true;
             }
             catch (Exception)
             {
                 return false;
             }
+        }
 
-            user = new User { ID = id, UserName = userName };
+        public bool ChangePassword(string oldPassword, string newPassword)
+        {
+            var dbUser = UserDAL.GetUser(user.ID);
+
+            if (!dbUser.IsPasswordForUser(oldPassword))
+                return false;
+
+            string passwordSalt, encryptedPassword;
+            EncryptionUtils.EncryptPassword(newPassword, out passwordSalt, out encryptedPassword);
+
+            UserDAL.ChangeUserPassword(user.ID, passwordSalt, encryptedPassword);
             return true;
         }
 
         public PlayedGameInfo[] GetPlayedGames()
         {
-            return HanksiteDAL.GetPlayedGamesForUser(user.ID).ToArray();
+            return GameDAL.GetPlayedGamesForUser(user.ID).ToArray();
         }
     }
 }

@@ -19,6 +19,9 @@ namespace Common.Users
         bool RegisterUser(string userName, string password);
 
         [OperationContract(IsOneWay = false)]
+        bool ChangePassword(string oldPassword, string newPassword);
+
+        [OperationContract(IsOneWay = false)]
         PlayedGameInfo[] GetPlayedGames();
     }
 }
