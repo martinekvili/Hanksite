@@ -118,9 +118,9 @@
             </Button>
             <Button
                 Margin="4"
-                Visibility="{Binding IsReady, Converter={StaticResource BooleanToVisibility}}"
-                Command="{Binding CancelCommand}">
-                Cancel
+                Visibility="{Binding IsCanceled, Converter={StaticResource BooleanToVisibility}}"
+                Command="{Binding BackCommand}">
+                Back
             </Button>
             <Button
                 Margin="4"
@@ -130,9 +130,9 @@
             </Button>
             <Button
                 Margin="4"
-                Visibility="{Binding IsCanceled, Converter={StaticResource BooleanToVisibility}}"
-                Command="{Binding BackCommand}">
-                Back
+                Visibility="{Binding IsReady, Converter={StaticResource BooleanToVisibility}}"
+                Command="{Binding CancelCommand}">
+                Cancel
             </Button>
         </StackPanel>
     </DockPanel>

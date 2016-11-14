@@ -24,22 +24,27 @@
                 Main Menu
             </TextBlock>
             <Button
+                Style="{StaticResource MenuButton}"
                 Command="{Binding CreateLobbyCommand}">
                 Create new game
             </Button>
             <Button
+                Style="{StaticResource MenuButton}"
                 Command="{Binding ConnectLobbyCommand}">
                 Connect to a lobby
             </Button>
             <Button
+                Style="{StaticResource MenuButton}"
                 Command="{Binding ShowStatisticsCommand}">
                 Statistics
             </Button>
             <Button
+                Style="{StaticResource MenuButton}"
                 Command="{Binding ShowSettingsCommand}">
                 Settings
             </Button>
             <Button
+                Style="{StaticResource MenuButton}"
                 Command="{Binding QuitCommand}">
                 Quit
             </Button>

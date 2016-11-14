@@ -22,10 +22,10 @@ namespace Client.ViewModel
         public ICommand SignInCommand { get; set; }
         public ICommand CreateAccountCommand { get; set; }
         public ICommand QuitCommand { get; set; }
-        
+
+        public string Server { get; set; }
         public string Username { get; set; }
         public string Password { get; set; }
-        public string Server { get; set; }
         public string Message
         {
             get { return message; }
