@@ -18,6 +18,7 @@ namespace Client.Model.Dummy
             Dictionary<BotDifficulty, int> bots = new Dictionary<BotDifficulty, int>();
             bots[BotDifficulty.EASY] = 1;
             bots[BotDifficulty.MEDIUM] = 2;
+            bots[BotDifficulty.HARD] = 0;
 
             List<Player> players = new List<Player>();
             players.Add(new Player() { Username = "Kornyek" });

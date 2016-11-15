@@ -28,6 +28,12 @@ namespace Client.ViewModel
             get { return availableLobbies; }
             set { availableLobbies = value; NotifyPropertyChanged("AvailableLobbies"); }
         }
+        private Lobby selectedLobby;
+        public Lobby SelectedLobby
+        {
+            get { return selectedLobby; }
+            set { selectedLobby = value; NotifyPropertyChanged("SelectedLobby"); }
+        }
 
         private bool isConnected = false;
         public bool IsConnected

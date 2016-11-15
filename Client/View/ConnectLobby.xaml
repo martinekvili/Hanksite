@@ -1,14 +1,16 @@
-﻿<UserControl x:Class="Client.View.ConnectLobby"
-             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:Client.View"
-             xmlns:viewmodel="clr-namespace:Client.ViewModel"
-             mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="300">
+﻿<UserControl
+    x:Class="Client.View.ConnectLobby"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:Client.View"
+    xmlns:viewmodel="clr-namespace:Client.ViewModel"
+    mc:Ignorable="d"
+    d:DesignHeight="300"
+    d:DesignWidth="300">
     <UserControl.DataContext>
-        <viewmodel:ConnectLobbyViewModel/>
+        <viewmodel:ConnectLobbyViewModel />
     </UserControl.DataContext>
     <DockPanel
         Margin="24">
@@ -21,48 +23,57 @@
             <Label>Available lobbies</Label>
             <ListView
                 Height="300"
-                ItemsSource="{Binding AvailableLobbies}">
+                ItemsSource="{Binding AvailableLobbies}"
+                SelectedItem="{Binding SelectedLobby}">
                 <ListView.View>
                     <GridView>
                         <GridView.Columns>
                             <GridViewColumn>
                                 <GridViewColumn.CellTemplate>
                                     <DataTemplate>
-                                        <Label Content="{Binding Name}"/>
+                                        <Label
+                                            Content="{Binding Name}" />
                                     </DataTemplate>
                                 </GridViewColumn.CellTemplate>
                                 <GridViewColumn.Header>
-                                    <Label Content="Name"/>
+                                    <Label
+                                        Content="Name" />
                                 </GridViewColumn.Header>
                             </GridViewColumn>
                             <GridViewColumn>
                                 <GridViewColumn.CellTemplate>
                                     <DataTemplate>
-                                        <Label Content="{Binding NumberOfPlayers}"/>
+                                        <Label
+                                            Content="{Binding NumberOfPlayers}" />
                                     </DataTemplate>
                                 </GridViewColumn.CellTemplate>
                                 <GridViewColumn.Header>
-                                    <Label Content="Players"/>
+                                    <Label
+                                        Content="Players" />
                                 </GridViewColumn.Header>
                             </GridViewColumn>
                             <GridViewColumn>
                                 <GridViewColumn.CellTemplate>
                                     <DataTemplate>
-                                        <Label Content="{Binding Bots.Count}"/>
+                                        <Label
+                                            Content="{Binding Bots.Count}" />
                                     </DataTemplate>
                                 </GridViewColumn.CellTemplate>
                                 <GridViewColumn.Header>
-                                    <Label Content="Bots"/>
+                                    <Label
+                                        Content="Bots" />
                                 </GridViewColumn.Header>
                             </GridViewColumn>
                             <GridViewColumn>
                                 <GridViewColumn.CellTemplate>
                                     <DataTemplate>
-                                        <Label Content="{Binding NumberOfColours}"/>
+                                        <Label
+                                            Content="{Binding NumberOfColours}" />
                                     </DataTemplate>
                                 </GridViewColumn.CellTemplate>
                                 <GridViewColumn.Header>
-                                    <Label Content="Colours"/>
+                                    <Label
+                                        Content="Colours" />
                                 </GridViewColumn.Header>
                             </GridViewColumn>
                         </GridView.Columns>
@@ -70,16 +81,73 @@
                 </ListView.View>
             </ListView>
         </StackPanel>
+        <!--connected-->
         <StackPanel
-            Margin="24"
-            Visibility="{Binding IsConnected, Converter={StaticResource BooleanToVisibility}}"
-            Orientation="Vertical"
-            DockPanel.Dock="Top">
-            <TextBlock
-                Style="{StaticResource TitleStyle}"
-                HorizontalAlignment="Center">
-                Adatok jól
-            </TextBlock>
+            DockPanel.Dock="Top"
+            Orientation="Horizontal"
+            HorizontalAlignment="Center"
+            Visibility="{Binding IsConnected, Converter={StaticResource BooleanToVisibility}}">
+            <StackPanel
+                Width="150"
+                Margin="24"
+                Orientation="Vertical">
+                <Label>Name</Label>
+                <Label
+                    Content="{Binding SelectedLobby.Name}" />
+                <Label>Number of players</Label>
+                <Label
+                    Content="{Binding SelectedLobby.NumberOfPlayers}" />
+                <Label>Number of colours</Label>
+                <Label
+                    Content="{Binding SelectedLobby.NumberOfColours}" />
+            </StackPanel>
+            <DockPanel
+                Width="200"
+                Margin="24">
+                <StackPanel
+                    DockPanel.Dock="Top"
+                    Orientation="Vertical">
+                    <Label>Bots</Label>
+                    <StackPanel
+                        Orientation="Horizontal">
+                        <Label
+                            Width="60">Easy</Label>
+                        <Label
+                            Content="{Binding SelectedLobby.Bots[0]}" />
+                    </StackPanel>
+                    <StackPanel
+                        Orientation="Horizontal">
+                        <Label
+                            Width="60">Medium</Label>
+                        <Label
+                            Content="{Binding SelectedLobby.Bots[1]}" />
+                    </StackPanel>
+                    <StackPanel
+                        Orientation="Horizontal">
+                        <Label
+                            Width="60">Hard</Label>
+                        <Label
+                            Content="{Binding SelectedLobby.Bots[2]}" />
+                    </StackPanel>
+                </StackPanel>
+            </DockPanel>
+            <StackPanel
+                Margin="24"
+                Orientation="Vertical"
+                Width="200">
+                <Label>Connected players</Label>
+                <ListBox
+                    ItemsSource="{Binding SelectedLobby.ConnectedPlayers}"
+                    Height="200"
+                    IsEnabled="{Binding IsReady}">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <Label
+                                Content="{Binding Username}" />
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+            </StackPanel>
         </StackPanel>
         <StackPanel
             DockPanel.Dock="Bottom"
