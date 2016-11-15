@@ -31,13 +31,18 @@ namespace Client.ViewModel
             MapConverter converter = new MapConverter();
             Map = new ObservableCollection<DrawableField>(converter.ConvertToDrawable(mapProvider.GetMap()));
 
-            TestCommand = new ParameterizedCommandHandler(Test, true);
+            TestCommand = new ParameterizedCommandHandler(Test, IsTestEnabled);
         }
 
         private void Test(object parameter)
         {
             UIElement e = parameter as UIElement;
             Console.WriteLine(parameter);
+        }
+
+        private bool IsTestEnabled(object parameter)
+        {
+            return true;
         }
 
         public void DecodeColor(Brush brush)

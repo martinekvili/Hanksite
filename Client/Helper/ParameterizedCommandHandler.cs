@@ -6,11 +6,11 @@ namespace Client.Helper
     class ParameterizedCommandHandler : ICommand
     {
         private Action<object> action;
-        private bool canExecute;
+        private Predicate<object> canExecute;
 
         public event EventHandler CanExecuteChanged;
 
-        public ParameterizedCommandHandler (Action<object> action, bool canExecute)
+        public ParameterizedCommandHandler (Action<object> action, Predicate<object> canExecute)
         {
             this.action = action;
             this.canExecute = canExecute;
@@ -18,12 +18,18 @@ namespace Client.Helper
 
         public bool CanExecute(object parameter)
         {
-            return canExecute;
+            return canExecute(parameter);
         }
 
         public void Execute(object parameter)
         {
             action(parameter);
+        }
+
+        public void RaiseCanExecuteChanged()
+        {
+            if (CanExecuteChanged != null)
+                CanExecuteChanged(this, new EventArgs());
         }
     }
 }
