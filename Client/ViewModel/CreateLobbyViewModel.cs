@@ -10,6 +10,7 @@ using System.ComponentModel;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Navigation;
+using System.Linq;
 
 namespace Client.ViewModel
 {
@@ -30,7 +31,6 @@ namespace Client.ViewModel
         private const int MAX_COLOURS = 16;
         private const int MIN_PLAYER_COLOUR_DIFF = 3;
 
-        private string selectedNumberOfPlayers;
         private int selectedNumberOfColours;
         private IConnectedPlayerProvider connectedPlayerProvider;
 
@@ -54,10 +54,11 @@ namespace Client.ViewModel
         }
 
         public int[] NumberOfPlayers { get; set; }
-        public string SelectedNumberOfPlayers
+        private int selectedNumberOfPlayers;
+        public int SelectedNumberOfPlayers
         {
             get { return selectedNumberOfPlayers; }
-            set { selectedNumberOfPlayers = value; RefreshNumberOfColours(); }
+            set { selectedNumberOfPlayers = value; RefreshNumberOfColours(); RefreshBots(); }
         }
         public ObservableCollection<int> NumberOfColours { get; set; }
         public int SelectedNumberOfColours
@@ -65,10 +66,6 @@ namespace Client.ViewModel
             get { return selectedNumberOfColours; }
             set { selectedNumberOfColours = value; NotifyPropertyChanged("SelectedNumberOfColours"); }
         }
-        //public ObservableCollection<string> BotList { get; set; }
-        //public List<string> BotDifficultyList { get; set; }
-        //public string SelectedBotDifficulty { get; set; }
-        //public string BotToRemove { get; set; }
 
         #region bot properties
         private Dictionary<BotDifficulty, int> bots;
@@ -113,65 +110,29 @@ namespace Client.ViewModel
                 NumberOfPlayers[i] = i + 2;
             }
 
-            //BotList = new ObservableCollection<string>();
-            //BotDifficultyList = new List<string>();
-            //foreach (BotDifficulty difficulty in Enum.GetValues(typeof(BotDifficulty)))
-            //{
-            //    if (difficulty != BotDifficulty.INVALID)
-            //    {
-            //        bots.Add(difficulty, 0);
-            //        BotDifficultyList.Add(difficulty.convertToString());
-            //    }
-            //}
-
             connectedPlayerProvider = new Players();
 
-            //AddBotCommand = new CommandHandler(AddSelectedBot, true);
             ReadyCommand = new CommandHandler(Ready, true);
             CancelCommand = new CommandHandler(Cancel, true);
             StartCommand = new CommandHandler(Start, true);
             BackCommand = new CommandHandler(Back, true);
-            //RemoveBotCommand = new CommandHandler(RemoveBot, true);
 
             bots = new Dictionary<BotDifficulty, int>();
             bots[BotDifficulty.EASY] = 0;
             bots[BotDifficulty.MEDIUM] = 0;
             bots[BotDifficulty.HARD] = 0;
 
-            IncreaseBotCommand = new ParameterizedCommandHandler(IncreaseBot, IsIncreaseEnabled);
-            DecreaseBotCommand = new ParameterizedCommandHandler(DecreaseBot, IsDecreaseEnabled);
+            IncreaseBotCommand = new ParameterizedCommandHandler(IncreaseBot, IsIncreaseBotEnabled);
+            DecreaseBotCommand = new ParameterizedCommandHandler(DecreaseBot, IsDecreaseBotEnabled);
         }
 
-        //private void AddSelectedBot()
-        //{
-        //    if (SelectedBotDifficulty == "Easy")
-        //    {
-        //        AddBot(BotDifficulty.EASY);
-        //    }
-        //    else if (SelectedBotDifficulty == "Medium")
-        //    {
-        //        AddBot(BotDifficulty.MEDIUM);
-        //    }
-        //    else if (SelectedBotDifficulty == "Hard")
-        //    {
-        //        AddBot(BotDifficulty.HARD);
-        //    }
-        //}
-
-        //private void AddBot(BotDifficulty difficulty)
-        //{
-        //    bots[difficulty] = bots[difficulty] + 1;
-        //    RefreshBotList();
-        //}
-
+        #region bot methods
         private void IncreaseBot(object parameter)
         {
             BotDifficulty difficulty = (BotDifficulty)parameter;
             bots[difficulty] = bots[difficulty] + 1;
 
-            NotifyPropertyChanged("NumberOfEasyBots");
-            NotifyPropertyChanged("NumberOfMediumBots");
-            NotifyPropertyChanged("NumberOfHardBots");
+            NotifyNumberOfBotsProperties();
         }
 
         private void DecreaseBot(object parameter)
@@ -179,17 +140,27 @@ namespace Client.ViewModel
             BotDifficulty difficulty = (BotDifficulty)parameter;
             bots[difficulty] = bots[difficulty] - 1;
 
+            NotifyNumberOfBotsProperties();
+        }
+
+        private void NotifyNumberOfBotsProperties()
+        {
             NotifyPropertyChanged("NumberOfEasyBots");
             NotifyPropertyChanged("NumberOfMediumBots");
             NotifyPropertyChanged("NumberOfHardBots");
         }
 
-        private bool IsIncreaseEnabled(object parameter)
+        private bool IsIncreaseBotEnabled(object parameter)
         {
-            return true;
+            if (1 < SelectedNumberOfPlayers - bots.Sum(bot => bot.Value))
+            {
+                return true;
+            }
+
+            return false;
         }
 
-        private bool IsDecreaseEnabled(object parameter)
+        private bool IsDecreaseBotEnabled(object parameter)
         {
             BotDifficulty difficulty = (BotDifficulty)parameter;
             if (0 < bots[difficulty])
@@ -199,6 +170,7 @@ namespace Client.ViewModel
 
             return false;
         }
+        #endregion
 
         private void Ready()
         {
@@ -220,18 +192,6 @@ namespace Client.ViewModel
             NavigationService.GetNavigationService(View).GoBack();
         }
 
-        //private void RefreshBotList()
-        //{
-        //    BotList.Clear();
-        //    foreach (var difficulty in bots)
-        //    {
-        //        for (int i = 0; i < difficulty.Value; i++)
-        //        {
-        //            BotList.Add(difficulty.Key.convertToString());
-        //        }
-        //    }
-        //}
-
         private void SetNumberOfColours(int selectedNumberOfPlayers)
         {
             NumberOfColours.Clear();
@@ -246,10 +206,7 @@ namespace Client.ViewModel
         {
             int actualNumberOfColours = NumberOfColours[SelectedNumberOfColours];
 
-            if (SelectedNumberOfPlayers != null)
-            {
-                SetNumberOfColours(int.Parse(SelectedNumberOfPlayers));
-            }
+            SetNumberOfColours(SelectedNumberOfPlayers);
 
             if (NumberOfColours.Contains(actualNumberOfColours))
             {
@@ -261,15 +218,17 @@ namespace Client.ViewModel
             }
         }
 
-        //private void RemoveBot()
-        //{
-        //    BotDifficulty difficulty = BotDifficultyHelper.convertFromString(BotToRemove);
-        //    if (difficulty != BotDifficulty.INVALID)
-        //    {
-        //        bots[difficulty] = bots[difficulty] - 1;
-        //    }
-        //    RefreshBotList();
-        //}
+        private void RefreshBots()
+        {
+            if (SelectedNumberOfPlayers <= bots.Sum(bot => bot.Value))
+            {
+                bots[BotDifficulty.EASY] = 0;
+                bots[BotDifficulty.MEDIUM] = 0;
+                bots[BotDifficulty.HARD] = 0;
+
+                NotifyNumberOfBotsProperties();
+            }
+        }
 
         private void NotifyPropertyChanged(string propertyName)
         {

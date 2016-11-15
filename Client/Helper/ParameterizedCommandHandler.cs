@@ -8,8 +8,6 @@ namespace Client.Helper
         private Action<object> action;
         private Predicate<object> canExecute;
 
-        public event EventHandler CanExecuteChanged;
-
         public ParameterizedCommandHandler (Action<object> action, Predicate<object> canExecute)
         {
             this.action = action;
@@ -26,10 +24,10 @@ namespace Client.Helper
             action(parameter);
         }
 
-        public void RaiseCanExecuteChanged()
+        public event EventHandler CanExecuteChanged
         {
-            if (CanExecuteChanged != null)
-                CanExecuteChanged(this, new EventArgs());
+            add { CommandManager.RequerySuggested += value; }
+            remove { CommandManager.RequerySuggested -= value; }
         }
     }
 }
