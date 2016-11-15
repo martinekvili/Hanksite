@@ -62,7 +62,7 @@ namespace Server.Game
 
             this.map = MapBuilder.CreateMap(players.Select(player => player.ID).ToList(), settings.NumberOfColours);
 
-            this.currentPlayerNum = -1;
+            this.currentPlayerNum = this.players.Count - 1;
             stepNextPlayer();
         }
 
