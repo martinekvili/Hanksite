@@ -11,21 +11,21 @@ using System.Windows;
 using System.Windows.Input;
 using System.Windows.Navigation;
 using System.Linq;
+using System.Threading.Tasks;
+using Client.ViewModel.Interfaces;
 
 namespace Client.ViewModel
 {
-    class CreateLobbyViewModel : INotifyPropertyChanged
+    class CreateLobbyViewModel : INotifyPropertyChanged, ILobbyOwner
     {
         public event PropertyChangedEventHandler PropertyChanged;
 
         public DependencyObject View { get; set; }
-
-        //public ICommand AddBotCommand { get; set; }
+        
         public ICommand ReadyCommand { get; set; }
         public ICommand CancelCommand { get; set; }
         public ICommand StartCommand { get; set; }
         public ICommand BackCommand { get; set; }
-        //public ICommand RemoveBotCommand { get; set; }
 
         private const int MAX_PLAYERS = 8;
         private const int MAX_COLOURS = 16;
@@ -78,7 +78,12 @@ namespace Client.ViewModel
         public ParameterizedCommandHandler DecreaseBotCommand { get; set; }
         #endregion
 
-        public List<Player> ConnectedPlayers { get { return connectedPlayerProvider.GetPlayers(); } }
+        private List<Player> connectedPlayers;
+        public List<Player> ConnectedPlayers
+        {
+            get { return connectedPlayers; }
+            set { connectedPlayers = value; NotifyPropertyChanged("ConnectedPlayers"); }
+        }
 
         private bool isReadyEnabled = false;
         public bool IsReadyEnabled
@@ -124,6 +129,8 @@ namespace Client.ViewModel
 
             IncreaseBotCommand = new ParameterizedCommandHandler(IncreaseBot, IsIncreaseBotEnabled);
             DecreaseBotCommand = new ParameterizedCommandHandler(DecreaseBot, IsDecreaseBotEnabled);
+
+            connectedPlayers = new List<Player>();
         }
 
         #region bot methods
@@ -175,6 +182,7 @@ namespace Client.ViewModel
         private void Ready()
         {
             IsReady = true;
+            //Task.Factory.StartNew(() => );
         }
 
         private void Cancel()
@@ -233,6 +241,16 @@ namespace Client.ViewModel
         private void NotifyPropertyChanged(string propertyName)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+
+        public void RefreshConnectedPlayers(List<Player> players)
+        {
+            ConnectedPlayers = players;
+        }
+
+        public void NotEnoughPlayers()
+        {
+            throw new NotImplementedException();
         }
     }
 }

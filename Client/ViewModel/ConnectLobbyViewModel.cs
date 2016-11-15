@@ -2,15 +2,17 @@
 using Client.Model;
 using Client.Model.Dummy;
 using Client.Model.Interfaces;
+using Client.ViewModel.Interfaces;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Navigation;
+using System;
 
 namespace Client.ViewModel
 {
-    class ConnectLobbyViewModel : INotifyPropertyChanged
+    class ConnectLobbyViewModel : INotifyPropertyChanged, ILobbyJoiner
     {
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -79,6 +81,11 @@ namespace Client.ViewModel
         private void NotifyPropertyChanged(string propertyName)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+
+        public void ForceQuit()
+        {
+            Disconnect();
         }
     }
 }
