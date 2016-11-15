@@ -66,6 +66,12 @@
     <Compile Include="Model\Dummy\MapProvider.cs" />
     <Compile Include="Model\Interfaces\IMapProvider.cs" />
     <Compile Include="Model\MapConverter.cs" />
+    <Compile Include="ViewModel\ChangeServerDialogViewModel.cs" />
+    <Compile Include="ViewModel\Interfaces\IHideableButtonContainer.cs" />
+    <Compile Include="ViewModel\MainWindowViewModel.cs" />
+    <Compile Include="View\ChangeServerDialog.xaml.cs">
+      <DependentUpon>ChangeServerDialog.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\ConnectLobby.xaml.cs">
       <DependentUpon>ConnectLobby.xaml</DependentUpon>
     </Compile>
@@ -110,6 +116,10 @@
     <Compile Include="ViewModel\RegistrationViewModel.cs" />
     <Compile Include="ViewModel\SettingsViewModel.cs" />
     <Compile Include="ViewModel\StatisticsViewModel.cs" />
+    <Page Include="View\ChangeServerDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="View\ConnectLobby.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

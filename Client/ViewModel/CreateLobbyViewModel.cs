@@ -132,7 +132,7 @@ namespace Client.ViewModel
             BotDifficulty difficulty = (BotDifficulty)parameter;
             bots[difficulty] = bots[difficulty] + 1;
 
-            NotifyNumberOfBotsProperties();
+            NotifyNumberOfBotsChanged();
         }
 
         private void DecreaseBot(object parameter)
@@ -140,10 +140,10 @@ namespace Client.ViewModel
             BotDifficulty difficulty = (BotDifficulty)parameter;
             bots[difficulty] = bots[difficulty] - 1;
 
-            NotifyNumberOfBotsProperties();
+            NotifyNumberOfBotsChanged();
         }
 
-        private void NotifyNumberOfBotsProperties()
+        private void NotifyNumberOfBotsChanged()
         {
             NotifyPropertyChanged("NumberOfEasyBots");
             NotifyPropertyChanged("NumberOfMediumBots");
@@ -226,7 +226,7 @@ namespace Client.ViewModel
                 bots[BotDifficulty.MEDIUM] = 0;
                 bots[BotDifficulty.HARD] = 0;
 
-                NotifyNumberOfBotsProperties();
+                NotifyNumberOfBotsChanged();
             }
         }
 

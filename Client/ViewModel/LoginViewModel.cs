@@ -7,6 +7,7 @@ using System.Windows;
 using Client.View;
 using Client.Helper;
 using Client.Model.Interfaces;
+using Client.ViewModel.Interfaces;
 
 namespace Client.ViewModel
 {
@@ -61,6 +62,7 @@ namespace Client.ViewModel
             if (Accounts.IsAccountValid(Username, Password))
             {
                 NavigationService.GetNavigationService(View).Navigate(new MainMenu());
+                ((IHideableButtonContainer)Window.GetWindow(View)).HideChangeServerButton();
             }
             else
             {
