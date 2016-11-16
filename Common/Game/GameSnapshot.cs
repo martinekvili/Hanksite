@@ -9,6 +9,13 @@ using System.Threading.Tasks;
 namespace Common.Game
 {
     [DataContract]
+    public class GamePlayersSnapshot
+    {
+        [DataMember]
+        public Player[] Players;
+    }
+
+    [DataContract]
     public class GameSnapshot
     {
         [DataMember]

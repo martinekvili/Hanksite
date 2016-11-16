@@ -39,7 +39,7 @@ namespace Server.Game.Player
             };
         }
 
-        public override void SendTimedOut()
+        public override void SendGamePlayersSnapshot()
         { }
     }
 }

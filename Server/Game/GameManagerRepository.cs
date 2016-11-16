@@ -8,17 +8,17 @@ using Common.Lobby;
 
 namespace Server.Game
 {
-    public class GameManagerPool
+    public class GameManagerRepository
     {
-        private static readonly GameManagerPool instance = new GameManagerPool();
+        private static readonly GameManagerRepository instance = new GameManagerRepository();
 
-        public static GameManagerPool Instance => instance;
+        public static GameManagerRepository Instance => instance;
 
         private readonly object syncObject = new object();
 
         private readonly List<GameManager> gameManagers;
 
-        private GameManagerPool()
+        private GameManagerRepository()
         {
             gameManagers = new List<GameManager>();
         }

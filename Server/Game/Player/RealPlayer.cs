@@ -58,9 +58,9 @@ namespace Server.Game.Player
             session.SendGameSnapshot(game.Snapshot);
         }
 
-        public override void SendTimedOut()
+        public override void SendGamePlayersSnapshot()
         {
-            session.SendTimedOut();
+            session.SendGamePlayersSnapshot(game.PlayersSnapshot);
         }
 
         public override Common.Game.Player ToDto()

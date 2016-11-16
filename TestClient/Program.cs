@@ -65,9 +65,9 @@ namespace TestClient
             Console.WriteLine("Game not started, not enough players.");
         }
 
-        public void SendTimedOut()
+        public void SendGamePlayerSnapshot(GamePlayersSnapshot snapshot)
         {
-            Console.WriteLine("You didn't choose fast enough!");
+            Console.WriteLine("Players changed.");
         }
     }
 

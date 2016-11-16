@@ -29,12 +29,12 @@ namespace Server
 
         public GameSnapshotForDisconnected[] GetRunningGames()
         {
-            return GameManagerPool.Instance.GetGamesForPlayer(user.ID);
+            return GameManagerRepository.Instance.GetGamesForPlayer(user.ID);
         }
 
         public GameSnapshot ReconnectToGame(int gameId)
         {
-            GameManager game = GameManagerPool.Instance.GetGameByID(gameId);
+            GameManager game = GameManagerRepository.Instance.GetGameByID(gameId);
 
             if (game == null)
                 return null;
@@ -52,9 +52,9 @@ namespace Server
             callback.DoNextStep(snapshot);
         }
 
-        public void SendTimedOut()
+        public void SendGamePlayersSnapshot(GamePlayersSnapshot snapshot)
         {
-            callback.SendTimedOut();
+            callback.SendGamePlayerSnapshot(snapshot);
         }
 
         public void SendGameOver(GameSnapshot snapshot)

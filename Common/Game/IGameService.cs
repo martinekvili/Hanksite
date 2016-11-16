@@ -32,7 +32,7 @@ namespace Common.Game
         void DoNextStep(GameSnapshotForNextPlayer snapshot);
 
         [OperationContract(IsOneWay = true)]
-        void SendTimedOut();
+        void SendGamePlayerSnapshot(GamePlayersSnapshot snapshot);
 
         [OperationContract(IsOneWay = true)]
         void SendGameOver(GameSnapshot snapshot);

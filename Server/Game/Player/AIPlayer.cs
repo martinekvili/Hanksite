@@ -37,7 +37,7 @@ namespace Server.Game.Player
         public override void SendGameSnapshot()
         { }
 
-        public override void SendTimedOut()
+        public override void SendGamePlayersSnapshot()
         { }
 
         public override Common.Game.Player ToDto()

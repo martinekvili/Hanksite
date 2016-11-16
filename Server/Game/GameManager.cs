@@ -51,6 +51,11 @@ namespace Server.Game
             Players = players.Select(player => player.User).ToArray()
         };
 
+        public GamePlayersSnapshot PlayersSnapshot => new GamePlayersSnapshot
+        {
+            Players = players.Select(player => player.ToDto()).ToArray()
+        };
+
         public GameManager(List<HanksiteSession> realPlayers, LobbySettings settings)
         {
             this.id = Interlocked.Increment(ref gameManagerCounter);
@@ -123,7 +128,6 @@ namespace Server.Game
                 if (currentPlayerNum != playerNum)
                     return;
 
-                players[currentPlayerNum].SendTimedOut();
                 stepNextPlayerNoLock();
             }
         }
@@ -162,7 +166,7 @@ namespace Server.Game
         {
             isGameOver = true;
 
-            GameManagerPool.Instance.RemoveGame(this);
+            GameManagerRepository.Instance.RemoveGame(this);
 
             GameDAL.StoreGame(Snapshot, startTime);
 
@@ -215,7 +219,7 @@ namespace Server.Game
                 }
                 else
                 {
-                    sendToAllPlayers(p => p.SendGameSnapshot());
+                    sendToAllPlayers(p => p.SendGamePlayersSnapshot());
                 }    
             }
         }
@@ -241,7 +245,7 @@ namespace Server.Game
                     return null;
 
                 players[playerNum] = new RealPlayer(hanksiteSession, players[playerNum] as DisconnectedPlayer);
-                sendToAllPlayers(player => player.SendGameSnapshot(), players[playerNum]);
+                sendToAllPlayers(player => player.SendGamePlayersSnapshot(), players[playerNum]);
 
                 return Snapshot;
             }

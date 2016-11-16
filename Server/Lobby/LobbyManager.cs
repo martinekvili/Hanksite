@@ -67,7 +67,7 @@ namespace Server.Lobby
                 else
                 {
                     sendMessage(player => player.SendLobbyClosed(), member);
-                    LobbyManagerPool.Instance.RemoveLobbyManager(this);
+                    LobbyManagerRepository.Instance.RemoveLobbyManager(this);
                 }
             }
         }
@@ -104,9 +104,9 @@ namespace Server.Lobby
                 foreach (var player in connectedPlayers)
                     player.Session.LobbyMember = null;
 
-                LobbyManagerPool.Instance.RemoveLobbyManager(this);
+                LobbyManagerRepository.Instance.RemoveLobbyManager(this);
 
-                GameManagerPool.Instance.CreateGame(connectedPlayers.Select(player => player.Session).ToList(), settings);
+                GameManagerRepository.Instance.CreateGame(connectedPlayers.Select(player => player.Session).ToList(), settings);
             }
         }
     }

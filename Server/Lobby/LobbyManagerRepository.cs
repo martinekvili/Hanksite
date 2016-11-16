@@ -7,17 +7,17 @@ using Common.Lobby;
 
 namespace Server.Lobby
 {
-    public class LobbyManagerPool
+    public class LobbyManagerRepository
     {
-        private static readonly LobbyManagerPool instance = new LobbyManagerPool();
+        private static readonly LobbyManagerRepository instance = new LobbyManagerRepository();
 
-        public static LobbyManagerPool Instance => instance;
+        public static LobbyManagerRepository Instance => instance;
 
         private readonly object syncObject = new object();
 
         private readonly List<LobbyManager> lobbyManagers;
 
-        private LobbyManagerPool()
+        private LobbyManagerRepository()
         {
             lobbyManagers = new List<LobbyManager>();
         }

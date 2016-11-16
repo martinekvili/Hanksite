@@ -14,17 +14,17 @@ namespace Server
 
         public LobbySettingsWithMembersSnapshot[] ListLobbies()
         {
-            return LobbyManagerPool.Instance.ListLobbies().ToArray();
+            return LobbyManagerRepository.Instance.ListLobbies().ToArray();
         }
 
         public bool CreateLobby(LobbySettings settings)
         {
-            return LobbyManagerPool.Instance.CreateLobby(this, settings);
+            return LobbyManagerRepository.Instance.CreateLobby(this, settings);
         }
 
         public LobbySettingsWithMembersSnapshot ConnectToLobby(string lobbyName)
         {
-            return LobbyManagerPool.Instance.ConnectToLobby(this, lobbyName);
+            return LobbyManagerRepository.Instance.ConnectToLobby(this, lobbyName);
         }
 
         public void DisconnectFromLobby()
