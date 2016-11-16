@@ -2,17 +2,16 @@
 using Client.Model;
 using Client.Model.Dummy;
 using Client.Model.Interfaces;
-using Client.ViewModel.Interfaces;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Navigation;
-using System;
+using Client.View;
 
 namespace Client.ViewModel
 {
-    class ConnectLobbyViewModel : INotifyPropertyChanged, ILobbyJoiner
+    class ConnectLobbyViewModel : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -37,25 +36,12 @@ namespace Client.ViewModel
             set { selectedLobby = value; NotifyPropertyChanged("SelectedLobby"); }
         }
 
-        private bool isConnected = false;
-        public bool IsConnected
-        {
-            get { return isConnected; }
-            set { isConnected = value; NotifyPropertyChanged("IsConnected"); NotifyPropertyChanged("IsDisconnected"); }
-        }
-        public bool IsDisconnected
-        {
-            get { return !isConnected; }
-            set { isConnected = !value; NotifyPropertyChanged("IsConnected"); NotifyPropertyChanged("IsDisconnected"); }
-        }
-
         public ConnectLobbyViewModel()
         {
             availableLobbyProvider = new Lobbies();
             BackCommand = new CommandHandler(Back, true);
             RefreshCommand = new CommandHandler(Refresh, true);
             ConnectCommand = new CommandHandler(Connect, true);
-            DisconnectCommand = new CommandHandler(Disconnect, true);
         }
 
         private void Back()
@@ -70,22 +56,12 @@ namespace Client.ViewModel
 
         private void Connect()
         {
-            IsConnected = true;
-        }
-
-        private void Disconnect()
-        {
-            IsConnected = false;
+            NavigationService.GetNavigationService(View).Navigate(new CreateLobby(selectedLobby));
         }
 
         private void NotifyPropertyChanged(string propertyName)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
-
-        public void ForceQuit()
-        {
-            Disconnect();
         }
     }
 }

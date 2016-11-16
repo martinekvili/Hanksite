@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Client.Model
 {
-    class Player
+    public class Player
     {
         public string Username { get; set; }
     }

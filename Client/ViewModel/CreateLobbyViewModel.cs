@@ -95,13 +95,20 @@ namespace Client.ViewModel
         private bool isReady = false;
         public bool IsReady
         {
-            get { return isReady; }
+            get { return isReady && isCreator; }
             set { isReady = value; NotifyPropertyChanged("IsReady"); NotifyPropertyChanged("IsCanceled"); }
         }
         public bool IsCanceled
         {
-            get { return !isReady; }
+            get { return !isReady && isCreator; }
             set { isReady = !value; NotifyPropertyChanged("IsReady"); NotifyPropertyChanged("IsCanceled"); }
+        }
+
+        private bool isCreator = true;
+        public bool IsJoiner
+        {
+            get { return !isCreator; }
+            set { isCreator = !value; NotifyPropertyChanged("IsCreator"); NotifyPropertyChanged("IsJoiner"); }
         }
 
         public CreateLobbyViewModel()
@@ -131,6 +138,21 @@ namespace Client.ViewModel
             DecreaseBotCommand = new ParameterizedCommandHandler(DecreaseBot, IsDecreaseBotEnabled);
 
             connectedPlayers = new List<Player>();
+        }
+
+        public void SetLobby(Lobby lobby)
+        {
+            IsJoiner = true;
+            IsReady = true;
+
+            Name = lobby.Name;
+            SelectedNumberOfPlayers = lobby.NumberOfPlayers;
+            SelectedNumberOfColours = lobby.NumberOfColours;
+
+            bots = lobby.Bots;
+            NotifyNumberOfBotsChanged();
+
+            ConnectedPlayers = lobby.ConnectedPlayers;
         }
 
         #region bot methods

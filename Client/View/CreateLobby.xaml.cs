@@ -1,4 +1,5 @@
-﻿using Client.ViewModel;
+﻿using Client.Model;
+using Client.ViewModel;
 using System.Windows.Controls;
 
 namespace Client.View
@@ -9,8 +10,19 @@ namespace Client.View
 
         public CreateLobby()
         {
+            Initialize();
+        }
+
+        public CreateLobby(Lobby selectedLobby)
+        {
+            Initialize();
+            viewModel.SetLobby(selectedLobby);
+        }
+
+        private void Initialize()
+        {
             InitializeComponent();
-            viewModel = (CreateLobbyViewModel) base.DataContext;
+            viewModel = (CreateLobbyViewModel)base.DataContext;
             viewModel.View = this;
         }
     }

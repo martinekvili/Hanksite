@@ -2,7 +2,7 @@
 
 namespace Client.Model
 {
-    class Lobby
+    public class Lobby
     {
         public string Name { get; set; }
         public int NumberOfPlayers { get; set; }

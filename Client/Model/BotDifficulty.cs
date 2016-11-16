@@ -1,6 +1,6 @@
 ﻿namespace Client.Model
 {
-    enum BotDifficulty
+    public enum BotDifficulty
     {
         EASY,
         MEDIUM,
