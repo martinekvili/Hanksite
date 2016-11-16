@@ -1,6 +1,7 @@
 ﻿using Client.ViewModel;
 using Client.ViewModel.Interfaces;
 using System.Windows;
+using System;
 
 namespace Client
 {
@@ -18,6 +19,16 @@ namespace Client
         public void HideChangeServerButton()
         {
             viewModel.IsChangeServerButtonVisible = false;
+        }
+
+        public void HideQuitButton()
+        {
+            viewModel.IsQuitButtonVisible = false;
+        }
+
+        public void UnhideQuitButton()
+        {
+            viewModel.IsQuitButtonVisible = true;
         }
     }
 }

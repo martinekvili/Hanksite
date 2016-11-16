@@ -2,6 +2,7 @@
 using Client.Model;
 using Client.Model.Dummy;
 using Client.Model.Interfaces;
+using Client.ViewModel.Interfaces;
 using System.ComponentModel;
 using System.Windows;
 using System.Windows.Input;
@@ -57,12 +58,14 @@ namespace Client.ViewModel
                 return;
             }
 
-            NavigationService.GetNavigationService(View).GoBack();
+            Back();
         }
 
         private void Back()
         {
             NavigationService.GetNavigationService(View).GoBack();
+            IHideableButtonContainer window = (IHideableButtonContainer)Window.GetWindow(View);
+            window.UnhideQuitButton();
         }
 
         private void NotifyPropertyChanged(string propertyName)

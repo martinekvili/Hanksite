@@ -26,7 +26,7 @@
                 Server:
             </Label>
             <Label
-                Content="{Binding Server}"
+                Content="{Binding CurrentServer}"
                 Width="120"
                 VerticalAlignment="Center" />
             <Button
@@ -36,8 +36,17 @@
                 Change
             </Button>
         </StackPanel>
-        <Frame
-            Source="View/Login.xaml"
-            NavigationUIVisibility="Hidden" />
+        <StackPanel>
+            <Frame
+                DockPanel.Dock="Top"
+                Source="View/Login.xaml"
+                IsEnabled="{Binding IsFrameEnabled}"
+                NavigationUIVisibility="Hidden" />
+            <Button
+                Command="{Binding QuitCommand}"
+                Visibility="{Binding IsQuitButtonVisible, Converter={StaticResource BooleanToVisibility}}">
+                Quit
+            </Button>
+        </StackPanel>
     </DockPanel>
 </Window>

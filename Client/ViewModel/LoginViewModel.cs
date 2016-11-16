@@ -22,7 +22,6 @@ namespace Client.ViewModel
         
         public ICommand SignInCommand { get; set; }
         public ICommand CreateAccountCommand { get; set; }
-        public ICommand QuitCommand { get; set; }
 
         public string Server { get; set; }
         public string Username { get; set; }
@@ -54,7 +53,6 @@ namespace Client.ViewModel
 
             SignInCommand = new CommandHandler(SignIn, true);
             CreateAccountCommand = new CommandHandler(CreateAccount, true);
-            QuitCommand = new CommandHandler(Quit, true);
         }
 
         private void SignIn()
@@ -62,7 +60,9 @@ namespace Client.ViewModel
             if (Accounts.IsAccountValid(Username, Password))
             {
                 NavigationService.GetNavigationService(View).Navigate(new MainMenu());
-                ((IHideableButtonContainer)Window.GetWindow(View)).HideChangeServerButton();
+                IHideableButtonContainer window = (IHideableButtonContainer)Window.GetWindow(View);
+                window.HideChangeServerButton();
+                window.HideQuitButton();
             }
             else
             {
@@ -73,11 +73,8 @@ namespace Client.ViewModel
         private void CreateAccount()
         {
             NavigationService.GetNavigationService(View).Navigate(new Registration());
-        }
-
-        private void Quit()
-        {
-            Application.Current.Shutdown();
+            IHideableButtonContainer window = (IHideableButtonContainer)Window.GetWindow(View);
+            window.HideQuitButton();
         }
 
         private void NotifyPropertyChanged(string propertyName)

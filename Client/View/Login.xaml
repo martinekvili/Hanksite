@@ -33,9 +33,5 @@
             Command="{Binding CreateAccountCommand}">
             Sign up
         </Button>
-        <Button
-            Command="{Binding QuitCommand}">
-            Quit
-        </Button>
     </StackPanel>
 </UserControl>
