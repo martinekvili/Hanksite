@@ -53,7 +53,7 @@
                     IsEnabled="{Binding IsCanceled}" />
             </StackPanel>
             <DockPanel
-                Width="200"
+                Width="150"
                 Margin="24">
                 <StackPanel
                     DockPanel.Dock="Top"

@@ -12,6 +12,10 @@
     <UserControl.DataContext>
         <viewmodel:ConnectLobbyViewModel />
     </UserControl.DataContext>
+    <UserControl.Resources>
+        <viewmodel:FreeSpaceCounter
+            x:Key="FreeSpaceCounter" />
+    </UserControl.Resources>
     <DockPanel
         Margin="24">
         <StackPanel
@@ -49,7 +53,19 @@
                                 </GridViewColumn.CellTemplate>
                                 <GridViewColumn.Header>
                                     <Label
-                                        Content="Players" />
+                                        Content="Max players" />
+                                </GridViewColumn.Header>
+                            </GridViewColumn>
+                            <GridViewColumn>
+                                <GridViewColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <Label
+                                            Content="{Binding ConnectedPlayers.Count}" />
+                                    </DataTemplate>
+                                </GridViewColumn.CellTemplate>
+                                <GridViewColumn.Header>
+                                    <Label
+                                        Content="Connected players" />
                                 </GridViewColumn.Header>
                             </GridViewColumn>
                             <GridViewColumn>
@@ -62,6 +78,29 @@
                                 <GridViewColumn.Header>
                                     <Label
                                         Content="Bots" />
+                                </GridViewColumn.Header>
+                            </GridViewColumn>
+                            <GridViewColumn>
+                                <GridViewColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <Label>
+                                            <Label.Content>
+                                                <MultiBinding
+                                                    Converter="{StaticResource FreeSpaceCounter}">
+                                                    <Binding
+                                                        Path="NumberOfPlayers" />
+                                                    <Binding
+                                                        Path="ConnectedPlayers" />
+                                                    <Binding
+                                                        Path="Bots" />
+                                                </MultiBinding>
+                                            </Label.Content>
+                                        </Label>
+                                    </DataTemplate>
+                                </GridViewColumn.CellTemplate>
+                                <GridViewColumn.Header>
+                                    <Label
+                                        Content="Free spaces" />
                                 </GridViewColumn.Header>
                             </GridViewColumn>
                             <GridViewColumn>
@@ -95,14 +134,9 @@
             <Button
                 Margin="4"
                 Visibility="{Binding IsDisconnected, Converter={StaticResource BooleanToVisibility}}"
+                IsEnabled="{Binding IsConnectable}"
                 Command="{Binding ConnectCommand}">
                 Connect
-            </Button>
-            <Button
-                Margin="4"
-                Visibility="{Binding IsConnected, Converter={StaticResource BooleanToVisibility}}"
-                Command="{Binding DisconnectCommand}">
-                Disconnect
             </Button>
             <Button
                 Margin="4"

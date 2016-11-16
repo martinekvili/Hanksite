@@ -13,10 +13,11 @@ using System.Windows.Navigation;
 using System.Linq;
 using System.Threading.Tasks;
 using Client.ViewModel.Interfaces;
+using Common.Lobby;
 
 namespace Client.ViewModel
 {
-    class CreateLobbyViewModel : INotifyPropertyChanged, ILobbyOwner
+    class CreateLobbyViewModel : INotifyPropertyChanged, ILobbyServiceCallback
     {
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -50,6 +51,8 @@ namespace Client.ViewModel
                 {
                     IsReadyEnabled = false;
                 }
+
+                NotifyPropertyChanged("Name");
             }
         }
 
@@ -265,12 +268,27 @@ namespace Client.ViewModel
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
-        public void RefreshConnectedPlayers(List<Player> players)
+        //public void RefreshConnectedPlayers(List<Player> players)
+        //{
+        //    ConnectedPlayers = players;
+        //}
+
+        //public void NotEnoughPlayers()
+        //{
+        //    throw new NotImplementedException();
+        //}
+
+        public void SendLobbyMembersSnapshot(LobbyMembersSnapshot lobbySnapshot)
         {
-            ConnectedPlayers = players;
+            throw new NotImplementedException();
         }
 
-        public void NotEnoughPlayers()
+        public void SendLobbyClosed()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void SendNotEnoughPlayers()
         {
             throw new NotImplementedException();
         }

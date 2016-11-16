@@ -8,6 +8,9 @@ using System.Windows;
 using System.Windows.Input;
 using System.Windows.Navigation;
 using Client.View;
+using System.Windows.Data;
+using System;
+using System.Globalization;
 
 namespace Client.ViewModel
 {
@@ -33,7 +36,11 @@ namespace Client.ViewModel
         public Lobby SelectedLobby
         {
             get { return selectedLobby; }
-            set { selectedLobby = value; NotifyPropertyChanged("SelectedLobby"); }
+            set { selectedLobby = value; NotifyPropertyChanged("SelectedLobby"); NotifyPropertyChanged("IsConnectable"); }
+        }
+        public bool IsConnectable
+        {
+            get { return (selectedLobby == null) ? false : true; }
         }
 
         public ConnectLobbyViewModel()
@@ -62,6 +69,22 @@ namespace Client.ViewModel
         private void NotifyPropertyChanged(string propertyName)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+    }
+
+    public class FreeSpaceCounter : IMultiValueConverter
+    {
+        public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
+        {
+            int maxPlayers = int.Parse(values[0].ToString());
+            int connectedPlayers = ((List<Player>)values[1]).Count;
+            int bots = ((Dictionary<BotDifficulty, int>)values[2]).Count;
+            return maxPlayers - connectedPlayers - bots;
+        }
+
+        public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture)
+        {
+            throw new NotImplementedException();
         }
     }
 }
