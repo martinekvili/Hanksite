@@ -1,0 +1,206 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+<<<<<<< HEAD
+    <Schema Namespace="HanksiteModel.Store" Provider="System.Data.SQLite.EF6" ProviderManifestToken="data source=HanksiteDB.db" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+=======
+    <Schema Namespace="HanksiteModel.Store" Provider="System.Data.SQLite.EF6" ProviderManifestToken="data source=D:\Projects\Hanksite\Server\bin\Debug\HanksiteDB.db" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+>>>>>>> Small fixes
+        <EntityType Name="Game">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="integer" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="nvarchar" MaxLength="2147483647" Nullable="false" />
+          <Property Name="StartTime" Type="datetime" Nullable="false" />
+          <Property Name="EndTime" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="GameUser">
+          <Key>
+            <PropertyRef Name="UserID" />
+            <PropertyRef Name="GameID" />
+          </Key>
+          <Property Name="UserID" Type="integer" Nullable="false" />
+          <Property Name="GameID" Type="integer" Nullable="false" />
+          <Property Name="Position" Type="integer" Nullable="false" />
+        </EntityType>
+        <EntityType Name="User">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="integer" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="UserName" Type="nvarchar" MaxLength="2147483647" Nullable="false" />
+          <Property Name="PasswordSalt" Type="char" MaxLength="24" />
+          <Property Name="Password" Type="char" MaxLength="44" />
+        </EntityType>
+        <Association Name="FK_GameUser_0_0">
+          <End Role="Game" Type="Self.Game" Multiplicity="1" />
+          <End Role="GameUser" Type="Self.GameUser" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Game">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="GameUser">
+              <PropertyRef Name="GameID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_GameUser_1_0">
+          <End Role="User" Type="Self.User" Multiplicity="1" />
+          <End Role="GameUser" Type="Self.GameUser" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="GameUser">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="HanksiteModelStoreContainer">
+          <EntitySet Name="Game" EntityType="Self.Game" store:Type="Tables" />
+          <EntitySet Name="User" EntityType="Self.User" store:Type="Tables" />
+          <EntitySet Name="GameUser" EntityType="Self.GameUser" store:Type="Tables" />
+          <AssociationSet Name="FK_GameUser_0_0" Association="Self.FK_GameUser_0_0">
+            <End Role="Game" EntitySet="Game" />
+            <End Role="GameUser" EntitySet="GameUser" />
+          </AssociationSet>
+          <AssociationSet Name="FK_GameUser_1_0" Association="Self.FK_GameUser_1_0">
+            <End Role="User" EntitySet="User" />
+            <End Role="GameUser" EntitySet="GameUser" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="HanksiteModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Game">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="2147483647" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="StartTime" Type="DateTime" Nullable="false" />
+          <NavigationProperty Name="GameUsers" Relationship="Self.FK_GameUser_0_0" FromRole="Game" ToRole="GameUser" />
+          <Property Name="EndTime" Type="DateTime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="User">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserName" Type="String" MaxLength="2147483647" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="PasswordSalt" Type="String" MaxLength="24" FixedLength="true" Unicode="false" />
+          <Property Name="Password" Type="String" MaxLength="44" FixedLength="true" Unicode="false" />
+          <NavigationProperty Name="GameUsers" Relationship="Self.FK_GameUser_1_0" FromRole="User" ToRole="GameUser" />
+        </EntityType>
+        <EntityType Name="GameUser">
+          <Key>
+            <PropertyRef Name="UserID" />
+            <PropertyRef Name="GameID" />
+          </Key>
+          <Property Name="UserID" Type="Int64" Nullable="false" />
+          <Property Name="GameID" Type="Int64" Nullable="false" />
+          <Property Name="Position" Type="Int64" Nullable="false" />
+          <NavigationProperty Name="Game" Relationship="Self.FK_GameUser_0_0" FromRole="GameUser" ToRole="Game" />
+          <NavigationProperty Name="User" Relationship="Self.FK_GameUser_1_0" FromRole="GameUser" ToRole="User" />
+        </EntityType>
+        <Association Name="FK_GameUser_0_0">
+          <End Role="Game" Type="Self.Game" Multiplicity="1" />
+          <End Role="GameUser" Type="Self.GameUser" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Game">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="GameUser">
+              <PropertyRef Name="GameID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_GameUser_1_0">
+          <End Role="User" Type="Self.User" Multiplicity="1" />
+          <End Role="GameUser" Type="Self.GameUser" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="GameUser">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="HanksiteEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Games" EntityType="Self.Game" />
+          <EntitySet Name="Users" EntityType="Self.User" />
+          <EntitySet Name="GameUsers" EntityType="Self.GameUser" />
+          <AssociationSet Name="FK_GameUser_0_0" Association="Self.FK_GameUser_0_0">
+            <End Role="Game" EntitySet="Games" />
+            <End Role="GameUser" EntitySet="GameUsers" />
+          </AssociationSet>
+          <AssociationSet Name="FK_GameUser_1_0" Association="Self.FK_GameUser_1_0">
+            <End Role="User" EntitySet="Users" />
+            <End Role="GameUser" EntitySet="GameUsers" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="HanksiteModelStoreContainer" CdmEntityContainer="HanksiteEntities">
+          <EntitySetMapping Name="Games">
+            <EntityTypeMapping TypeName="HanksiteModel.Game">
+              <MappingFragment StoreEntitySet="Game">
+                <ScalarProperty Name="EndTime" ColumnName="EndTime" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="StartTime" ColumnName="StartTime" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Users">
+            <EntityTypeMapping TypeName="HanksiteModel.User">
+              <MappingFragment StoreEntitySet="User">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="UserName" ColumnName="UserName" />
+                <ScalarProperty Name="PasswordSalt" ColumnName="PasswordSalt" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="GameUsers">
+            <EntityTypeMapping TypeName="HanksiteModel.GameUser">
+              <MappingFragment StoreEntitySet="GameUser">
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="GameID" ColumnName="GameID" />
+                <ScalarProperty Name="Position" ColumnName="Position" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
