@@ -2,7 +2,7 @@
 using System.Windows;
 using System.Windows.Input;
 
-namespace Client.ViewModel
+namespace Client.ViewModel.Dialogs
 {
     class ChangeServerDialogViewModel
     {

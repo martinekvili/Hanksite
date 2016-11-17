@@ -127,20 +127,17 @@
             VerticalAlignment="Bottom">
             <Button
                 Margin="4"
-                Visibility="{Binding IsDisconnected, Converter={StaticResource BooleanToVisibility}}"
                 Command="{Binding RefreshCommand}">
                 Refresh
             </Button>
             <Button
                 Margin="4"
-                Visibility="{Binding IsDisconnected, Converter={StaticResource BooleanToVisibility}}"
                 IsEnabled="{Binding IsConnectable}"
                 Command="{Binding ConnectCommand}">
                 Connect
             </Button>
             <Button
                 Margin="4"
-                Visibility="{Binding IsDisconnected, Converter={StaticResource BooleanToVisibility}}"
                 Command="{Binding BackCommand}">
                 Back
             </Button>

@@ -1,8 +1,9 @@
 ﻿using Client.ViewModel;
 using System.Windows;
 using System;
+using Client.ViewModel.Dialogs;
 
-namespace Client.View
+namespace Client.View.Dialogs
 {
     public partial class ChangeServerDialog : Window
     {

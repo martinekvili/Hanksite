@@ -18,12 +18,18 @@ using System.Threading;
 
 namespace Client.ViewModel
 {
-    class CreateLobbyViewModel : INotifyPropertyChanged, ILobbyServiceCallback
+    class CreateLobbyViewModel : INotifyPropertyChanged, ILobbyActions
     {
+        #region dialogs
+        private const string DIALOG_CAPTION = "Hanksite";
+        private const MessageBoxButton DIALOG_BUTTON = MessageBoxButton.OK;
+        private const MessageBoxImage DIALOG_ICON = MessageBoxImage.Warning;
+        #endregion
+
         public event PropertyChangedEventHandler PropertyChanged;
 
         public DependencyObject View { get; set; }
-        
+
         public ICommand ReadyCommand { get; set; }
         public ICommand CancelCommand { get; set; }
         public ICommand StartCommand { get; set; }
@@ -87,7 +93,7 @@ namespace Client.ViewModel
         private ObservableCollection<Player> connectedPlayers;
         public ObservableCollection<Player> ConnectedPlayers
         {
-            get { return new ObservableCollection<Player>(connectedPlayerAdapter); }
+            get { return connectedPlayers; }
             set { connectedPlayers = value; NotifyPropertyChanged("ConnectedPlayers"); }
         }
         #endregion
@@ -224,13 +230,13 @@ namespace Client.ViewModel
 
                 Thread.Sleep(1000);
                 connectedPlayerAdapter.Add(playerContainer[0]);
-                NotifyPropertyChanged("ConnectedPlayers");
+                SendLobbyMembersSnapshot(connectedPlayerAdapter);
                 Thread.Sleep(500);
                 connectedPlayerAdapter.Add(playerContainer[1]);
-                NotifyPropertyChanged("ConnectedPlayers");
+                SendLobbyMembersSnapshot(connectedPlayerAdapter);
                 Thread.Sleep(1000);
                 connectedPlayerAdapter.Add(playerContainer[2]);
-                NotifyPropertyChanged("ConnectedPlayers");
+                SendLobbyMembersSnapshot(connectedPlayerAdapter);
             });
         }
 
@@ -292,19 +298,22 @@ namespace Client.ViewModel
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
-        public void SendLobbyMembersSnapshot(LobbyMembersSnapshot lobbySnapshot)
+        public void SendLobbyMembersSnapshot(List<Player> lobbySnapshot)
         {
-            throw new NotImplementedException();
+            ConnectedPlayers = new ObservableCollection<Player>(lobbySnapshot);
         }
 
         public void SendLobbyClosed()
         {
-            throw new NotImplementedException();
+            string message = "The lobby you connected to has closed.";
+            MessageBox.Show(message, DIALOG_CAPTION, DIALOG_BUTTON, DIALOG_ICON);
+            Back();
         }
 
         public void SendNotEnoughPlayers()
         {
-            throw new NotImplementedException();
+            string message = "There are not enough players in the lobby.";
+            MessageBox.Show(message, DIALOG_CAPTION, DIALOG_BUTTON, DIALOG_ICON);
         }
     }
 }
