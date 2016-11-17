@@ -32,7 +32,7 @@
         </StackPanel>
         <Button
             Command="{Binding CreateAccountCommand}">
-            Create an account
+            Sign Up
         </Button>
         <Button
             Command="{Binding BackCommand}">

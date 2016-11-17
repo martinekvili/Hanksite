@@ -35,15 +35,8 @@ namespace Client.ViewModel
 
         internal IAccountProvider Accounts
         {
-            get
-            {
-                return accounts;
-            }
-
-            set
-            {
-                accounts = value;
-            }
+            get { return accounts; }
+            set { accounts = value; }
         }
 
         public LoginViewModel()
@@ -58,11 +51,11 @@ namespace Client.ViewModel
 
         private async void SignIn()
         {
-            // TODO ZSolt, server URL!!!
-            if (await Accounts.IsAccountValid("localhost", Username, Password))
+            IServerChanger window = (IServerChanger)Window.GetWindow(View);
+
+            if (await Accounts.IsAccountValid(window.GetServer(), Username, Password))
             {
                 NavigationService.GetNavigationService(View).Navigate(new MainMenu());
-                IHideableButtonContainer window = (IHideableButtonContainer)Window.GetWindow(View);
                 window.HideChangeServerButton();
                 window.HideQuitButton();
             }
@@ -75,7 +68,7 @@ namespace Client.ViewModel
         private void CreateAccount()
         {
             NavigationService.GetNavigationService(View).Navigate(new Registration());
-            IHideableButtonContainer window = (IHideableButtonContainer)Window.GetWindow(View);
+            IServerChanger window = (IServerChanger)Window.GetWindow(View);
             window.HideQuitButton();
         }
 

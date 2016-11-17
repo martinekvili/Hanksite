@@ -8,6 +8,7 @@ using System.Windows;
 using System.Windows.Input;
 using System.Windows.Navigation;
 using Client.ServerConnection;
+using Client.View;
 
 namespace Client.ViewModel
 {
@@ -46,27 +47,32 @@ namespace Client.ViewModel
 
         private async void CreateAccount()
         {
+            IServerChanger window = (IServerChanger)Window.GetWindow(View);
+
             if (Password != ConfirmedPassword)
             {
                 Message = "Password differs from confirmed password!";
                 return;
             }
-
-            // TODO ZSolt, server URL!!!
-            bool success = await accounts.CreateAccount("localhost", Username, Password);
+            
+            bool success = await accounts.CreateAccount(window.GetServer(), Username, Password);
             if (!success)
             {
-                Message = "The given username is already exists!";
+                Message = "The given username already exists!";
                 return;
             }
 
-            Back();
+            if (await accounts.IsAccountValid(window.GetServer(), Username, Password))
+            {
+                NavigationService.GetNavigationService(View).Navigate(new MainMenu());
+                window.HideChangeServerButton();
+            }
         }
 
         private void Back()
         {
             NavigationService.GetNavigationService(View).GoBack();
-            IHideableButtonContainer window = (IHideableButtonContainer)Window.GetWindow(View);
+            IServerChanger window = (IServerChanger)Window.GetWindow(View);
             window.UnhideQuitButton();
         }
 

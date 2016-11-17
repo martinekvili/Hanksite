@@ -74,7 +74,7 @@
     <Compile Include="ServerConnection\ClientProxyManager.cs" />
     <Compile Include="ViewModel\Dialogs\ChangeServerDialogViewModel.cs" />
     <Compile Include="ViewModel\Interfaces\IGameActions.cs" />
-    <Compile Include="ViewModel\Interfaces\IHideableButtonContainer.cs" />
+    <Compile Include="ViewModel\Interfaces\IServerChanger.cs" />
     <Compile Include="ViewModel\Interfaces\ILobbyActions.cs" />
     <Compile Include="ViewModel\MainWindowViewModel.cs" />
     <Compile Include="View\Dialogs\ChangeServerDialog.xaml.cs">

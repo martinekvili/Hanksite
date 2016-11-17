@@ -1,7 +1,8 @@
 ﻿namespace Client.ViewModel.Interfaces
 {
-    interface IHideableButtonContainer
+    interface IServerChanger
     {
+        string GetServer();
         void HideChangeServerButton();
         void HideQuitButton();
         void UnhideQuitButton();
