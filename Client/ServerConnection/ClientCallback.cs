@@ -10,5 +10,6 @@ namespace Client.ServerConnection
 {
     public partial class ClientCallback : IHanksiteServiceCallback
     {
+        private readonly object syncObject = new object();
     }
 }

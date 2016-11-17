@@ -8,6 +8,6 @@ namespace Client.Model.Interfaces
 {
     interface IAvailableLobbyProvider
     {
-        List<Lobby> GetLobbies();
+        Task<List<Lobby>> GetLobbies();
     }
 }

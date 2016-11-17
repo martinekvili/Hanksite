@@ -4,12 +4,13 @@ using System.Linq;
 using System.ServiceModel;
 using System.Text;
 using System.Threading.Tasks;
+using Client.Model;
 using Client.Model.Interfaces;
 using Common;
 
 namespace Client.ServerConnection
 {
-    public class ClientProxyManager : IAccountProvider
+    public partial class ClientProxyManager : IAccountProvider, IAvailableLobbyProvider
     {
         private static ClientProxyManager instance = new ClientProxyManager();
 
@@ -64,6 +65,24 @@ namespace Client.ServerConnection
         {
             return Task.Factory.StartNew(() =>
                     connectAndStoreCredentials(serverUrl, username, password, (u, p) => proxy.ConnectUser(u, p)));
+        }
+
+        public Task<bool> TryReconnect()
+        {
+            return Task.Factory.StartNew(() =>
+            {
+                try
+                {
+                    getProxyForServer(serverUrl);
+                    proxy.ConnectUser(userName, password);
+
+                    return true;
+                }
+                catch (Exception)
+                {
+                    return false;
+                }
+            });
         }
     }
 }

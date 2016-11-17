@@ -74,6 +74,8 @@
     <Compile Include="ServerConnection\ClientCallback.Game.cs" />
     <Compile Include="ServerConnection\ClientCallback.Lobby.cs" />
     <Compile Include="ServerConnection\ClientProxyManager.cs" />
+    <Compile Include="ServerConnection\ClientProxyManager.Lobby.cs" />
+    <Compile Include="ServerConnection\ConversionHelper.cs" />
     <Compile Include="ViewModel\Dialogs\ChangeServerDialogViewModel.cs" />
     <Compile Include="ViewModel\Interfaces\IGameActions.cs" />
     <Compile Include="ViewModel\Interfaces\IServerChanger.cs" />
@@ -97,7 +99,6 @@
     </Compile>
     <Compile Include="Model\BotDifficulty.cs" />
     <Compile Include="Model\Dummy\GameHistory.cs" />
-    <Compile Include="Model\Dummy\Lobbies.cs" />
     <Compile Include="Model\Dummy\Players.cs" />
     <Compile Include="Model\GameInfo.cs" />
     <Compile Include="Model\Interfaces\IGameInfoProvider.cs" />

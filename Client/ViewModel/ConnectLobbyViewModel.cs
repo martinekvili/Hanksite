@@ -11,6 +11,7 @@ using Client.View;
 using System.Windows.Data;
 using System;
 using System.Globalization;
+using Client.ServerConnection;
 
 namespace Client.ViewModel
 {
@@ -45,7 +46,7 @@ namespace Client.ViewModel
 
         public ConnectLobbyViewModel()
         {
-            availableLobbyProvider = new Lobbies();
+            availableLobbyProvider = ClientProxyManager.Instance;
             BackCommand = new CommandHandler(Back, true);
             RefreshCommand = new CommandHandler(Refresh, true);
             ConnectCommand = new CommandHandler(Connect, true);
@@ -56,9 +57,9 @@ namespace Client.ViewModel
             NavigationService.GetNavigationService(View).GoBack();
         }
 
-        private void Refresh()
+        private async void Refresh()
         {
-            AvailableLobbies = availableLobbyProvider.GetLobbies();
+            AvailableLobbies = await availableLobbyProvider.GetLobbies();
         }
 
         private void Connect()

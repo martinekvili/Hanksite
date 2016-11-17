@@ -12,32 +12,46 @@ namespace Client.ServerConnection
 {
     public partial class ClientCallback
     {
-        public ILobbyActions Lobby { get; set; }
+        private ILobbyActions lobby;
+
+        public ILobbyActions Lobby
+        {
+            set
+            {
+                lock (syncObject)
+                {
+                    lobby = value;
+                }
+            }
+        }
 
         public void SendLobbyClosed()
         {
-            if (Lobby != null)
+            lock (syncObject)
             {
-                Lobby = null;
-
-                Application.Current.Dispatcher.InvokeAsync(() => Lobby.SendLobbyClosed());
-            }    
+                if (lobby != null)
+                    Application.Current.Dispatcher.InvokeAsync(() => lobby.SendLobbyClosed());
+            }
         }
 
         public void SendLobbyMembersSnapshot(LobbyMembersSnapshot lobbySnapshot)
         {
-            if (Lobby != null)
+            lock (syncObject)
             {
-                var players = lobbySnapshot.LobbyMembers.Select(user => new Player { Username = user.UserName }).ToList();
-                Application.Current.Dispatcher.InvokeAsync(() => Lobby.SendLobbyMembersSnapshot(players));
+                if (lobby != null)
+                {
+                    var players = lobbySnapshot.ToViewModel();
+                    Application.Current.Dispatcher.InvokeAsync(() => lobby.SendLobbyMembersSnapshot(players));
+                }
             }
         }
 
         public void SendNotEnoughPlayers()
         {
-            if (Lobby != null)
+            lock (syncObject)
             {
-                Application.Current.Dispatcher.InvokeAsync(() => Lobby.SendLobbyClosed());
+                if (lobby != null)
+                    Application.Current.Dispatcher.InvokeAsync(() => lobby.SendLobbyClosed());
             }
         }
     }
