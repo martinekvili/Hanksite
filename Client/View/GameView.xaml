@@ -8,16 +8,28 @@
     xmlns:local="clr-namespace:Client.View"
     xmlns:viewmodel="clr-namespace:Client.ViewModel"
     mc:Ignorable="d"
+    Height="650"
+    Width="1280"
     d:DesignHeight="300"
-    d:DesignWidth="300">
+    d:DesignWidth="300"
+    Background="#2A2A2A">
     <UserControl.DataContext>
         <viewmodel:GameViewModel />
     </UserControl.DataContext>
-    <Grid>
+    <DockPanel>
+        <StackPanel
+            DockPanel.Dock="Right"
+            Orientation="Horizontal">
+            <Button>
+                step
+            </Button>
+        </StackPanel>
         <ItemsControl
             HorizontalAlignment="Center"
             VerticalAlignment="Center"
             ItemsSource="{Binding Map}"
+            Height="650"
+            Width="800"
             Margin="12">
             <ItemsControl.ItemsPanel>
                 <ItemsPanelTemplate>
@@ -47,14 +59,6 @@
                     </Path>
                 </DataTemplate>
             </ItemsControl.ItemTemplate>
-            <!--<i:Interaction.Triggers>
-                <i:EventTrigger
-                    EventName="MouseLeftButtonUp">
-                    <i:InvokeCommandAction
-                        Command="{Binding TestCommand}"
-                    CommandParameter="{Binding RelativeSource={RelativeSource }}"/>
-                </i:EventTrigger>
-            </i:Interaction.Triggers>-->
         </ItemsControl>
-    </Grid>
+    </DockPanel>
 </UserControl>

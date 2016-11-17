@@ -20,6 +20,10 @@ namespace Client.ViewModel
 {
     class CreateLobbyViewModel : INotifyPropertyChanged, ILobbyActions
     {
+        private const int MAX_PLAYERS = 8;
+        private const int MAX_COLOURS = 16;
+        private const int MIN_PLAYER_COLOUR_DIFF = 3;
+
         #region dialogs
         private const string DIALOG_CAPTION = "Hanksite";
         private const MessageBoxButton DIALOG_BUTTON = MessageBoxButton.OK;
@@ -35,12 +39,7 @@ namespace Client.ViewModel
         public ICommand StartCommand { get; set; }
         public ICommand BackCommand { get; set; }
 
-        private const int MAX_PLAYERS = 8;
-        private const int MAX_COLOURS = 16;
-        private const int MIN_PLAYER_COLOUR_DIFF = 3;
-
-        private int selectedNumberOfColours;
-
+        #region lobby properties
         private string name;
         public string Name
         {
@@ -70,11 +69,13 @@ namespace Client.ViewModel
             set { selectedNumberOfPlayers = value; RefreshNumberOfColours(); RefreshBots(); }
         }
         public ObservableCollection<int> NumberOfColours { get; set; }
+        private int selectedNumberOfColours;
         public int SelectedNumberOfColours
         {
             get { return selectedNumberOfColours; }
             set { selectedNumberOfColours = value; NotifyPropertyChanged("SelectedNumberOfColours"); }
         }
+        #endregion
 
         #region bot properties
         private Dictionary<BotDifficulty, int> bots;
@@ -293,11 +294,7 @@ namespace Client.ViewModel
             }
         }
 
-        private void NotifyPropertyChanged(string propertyName)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
-
+        #region callbacks
         public void SendLobbyMembersSnapshot(List<Player> lobbySnapshot)
         {
             ConnectedPlayers = new ObservableCollection<Player>(lobbySnapshot);
@@ -314,6 +311,12 @@ namespace Client.ViewModel
         {
             string message = "There are not enough players in the lobby.";
             MessageBox.Show(message, DIALOG_CAPTION, DIALOG_BUTTON, DIALOG_ICON);
+        }
+        #endregion
+
+        private void NotifyPropertyChanged(string propertyName)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 }

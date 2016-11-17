@@ -1,4 +1,5 @@
-﻿using System.Windows.Media;
+﻿using Common.Game;
+using System.Windows.Media;
 
 namespace Client.Model
 {
@@ -13,6 +14,13 @@ namespace Client.Model
             X = x;
             Y = y;
             Colour = colour;
+        }
+
+        public Field(Hexagon hexagon)
+        {
+            X = hexagon.Coord.X;
+            Y = hexagon.Coord.Y;
+            Colour = hexagon.Colour;
         }
     }
 }

@@ -68,8 +68,9 @@
     <Compile Include="Model\MapConverter.cs" />
     <Compile Include="Model\Server.cs" />
     <Compile Include="ViewModel\Dialogs\ChangeServerDialogViewModel.cs" />
+    <Compile Include="ViewModel\Interfaces\IGameActions.cs" />
     <Compile Include="ViewModel\Interfaces\IHideableButtonContainer.cs" />
-    <Compile Include="ViewModel\Interfaces\ILobbyServices.cs" />
+    <Compile Include="ViewModel\Interfaces\ILobbyActions.cs" />
     <Compile Include="ViewModel\MainWindowViewModel.cs" />
     <Compile Include="View\Dialogs\ChangeServerDialog.xaml.cs">
       <DependentUpon>ChangeServerDialog.xaml</DependentUpon>

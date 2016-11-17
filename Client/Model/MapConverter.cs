@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Common.Game;
+using System;
 using System.Collections.Generic;
 using System.Windows.Media;
 
@@ -30,6 +31,18 @@ namespace Client.Model
             }
 
             return drawableMap;
+        }
+
+        public List<Field> ConvertToFields(Hexagon[] map)
+        {
+            List<Field> fields = new List<Field>();
+
+            foreach (var hexagon in map)
+            {
+                fields.Add(new Field(hexagon));
+            }
+
+            return fields;
         }
 
         private int GetMapSize(List<Field> map)

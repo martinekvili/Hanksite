@@ -22,8 +22,7 @@
             Margin="24"
             Orientation="Vertical"
             Width="600"
-            DockPanel.Dock="Top"
-            Visibility="{Binding IsDisconnected, Converter={StaticResource BooleanToVisibility}}">
+            DockPanel.Dock="Top">
             <Label>Available lobbies</Label>
             <ListView
                 Height="300"
