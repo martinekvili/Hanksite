@@ -14,21 +14,25 @@ namespace Server
 
         public LobbySettingsWithMembersSnapshot[] ListLobbies()
         {
+            log("listed lobbies");
             return LobbyManagerRepository.Instance.ListLobbies().ToArray();
         }
 
         public bool CreateLobby(LobbySettings settings)
         {
+            log($"created lobby with name '{settings.Name}'");
             return LobbyManagerRepository.Instance.CreateLobby(this, settings);
         }
 
         public LobbySettingsWithMembersSnapshot ConnectToLobby(string lobbyName)
         {
+            log($"tries to connect to lobby '{lobbyName}'");
             return LobbyManagerRepository.Instance.ConnectToLobby(this, lobbyName);
         }
 
         public void DisconnectFromLobby()
         {
+            log("disconnects from lobby");
             LobbyMember.DisconnectFromLobby();
 
             LobbyMember = null;
@@ -36,22 +40,49 @@ namespace Server
 
         public void StartGame()
         {
+            log("starts game");
             LobbyMember.StartGame();
         }
 
         public void SendLobbyMembersSnapshot(LobbyMembersSnapshot lobbyMembersSnapshot)
         {
-            callback.SendLobbyMembersSnapshot(lobbyMembersSnapshot);
+            try
+            {
+                log("is sent LobbyMembersSnapshot");
+                callback.SendLobbyMembersSnapshot(lobbyMembersSnapshot);
+            }
+            catch (Exception ex)
+            {
+                logError("sending LobbyMembersSnapshot", ex);
+            }
+            
         }
 
         public void SendNotEnoughPlayers()
         {
-            callback.SendNotEnoughPlayers();
+            try
+            {
+                log("is sent NotEnoughPlayers");
+                callback.SendNotEnoughPlayers();
+            }
+            catch (Exception ex)
+            {
+                logError("sending NotEnoughPlayers", ex);
+            }
+            
         }
 
         public void SendLobbyClosed()
         {
-            callback.SendLobbyClosed();
+            try
+            {
+                log("is sent LobbyClosed");
+                callback.SendLobbyClosed();
+            }
+            catch (Exception ex)
+            {
+                logError("sending LobbyClosed", ex);
+            }
 
             LobbyMember = null;
         }

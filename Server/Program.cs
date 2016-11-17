@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.ServiceModel;
-using System.ServiceModel.Description;
 using System.Text;
 using System.Threading.Tasks;
+using log4net;
 
 namespace Server
 {
@@ -12,24 +12,51 @@ namespace Server
     {
         static void Main(string[] args)
         {
-            //Uri baseAddress = new Uri("http://localhost:8080/hello");
+            DateTime startTime = DateTime.Now;
 
-            // Create the ServiceHost.
             using (ServiceHost host = new ServiceHost(typeof(HanksiteSession)))
             {
-                // Open the ServiceHost to start listening for messages. Since
-                // no endpoints are explicitly configured, the runtime will create
-                // one endpoint per base address for each service contract implemented
-                // by the service.
                 host.Open();
 
-                Console.WriteLine("The service is ready at {0}", host.BaseAddresses.FirstOrDefault());
-                Console.WriteLine("Press <Enter> to stop the service.");
-                Console.ReadLine();
+                LogManager.GetLogger(nameof(Program)).Info($"The service started.");
 
-                // Close the ServiceHost.
+                string hostAddress = host.BaseAddresses.FirstOrDefault().AbsoluteUri;
+                string addressToShow = hostAddress.Substring("net.tcp://".Length);
+                addressToShow = addressToShow.Remove(addressToShow.Length - "/HanksiteService".Length - 1);
+
+                Console.WriteLine("The service is ready at {0}", addressToShow);
+
+                while (true)
+                {
+                    Console.Write("> ");
+                    string command = Console.ReadLine().Trim();
+
+                    if (command == "help")
+                    {
+                        Console.WriteLine("The following commands are available right now:");
+                        Console.WriteLine("\thelp\t\tprints out this help");
+                        Console.WriteLine("\tuptime\t\ttells for how long has the server been up");
+                        Console.WriteLine("\tquit\t\tstops the server");
+                    }
+                    else if (command == "uptime")
+                    {
+                        Console.WriteLine("The server has been up for {0:dd} days {0:hh} hours {0:mm} minutes and {0:ss} seconds.", DateTime.Now - startTime);
+                    }
+                    else if (command == "quit")
+                    {
+                        break;
+                    }
+                    else
+                    {
+                        Console.WriteLine($"Unrecognized command: '{command}'. Please enter 'help' for help.");
+                    }
+                } 
+
                 host.Close();
             }
+
+            Console.WriteLine("Server shutting down");
+            LogManager.GetLogger(nameof(Program)).Info($"The service stopped.");
         }
     }
 }

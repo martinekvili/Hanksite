@@ -17,11 +17,15 @@ namespace Server
         public bool ConnectUser(string userName, string password)
         {
             var dbUser = UserDAL.GetUserByName(userName);
-            
+
             if (dbUser == null || !dbUser.IsPasswordForUser(password))
+            {
+                logger.Info($"Unsuccessful attempt to login with username '{userName}'.");
                 return false;
+            }
 
             user = new Common.Users.User { ID = dbUser.ID, UserName = userName };
+            log("connected");
             return true;
         }
 
@@ -35,16 +39,20 @@ namespace Server
                 long id = UserDAL.RegisterUser(userName, passwordSalt, encryptedPassword);
 
                 user = new Common.Users.User { ID = id, UserName = userName };
+                log("registered");
                 return true;
             }
             catch (Exception)
             {
+                logger.Info($"Unsuccessful attept to register with username '{userName}'.");
                 return false;
             }
         }
 
         public bool ChangePassword(string oldPassword, string newPassword)
         {
+            log("tries to change password");
+
             var dbUser = UserDAL.GetUser(user.ID);
 
             if (!dbUser.IsPasswordForUser(oldPassword))
@@ -59,6 +67,7 @@ namespace Server
 
         public PlayedGameInfo[] GetPlayedGames()
         {
+            log("queries the played games");
             return GameDAL.GetPlayedGamesForUser(user.ID).ToArray();
         }
     }
