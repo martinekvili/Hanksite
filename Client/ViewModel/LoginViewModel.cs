@@ -20,7 +20,6 @@ namespace Client.ViewModel
         public DependencyObject View { get; set; }
 
         private IAccountProvider accounts;
-        private string message;
         
         public ICommand SignInCommand { get; set; }
         public ICommand CreateAccountCommand { get; set; }
@@ -56,6 +55,18 @@ namespace Client.ViewModel
         private async void SignIn()
         {
             IServerChanger window = (IServerChanger)Window.GetWindow(View);
+
+            if (Username == null || Username.Length == 0)
+            {
+                MessageBox.Show("Username is empty!", "Hanksite", MessageBoxButton.OK);
+                return;
+            }
+
+            if (Password == null || Password.Length == 0)
+            {
+                MessageBox.Show("Password is empty!", "Hanksite", MessageBoxButton.OK);
+                return;
+            }
 
             if (await Accounts.IsAccountValid(window.GetServer(), Username, Password))
             {
