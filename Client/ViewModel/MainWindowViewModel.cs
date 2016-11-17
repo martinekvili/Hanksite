@@ -54,9 +54,10 @@ namespace Client.ViewModel
             IsChangeServerButtonVisible = true;
             IsQuitButtonVisible = true;
 
-            if(File.Exists("lastserver.xml"))
+            if(File.Exists("lastlogin.xml"))
             {
-                LoadLastServer();
+                LoginDataManager loginDataManager = new LoginDataManager();
+                CurrentServer = loginDataManager.LoadLastLogin().Server;
             }
         }
 
@@ -66,51 +67,12 @@ namespace Client.ViewModel
             if (dialog.ShowDialog() == true)
             {
                 CurrentServer = dialog.GetServer();
-                SaveLastServer();
             }
         }
 
         private void Quit()
         {
             Application.Current.Shutdown();
-        }
-
-        private void LoadLastServer()
-        {
-            XmlDocument xmlDocument = new XmlDocument();
-            xmlDocument.Load("lastserver.xml");
-            string xml = xmlDocument.InnerXml;
-
-            XmlSerializer xmlSerializer = new XmlSerializer(typeof(Server));
-            using (var stringReader = new StringReader(xml))
-            {
-                using (var xmlReader = XmlReader.Create(stringReader))
-                {
-                    Server server = (Server)xmlSerializer.Deserialize(xmlReader);
-                    CurrentServer = server.Address;
-                }
-            }
-        }
-
-        private void SaveLastServer()
-        {
-            XmlSerializer xmlSerializer = new XmlSerializer(typeof(Server));
-            Server server = new Server();
-            server.Address = CurrentServer;
-            string xml;
-
-            using (var stringWriter = new StringWriter())
-            {
-                using (var xmlWriter = XmlWriter.Create(stringWriter))
-                {
-                    xmlSerializer.Serialize(xmlWriter, server);
-                    xml = stringWriter.ToString();
-                }
-            }
-
-            XmlDocument xmlDocument = new XmlDocument();
-            xmlDocument.LoadXml(xml);
-            xmlDocument.Save("lastserver.xml");
         }
 
         private void NotifyPropertyChanged(string propertyName)

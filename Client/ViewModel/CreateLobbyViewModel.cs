@@ -24,12 +24,6 @@ namespace Client.ViewModel
         private const int MAX_COLOURS = 16;
         private const int MIN_PLAYER_COLOUR_DIFF = 3;
 
-        #region dialogs
-        private const string DIALOG_CAPTION = "Hanksite";
-        private const MessageBoxButton DIALOG_BUTTON = MessageBoxButton.OK;
-        private const MessageBoxImage DIALOG_ICON = MessageBoxImage.Warning;
-        #endregion
-
         public event PropertyChangedEventHandler PropertyChanged;
 
         public DependencyObject View { get; set; }
@@ -303,14 +297,14 @@ namespace Client.ViewModel
         public void SendLobbyClosed()
         {
             string message = "The lobby you connected to has closed.";
-            MessageBox.Show(message, DIALOG_CAPTION, DIALOG_BUTTON, DIALOG_ICON);
+            MessageBox.Show(message, "Hanksite", MessageBoxButton.OK);
             Back();
         }
 
         public void SendNotEnoughPlayers()
         {
             string message = "There are not enough players in the lobby.";
-            MessageBox.Show(message, DIALOG_CAPTION, DIALOG_BUTTON, DIALOG_ICON);
+            MessageBox.Show(message, "Hanksite", MessageBoxButton.OK);
         }
         #endregion
 

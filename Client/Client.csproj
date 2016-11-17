@@ -66,6 +66,8 @@
     <Compile Include="Model\Field.cs" />
     <Compile Include="Model\Dummy\MapProvider.cs" />
     <Compile Include="Model\Interfaces\IMapProvider.cs" />
+    <Compile Include="Model\LoginData.cs" />
+    <Compile Include="Model\LoginDataManager.cs" />
     <Compile Include="Model\MapConverter.cs" />
     <Compile Include="Model\Server.cs" />
     <Compile Include="ServerConnection\ClientCallback.cs" />

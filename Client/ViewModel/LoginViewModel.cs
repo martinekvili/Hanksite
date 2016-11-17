@@ -9,6 +9,7 @@ using Client.Helper;
 using Client.Model.Interfaces;
 using Client.ServerConnection;
 using Client.ViewModel.Interfaces;
+using System.IO;
 
 namespace Client.ViewModel
 {
@@ -27,11 +28,6 @@ namespace Client.ViewModel
         public string Server { get; set; }
         public string Username { get; set; }
         public string Password { get; set; }
-        public string Message
-        {
-            get { return message; }
-            set { message = value; NotifyPropertyChanged("Message"); }
-        }
 
         internal IAccountProvider Accounts
         {
@@ -39,11 +35,19 @@ namespace Client.ViewModel
             set { accounts = value; }
         }
 
+        private LoginDataManager loginDataManager;
+
         public LoginViewModel()
         {
+            loginDataManager = new LoginDataManager();
+
             Accounts = ClientProxyManager.Instance;
-            Username = "kornyek";
-            Password = "admin";
+
+            if (File.Exists("lastlogin.xml"))
+            {
+                LoginData lastLoginData = loginDataManager.LoadLastLogin();
+                Username = lastLoginData.Username;
+            }
 
             SignInCommand = new CommandHandler(SignIn, true);
             CreateAccountCommand = new CommandHandler(CreateAccount, true);
@@ -58,10 +62,13 @@ namespace Client.ViewModel
                 NavigationService.GetNavigationService(View).Navigate(new MainMenu());
                 window.HideChangeServerButton();
                 window.HideQuitButton();
+
+                LoginData loginData = new LoginData(window.GetServer(), Username);
+                loginDataManager.SaveLastLogin(loginData);
             }
             else
             {
-                Message = "Wrong username or password!";
+                MessageBox.Show("Wrong username or password!", "Hanksite", MessageBoxButton.OK);
             }
         }
 

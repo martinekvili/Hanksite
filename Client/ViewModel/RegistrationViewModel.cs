@@ -28,18 +28,10 @@ namespace Client.ViewModel
         public string Username { get; set; }
         public string Password { get; set; }
         public string ConfirmedPassword { get; set; }
-        public string Message
-        {
-            get { return message; }
-            set { message = value; NotifyPropertyChanged("Message"); }
-        }
 
         public RegistrationViewModel()
         {
             accounts = ClientProxyManager.Instance;
-            Username = "meres";
-            Password = "LaborImage";
-            ConfirmedPassword = "LaborImage";
 
             CreateAccountCommand = new CommandHandler(CreateAccount, true);
             BackCommand = new CommandHandler(Back, true);
@@ -49,16 +41,28 @@ namespace Client.ViewModel
         {
             IServerChanger window = (IServerChanger)Window.GetWindow(View);
 
+            if (Username == null || Username.Length == 0)
+            {
+                MessageBox.Show("Username is empty!", "Hanksite", MessageBoxButton.OK);
+                return;
+            }
+
+            if (Password == null || Password.Length == 0)
+            {
+                MessageBox.Show("Password is empty!", "Hanksite", MessageBoxButton.OK);
+                return;
+            }
+
             if (Password != ConfirmedPassword)
             {
-                Message = "Password differs from confirmed password!";
+                MessageBox.Show("Password differs from confirmed password!", "Hanksite", MessageBoxButton.OK);
                 return;
             }
             
             bool success = await accounts.CreateAccount(window.GetServer(), Username, Password);
             if (!success)
             {
-                Message = "The given username already exists!";
+                MessageBox.Show("The given username already exists!", "Hanksite", MessageBoxButton.OK);
                 return;
             }
 
