@@ -8,7 +8,19 @@ using Common.Users;
 
 namespace Server.Lobby
 {
-    public class LobbyMember
+    public interface ILobbyMember
+    {
+        User User { get; }
+        HanksiteSession Session { get; }
+        void SendLobbyMembersSnapshot(LobbyMembersSnapshot lobbyMembersSnapshot);
+        void SendLobbyClosed();
+        void DisconnectFromLobby();
+        void StartGame();
+        void SendNotEnoughPlayers();
+        void RemoveFromSession();
+    }
+
+    public class LobbyMember : ILobbyMember
     {
         private readonly HanksiteSession session;
         private readonly LobbyManager lobby;
@@ -47,6 +59,11 @@ namespace Server.Lobby
         public void SendNotEnoughPlayers()
         {
             session.SendNotEnoughPlayers();
+        }
+
+        public void RemoveFromSession()
+        {
+            session.LobbyMember = null;
         }
     }
 }

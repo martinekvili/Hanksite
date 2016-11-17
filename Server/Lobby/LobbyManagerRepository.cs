@@ -29,7 +29,7 @@ namespace Server.Lobby
                 if (lobbyManagers.Any(manager => manager.Name == settings.Name))
                     return false;
 
-                lobbyManagers.Add(new LobbyManager(ownerSession, settings));
+                lobbyManagers.Add(LobbyManager.CreateLobbyManager(ownerSession, settings));
                 return true;
             }
         }
