@@ -28,6 +28,13 @@ namespace Client.ViewModel
         public string Username { get; set; }
         public string Password { get; set; }
 
+        private bool isPageEnabled;
+        public bool IsPageEnabled
+        {
+            get { return isPageEnabled; }
+            set { isPageEnabled = value; NotifyPropertyChanged("IsPageEnabled"); }
+        }
+
         internal IAccountProvider Accounts
         {
             get { return accounts; }
@@ -38,6 +45,7 @@ namespace Client.ViewModel
 
         public LoginViewModel()
         {
+            IsPageEnabled = true;
             loginDataManager = new LoginDataManager();
 
             Accounts = ClientProxyManager.Instance;
@@ -68,6 +76,8 @@ namespace Client.ViewModel
                 return;
             }
 
+            IsPageEnabled = false;
+            window.Disable();
             if (await Accounts.IsAccountValid(window.GetServer(), Username, Password))
             {
                 NavigationService.GetNavigationService(View).Navigate(new MainMenu());
@@ -76,9 +86,12 @@ namespace Client.ViewModel
 
                 LoginData loginData = new LoginData(window.GetServer(), Username);
                 loginDataManager.SaveLastLogin(loginData);
+                window.Enable();
             }
             else
             {
+                IsPageEnabled = true;
+                window.Enable();
                 MessageBox.Show("Wrong username or password!", "Hanksite", MessageBoxButton.OK);
             }
         }

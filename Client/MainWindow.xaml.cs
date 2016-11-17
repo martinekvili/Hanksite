@@ -35,5 +35,15 @@ namespace Client
         {
             viewModel.IsQuitButtonVisible = true;
         }
+
+        public void Enable()
+        {
+            IsEnabled = true;
+        }
+
+        public void Disable()
+        {
+            IsEnabled = false;
+        }
     }
 }

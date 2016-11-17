@@ -19,7 +19,6 @@ namespace Client.ViewModel
         public DependencyObject View { get; set; }
 
         private IAccountProvider accounts;
-        private string message;
 
         public ICommand CreateAccountCommand { get; set; }
         public ICommand BackCommand { get; set; }
@@ -29,8 +28,16 @@ namespace Client.ViewModel
         public string Password { get; set; }
         public string ConfirmedPassword { get; set; }
 
+        private bool isPageEnabled;
+        public bool IsPageEnabled
+        {
+            get { return isPageEnabled; }
+            set { isPageEnabled = value; NotifyPropertyChanged("IsPageEnabled"); }
+        }
+
         public RegistrationViewModel()
         {
+            IsPageEnabled = true;
             accounts = ClientProxyManager.Instance;
 
             CreateAccountCommand = new CommandHandler(CreateAccount, true);
@@ -58,19 +65,21 @@ namespace Client.ViewModel
                 MessageBox.Show("Password differs from confirmed password!", "Hanksite", MessageBoxButton.OK);
                 return;
             }
-            
+
+            IsPageEnabled = false;
+            window.Disable();
             bool success = await accounts.CreateAccount(window.GetServer(), Username, Password);
             if (!success)
             {
+                IsPageEnabled = true;
+                window.Enable();
                 MessageBox.Show("The given username already exists!", "Hanksite", MessageBoxButton.OK);
                 return;
             }
 
-            if (await accounts.IsAccountValid(window.GetServer(), Username, Password))
-            {
-                NavigationService.GetNavigationService(View).Navigate(new MainMenu());
-                window.HideChangeServerButton();
-            }
+            window.Enable();
+            NavigationService.GetNavigationService(View).Navigate(new MainMenu());
+            window.HideChangeServerButton();
         }
 
         private void Back()

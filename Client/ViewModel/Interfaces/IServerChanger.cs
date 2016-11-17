@@ -6,5 +6,7 @@
         void HideChangeServerButton();
         void HideQuitButton();
         void UnhideQuitButton();
+        void Enable();
+        void Disable();
     }
 }

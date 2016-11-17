@@ -1,17 +1,10 @@
 ﻿using Client.Helper;
 using Client.Model;
 using Client.View.Dialogs;
-using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
-using System.Xml;
-using System.Xml.Serialization;
 
 namespace Client.ViewModel
 {
