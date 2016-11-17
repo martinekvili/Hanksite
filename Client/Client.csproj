@@ -69,8 +69,6 @@
     <Compile Include="Model\Server.cs" />
     <Compile Include="ViewModel\ChangeServerDialogViewModel.cs" />
     <Compile Include="ViewModel\Interfaces\IHideableButtonContainer.cs" />
-    <Compile Include="ViewModel\Interfaces\ILobbyJoiner.cs" />
-    <Compile Include="ViewModel\Interfaces\ILobbyOwner.cs" />
     <Compile Include="ViewModel\MainWindowViewModel.cs" />
     <Compile Include="View\ChangeServerDialog.xaml.cs">
       <DependentUpon>ChangeServerDialog.xaml</DependentUpon>

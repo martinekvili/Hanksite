@@ -14,6 +14,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Client.ViewModel.Interfaces;
 using Common.Lobby;
+using System.Threading;
 
 namespace Client.ViewModel
 {
@@ -33,7 +34,6 @@ namespace Client.ViewModel
         private const int MIN_PLAYER_COLOUR_DIFF = 3;
 
         private int selectedNumberOfColours;
-        private IConnectedPlayerProvider connectedPlayerProvider;
 
         private string name;
         public string Name
@@ -81,12 +81,16 @@ namespace Client.ViewModel
         public ParameterizedCommandHandler DecreaseBotCommand { get; set; }
         #endregion
 
-        private List<Player> connectedPlayers;
-        public List<Player> ConnectedPlayers
+        #region connected player properties
+        private IConnectedPlayerProvider connectedPlayerProvider;
+        private List<Player> connectedPlayerAdapter;
+        private ObservableCollection<Player> connectedPlayers;
+        public ObservableCollection<Player> ConnectedPlayers
         {
-            get { return connectedPlayers; }
+            get { return new ObservableCollection<Player>(connectedPlayerAdapter); }
             set { connectedPlayers = value; NotifyPropertyChanged("ConnectedPlayers"); }
         }
+        #endregion
 
         private bool isReadyEnabled = false;
         public bool IsReadyEnabled
@@ -140,7 +144,8 @@ namespace Client.ViewModel
             IncreaseBotCommand = new ParameterizedCommandHandler(IncreaseBot, IsIncreaseBotEnabled);
             DecreaseBotCommand = new ParameterizedCommandHandler(DecreaseBot, IsDecreaseBotEnabled);
 
-            connectedPlayers = new List<Player>();
+            connectedPlayerAdapter = new List<Player>();
+            connectedPlayers = new ObservableCollection<Player>();
         }
 
         public void SetLobby(Lobby lobby)
@@ -155,7 +160,7 @@ namespace Client.ViewModel
             bots = lobby.Bots;
             NotifyNumberOfBotsChanged();
 
-            ConnectedPlayers = lobby.ConnectedPlayers;
+            ConnectedPlayers = new ObservableCollection<Player>(lobby.ConnectedPlayers);
         }
 
         #region bot methods
@@ -207,7 +212,26 @@ namespace Client.ViewModel
         private void Ready()
         {
             IsReady = true;
-            //Task.Factory.StartNew(() => );
+
+            SimulatePlayers();
+        }
+
+        private void SimulatePlayers()
+        {
+            Task.Factory.StartNew(() =>
+            {
+                List<Player> playerContainer = connectedPlayerProvider.GetPlayers();
+
+                Thread.Sleep(1000);
+                connectedPlayerAdapter.Add(playerContainer[0]);
+                NotifyPropertyChanged("ConnectedPlayers");
+                Thread.Sleep(500);
+                connectedPlayerAdapter.Add(playerContainer[1]);
+                NotifyPropertyChanged("ConnectedPlayers");
+                Thread.Sleep(1000);
+                connectedPlayerAdapter.Add(playerContainer[2]);
+                NotifyPropertyChanged("ConnectedPlayers");
+            });
         }
 
         private void Cancel()
@@ -267,16 +291,6 @@ namespace Client.ViewModel
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
-
-        //public void RefreshConnectedPlayers(List<Player> players)
-        //{
-        //    ConnectedPlayers = players;
-        //}
-
-        //public void NotEnoughPlayers()
-        //{
-        //    throw new NotImplementedException();
-        //}
 
         public void SendLobbyMembersSnapshot(LobbyMembersSnapshot lobbySnapshot)
         {
