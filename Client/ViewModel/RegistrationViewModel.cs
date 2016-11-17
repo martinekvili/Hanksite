@@ -7,6 +7,7 @@ using System.ComponentModel;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Navigation;
+using Client.ServerConnection;
 
 namespace Client.ViewModel
 {
@@ -34,7 +35,7 @@ namespace Client.ViewModel
 
         public RegistrationViewModel()
         {
-            accounts = new Accounts();
+            accounts = ClientProxyManager.Instance;
             Username = "meres";
             Password = "LaborImage";
             ConfirmedPassword = "LaborImage";
@@ -43,7 +44,7 @@ namespace Client.ViewModel
             BackCommand = new CommandHandler(Back, true);
         }
 
-        private void CreateAccount()
+        private async void CreateAccount()
         {
             if (Password != ConfirmedPassword)
             {
@@ -51,7 +52,8 @@ namespace Client.ViewModel
                 return;
             }
 
-            bool success = accounts.CreateAccount(Username, Password);
+            // TODO ZSolt, server URL!!!
+            bool success = await accounts.CreateAccount("localhost", Username, Password);
             if (!success)
             {
                 Message = "The given username is already exists!";

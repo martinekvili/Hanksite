@@ -7,6 +7,7 @@ using System.Windows;
 using Client.View;
 using Client.Helper;
 using Client.Model.Interfaces;
+using Client.ServerConnection;
 using Client.ViewModel.Interfaces;
 
 namespace Client.ViewModel
@@ -47,7 +48,7 @@ namespace Client.ViewModel
 
         public LoginViewModel()
         {
-            Accounts = new Accounts();
+            Accounts = ClientProxyManager.Instance;
             Username = "kornyek";
             Password = "admin";
 
@@ -55,9 +56,10 @@ namespace Client.ViewModel
             CreateAccountCommand = new CommandHandler(CreateAccount, true);
         }
 
-        private void SignIn()
+        private async void SignIn()
         {
-            if (Accounts.IsAccountValid(Username, Password))
+            // TODO ZSolt, server URL!!!
+            if (await Accounts.IsAccountValid("localhost", Username, Password))
             {
                 NavigationService.GetNavigationService(View).Navigate(new MainMenu());
                 IHideableButtonContainer window = (IHideableButtonContainer)Window.GetWindow(View);

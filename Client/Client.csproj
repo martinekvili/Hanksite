@@ -39,6 +39,7 @@
     <Reference Include="Microsoft.Expression.Interactions, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.ServiceModel" />
     <Reference Include="System.Windows.Interactivity, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
@@ -67,6 +68,10 @@
     <Compile Include="Model\Interfaces\IMapProvider.cs" />
     <Compile Include="Model\MapConverter.cs" />
     <Compile Include="Model\Server.cs" />
+    <Compile Include="ServerConnection\ClientCallback.cs" />
+    <Compile Include="ServerConnection\ClientCallback.Game.cs" />
+    <Compile Include="ServerConnection\ClientCallback.Lobby.cs" />
+    <Compile Include="ServerConnection\ClientProxyManager.cs" />
     <Compile Include="ViewModel\Dialogs\ChangeServerDialogViewModel.cs" />
     <Compile Include="ViewModel\Interfaces\IGameActions.cs" />
     <Compile Include="ViewModel\Interfaces\IHideableButtonContainer.cs" />
@@ -106,7 +111,6 @@
     <Compile Include="View\MainMenu.xaml.cs">
       <DependentUpon>MainMenu.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Model\Dummy\Accounts.cs" />
     <Compile Include="View\Registration.xaml.cs">
       <DependentUpon>Registration.xaml</DependentUpon>
     </Compile>

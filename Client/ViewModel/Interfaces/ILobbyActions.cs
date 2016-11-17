@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Client.ViewModel.Interfaces
 {
-    interface ILobbyActions
+    public interface ILobbyActions
     {
         void SendLobbyMembersSnapshot(List<Player> lobbySnapshot);
         

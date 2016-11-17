@@ -6,10 +6,10 @@ using System.Threading.Tasks;
 
 namespace Client.Model.Interfaces
 {
-    interface IAccountProvider
+    public interface IAccountProvider
     {
-        bool CreateAccount(string username, string password);
+        Task<bool> CreateAccount(string serverUrl, string username, string password);
 
-        bool IsAccountValid(string username, string password);
+        Task<bool> IsAccountValid(string serverUrl, string username, string password);
     }
 }
