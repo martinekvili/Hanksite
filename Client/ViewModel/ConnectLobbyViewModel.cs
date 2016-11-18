@@ -44,12 +44,16 @@ namespace Client.ViewModel
             get { return (selectedLobby == null) ? false : true; }
         }
 
+        private ILobbyServer lobbyServer;
+
         public ConnectLobbyViewModel()
         {
             availableLobbyProvider = ClientProxyManager.Instance;
             BackCommand = new CommandHandler(Back, true);
             RefreshCommand = new CommandHandler(Refresh, true);
             ConnectCommand = new CommandHandler(Connect, true);
+
+            lobbyServer = ClientProxyManager.Instance;
         }
 
         private void Back()
@@ -62,9 +66,10 @@ namespace Client.ViewModel
             AvailableLobbies = await availableLobbyProvider.GetLobbies();
         }
 
-        private void Connect()
+        private async void Connect()
         {
-            NavigationService.GetNavigationService(View).Navigate(new CreateLobby(selectedLobby));
+            Lobby lobby = await lobbyServer.ConnectToLobby(selectedLobby.Name);
+            NavigationService.GetNavigationService(View).Navigate(new CreateLobby(lobby));
         }
 
         private void NotifyPropertyChanged(string propertyName)

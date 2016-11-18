@@ -15,6 +15,7 @@ using System.Threading.Tasks;
 using Client.ViewModel.Interfaces;
 using Common.Lobby;
 using System.Threading;
+using Client.ServerConnection;
 
 namespace Client.ViewModel
 {
@@ -119,6 +120,8 @@ namespace Client.ViewModel
             set { isCreator = !value; NotifyPropertyChanged("IsCreator"); NotifyPropertyChanged("IsJoiner"); }
         }
 
+        private ILobbyServer lobbyServer;
+
         public CreateLobbyViewModel()
         {
             NumberOfColours = new ObservableCollection<int>();
@@ -147,6 +150,8 @@ namespace Client.ViewModel
 
             connectedPlayerAdapter = new List<Player>();
             connectedPlayers = new ObservableCollection<Player>();
+
+            lobbyServer = ClientProxyManager.Instance;
         }
 
         public void SetLobby(Lobby lobby)
@@ -210,44 +215,45 @@ namespace Client.ViewModel
         }
         #endregion
 
-        private void Ready()
+        private async void Ready()
         {
             IsReady = true;
-
-            SimulatePlayers();
-        }
-
-        private void SimulatePlayers()
-        {
-            Task.Factory.StartNew(() =>
-            {
-                List<Player> playerContainer = connectedPlayerProvider.GetPlayers();
-
-                Thread.Sleep(1000);
-                connectedPlayerAdapter.Add(playerContainer[0]);
-                SendLobbyMembersSnapshot(connectedPlayerAdapter);
-                Thread.Sleep(500);
-                connectedPlayerAdapter.Add(playerContainer[1]);
-                SendLobbyMembersSnapshot(connectedPlayerAdapter);
-                Thread.Sleep(1000);
-                connectedPlayerAdapter.Add(playerContainer[2]);
-                SendLobbyMembersSnapshot(connectedPlayerAdapter);
-            });
+            bool result = await lobbyServer.CreateLobby(CreateLobbySettings());
         }
 
         private void Cancel()
         {
             IsReady = false;
+            lobbyServer.DisconnectFromLobby();
         }
 
         private void Start()
         {
+            lobbyServer.StartGame();
             NavigationService.GetNavigationService(View).Navigate(new GameView());
         }
 
         private void Back()
         {
+            if (IsJoiner)
+            {
+                lobbyServer.DisconnectFromLobby();
+            }
             NavigationService.GetNavigationService(View).GoBack();
+        }
+
+        private Lobby CreateLobbySettings()
+        {
+            Lobby settings = new Lobby();
+            settings.Name = Name;
+            settings.NumberOfPlayers = SelectedNumberOfPlayers;
+            settings.NumberOfColours = SelectedNumberOfColours;
+            LobbySettingsBotNumber[] botNumbers = new LobbySettingsBotNumber[3];
+            settings.Bots[BotDifficulty.EASY] = bots[BotDifficulty.EASY];
+            settings.Bots[BotDifficulty.MEDIUM] = bots[BotDifficulty.MEDIUM];
+            settings.Bots[BotDifficulty.HARD] = bots[BotDifficulty.HARD];
+           
+            return settings;
         }
 
         private void SetNumberOfColours(int selectedNumberOfPlayers)
@@ -311,6 +317,24 @@ namespace Client.ViewModel
         private void NotifyPropertyChanged(string propertyName)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+        
+        private void SimulatePlayers()
+        {
+            Task.Factory.StartNew(() =>
+            {
+                List<Player> playerContainer = connectedPlayerProvider.GetPlayers();
+
+                Thread.Sleep(1000);
+                connectedPlayerAdapter.Add(playerContainer[0]);
+                SendLobbyMembersSnapshot(connectedPlayerAdapter);
+                Thread.Sleep(500);
+                connectedPlayerAdapter.Add(playerContainer[1]);
+                SendLobbyMembersSnapshot(connectedPlayerAdapter);
+                Thread.Sleep(1000);
+                connectedPlayerAdapter.Add(playerContainer[2]);
+                SendLobbyMembersSnapshot(connectedPlayerAdapter);
+            });
         }
     }
 }

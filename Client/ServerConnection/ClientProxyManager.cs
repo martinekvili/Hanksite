@@ -7,10 +7,11 @@ using System.Threading.Tasks;
 using Client.Model;
 using Client.Model.Interfaces;
 using Common;
+using Common.Lobby;
 
 namespace Client.ServerConnection
 {
-    public partial class ClientProxyManager : IAccountProvider, IAvailableLobbyProvider
+    public partial class ClientProxyManager : IAccountProvider, IAvailableLobbyProvider, ILobbyServer
     {
         private static ClientProxyManager instance = new ClientProxyManager();
 
@@ -83,6 +84,26 @@ namespace Client.ServerConnection
                     return false;
                 }
             });
+        }
+
+        public Task<bool> CreateLobby(Lobby settings)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<Lobby> ConnectToLobby(string lobbyName)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void DisconnectFromLobby()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void StartGame()
+        {
+            throw new NotImplementedException();
         }
     }
 }
