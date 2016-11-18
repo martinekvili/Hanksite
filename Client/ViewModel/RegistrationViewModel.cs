@@ -9,6 +9,7 @@ using System.Windows.Input;
 using System.Windows.Navigation;
 using Client.ServerConnection;
 using Client.View;
+using Client.View.Interfaces;
 
 namespace Client.ViewModel
 {
@@ -25,8 +26,6 @@ namespace Client.ViewModel
 
         public string Server { get; set; }
         public string Username { get; set; }
-        public string Password { get; set; }
-        public string ConfirmedPassword { get; set; }
 
         private bool isPageEnabled;
         public bool IsPageEnabled
@@ -54,13 +53,17 @@ namespace Client.ViewModel
                 return;
             }
 
-            if (Password == null || Password.Length == 0)
+            IConfirmedPasswordProvider passwordProvider = (IConfirmedPasswordProvider)View;
+            string password = passwordProvider.GetPassword();
+            string confirmedPassword = passwordProvider.GetConfirmedPassword();
+
+            if (password == null || password.Length == 0)
             {
                 MessageBox.Show("Password is empty!", "Hanksite", MessageBoxButton.OK);
                 return;
             }
 
-            if (Password != ConfirmedPassword)
+            if (password != confirmedPassword)
             {
                 MessageBox.Show("Password differs from confirmed password!", "Hanksite", MessageBoxButton.OK);
                 return;
@@ -68,7 +71,7 @@ namespace Client.ViewModel
 
             IsPageEnabled = false;
             window.Disable();
-            bool success = await accounts.CreateAccount(window.GetServer(), Username, Password);
+            bool success = await accounts.CreateAccount(window.GetServer(), Username, password);
             if (!success)
             {
                 IsPageEnabled = true;

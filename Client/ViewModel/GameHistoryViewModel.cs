@@ -5,13 +5,13 @@ using System.Windows.Navigation;
 
 namespace Client.ViewModel
 {
-    class StatisticsViewModel
+    class GameHistoryViewModel
     {
         public DependencyObject View { get; set; }
 
         public ICommand BackCommand { get; set; }
 
-        public StatisticsViewModel()
+        public GameHistoryViewModel()
         {
             BackCommand = new CommandHandler(Back);
         }

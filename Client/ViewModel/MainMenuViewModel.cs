@@ -12,7 +12,7 @@ namespace Client.ViewModel
 
         public ICommand CreateLobbyCommand { get; set; }
         public ICommand ConnectLobbyCommand { get; set; }
-        public ICommand ShowStatisticsCommand { get; set; }
+        public ICommand ShowGameHistoryCommand { get; set; }
         public ICommand ShowSettingsCommand { get; set; }
         public ICommand QuitCommand { get; set; }
 
@@ -20,7 +20,7 @@ namespace Client.ViewModel
         {
             CreateLobbyCommand = new CommandHandler(NavigateToCreateLobby);
             ConnectLobbyCommand = new CommandHandler(NavigateToConnectLobby);
-            ShowStatisticsCommand = new CommandHandler(NavigateToStatistics);
+            ShowGameHistoryCommand = new CommandHandler(NavigateToGameHistory);
             ShowSettingsCommand = new CommandHandler(NavigateToSettings);
             QuitCommand = new CommandHandler(Quit);
         }
@@ -35,9 +35,9 @@ namespace Client.ViewModel
             NavigationService.GetNavigationService(View).Navigate(new ConnectLobby());
         }
 
-        private void NavigateToStatistics()
+        private void NavigateToGameHistory()
         {
-            NavigationService.GetNavigationService(View).Navigate(new Statistics());
+            NavigationService.GetNavigationService(View).Navigate(new GameHistory());
         }
 
         private void NavigateToSettings()

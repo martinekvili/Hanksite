@@ -5,14 +5,14 @@ using System.Windows.Navigation;
 
 namespace Client.View
 {
-    public partial class Statistics : UserControl
+    public partial class GameHistory : UserControl
     {
-        private StatisticsViewModel viewModel;
+        private GameHistoryViewModel viewModel;
 
-        public Statistics()
+        public GameHistory()
         {
             InitializeComponent();
-            viewModel = (StatisticsViewModel)base.DataContext;
+            viewModel = (GameHistoryViewModel)base.DataContext;
             viewModel.View = this;
         }
     }

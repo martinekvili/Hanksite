@@ -1,4 +1,4 @@
-﻿namespace Client.ViewModel.Interfaces
+﻿namespace Client.View.Interfaces
 {
     interface IServerChanger
     {

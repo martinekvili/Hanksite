@@ -1,9 +1,11 @@
-﻿using Client.ViewModel;
+﻿using Client.View.Interfaces;
+using Client.ViewModel;
 using System.Windows.Controls;
+using System;
 
 namespace Client.View
 {
-    public partial class Login : UserControl
+    public partial class Login : UserControl, IPasswordProvider
     {
         private LoginViewModel viewModel;
 
@@ -12,6 +14,11 @@ namespace Client.View
             InitializeComponent();
             viewModel = (LoginViewModel)base.DataContext;
             viewModel.View = this;
+        }
+
+        public string GetPassword()
+        {
+            return passwordBox.Password;
         }
     }
 }

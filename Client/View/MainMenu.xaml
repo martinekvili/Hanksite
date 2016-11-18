@@ -35,8 +35,8 @@
             </Button>
             <Button
                 Style="{StaticResource MenuButton}"
-                Command="{Binding ShowStatisticsCommand}">
-                Statistics
+                Command="{Binding ShowGameHistoryCommand}">
+                Game history
             </Button>
             <Button
                 Style="{StaticResource MenuButton}"

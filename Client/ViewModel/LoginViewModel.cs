@@ -10,6 +10,7 @@ using Client.Model.Interfaces;
 using Client.ServerConnection;
 using Client.ViewModel.Interfaces;
 using System.IO;
+using Client.View.Interfaces;
 
 namespace Client.ViewModel
 {
@@ -20,13 +21,12 @@ namespace Client.ViewModel
         public DependencyObject View { get; set; }
 
         private IAccountProvider accounts;
-        
+
         public ICommand SignInCommand { get; set; }
         public ICommand CreateAccountCommand { get; set; }
 
         public string Server { get; set; }
         public string Username { get; set; }
-        public string Password { get; set; }
 
         private bool isPageEnabled;
         public bool IsPageEnabled
@@ -70,7 +70,8 @@ namespace Client.ViewModel
                 return;
             }
 
-            if (Password == null || Password.Length == 0)
+            string password = ((IPasswordProvider)View).GetPassword();
+            if (password == null || password.Length == 0)
             {
                 MessageBox.Show("Password is empty!", "Hanksite", MessageBoxButton.OK);
                 return;
@@ -78,7 +79,7 @@ namespace Client.ViewModel
 
             IsPageEnabled = false;
             window.Disable();
-            if (await Accounts.IsAccountValid(window.GetServer(), Username, Password))
+            if (await Accounts.IsAccountValid(window.GetServer(), Username, password))
             {
                 NavigationService.GetNavigationService(View).Navigate(new MainMenu());
                 window.HideChangeServerButton();

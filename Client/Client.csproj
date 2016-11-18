@@ -79,7 +79,7 @@
     <Compile Include="ServerConnection\ConversionHelper.cs" />
     <Compile Include="ViewModel\Dialogs\ChangeServerDialogViewModel.cs" />
     <Compile Include="ViewModel\Interfaces\IGameActions.cs" />
-    <Compile Include="ViewModel\Interfaces\IServerChanger.cs" />
+    <Compile Include="View\Interfaces\IServerChanger.cs" />
     <Compile Include="ViewModel\Interfaces\ILobbyActions.cs" />
     <Compile Include="ViewModel\MainWindowViewModel.cs" />
     <Compile Include="View\Dialogs\ChangeServerDialog.xaml.cs">
@@ -95,6 +95,7 @@
       <DependentUpon>GameView.xaml</DependentUpon>
     </Compile>
     <Compile Include="ViewModel\MainMenuViewModel.cs" />
+    <Compile Include="View\Interfaces\IPasswordProvider.cs" />
     <Compile Include="View\Login.xaml.cs">
       <DependentUpon>Login.xaml</DependentUpon>
     </Compile>
@@ -121,12 +122,12 @@
     <Compile Include="View\Settings.xaml.cs">
       <DependentUpon>Settings.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\Statistics.xaml.cs">
-      <DependentUpon>Statistics.xaml</DependentUpon>
+    <Compile Include="View\GameHistory.xaml.cs">
+      <DependentUpon>GameHistory.xaml</DependentUpon>
     </Compile>
     <Compile Include="ViewModel\RegistrationViewModel.cs" />
     <Compile Include="ViewModel\SettingsViewModel.cs" />
-    <Compile Include="ViewModel\StatisticsViewModel.cs" />
+    <Compile Include="ViewModel\GameHistoryViewModel.cs" />
     <Page Include="View\Dialogs\ChangeServerDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -171,7 +172,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\Statistics.xaml">
+    <Page Include="View\GameHistory.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

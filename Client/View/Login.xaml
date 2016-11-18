@@ -24,8 +24,8 @@
         <TextBox
             Text="{Binding Username}" />
         <Label>Password</Label>
-        <TextBox
-            Text="{Binding Password}" />
+        <PasswordBox
+            Name="passwordBox" />
         <Button
             Command="{Binding SignInCommand}">
             Sign in
