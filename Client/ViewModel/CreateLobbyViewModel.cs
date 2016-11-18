@@ -253,10 +253,7 @@ namespace Client.ViewModel
             settings.Name = Name;
             settings.NumberOfPlayers = SelectedNumberOfPlayers;
             settings.NumberOfColours = SelectedNumberOfColours;
-            LobbySettingsBotNumber[] botNumbers = new LobbySettingsBotNumber[3];
-            settings.Bots[BotDifficulty.EASY] = bots[BotDifficulty.EASY];
-            settings.Bots[BotDifficulty.MEDIUM] = bots[BotDifficulty.MEDIUM];
-            settings.Bots[BotDifficulty.HARD] = bots[BotDifficulty.HARD];
+            settings.Bots = bots;
            
             return settings;
         }

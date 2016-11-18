@@ -85,25 +85,5 @@ namespace Client.ServerConnection
                 }
             });
         }
-
-        public Task<bool> CreateLobby(Lobby settings)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<Lobby> ConnectToLobby(string lobbyName)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void DisconnectFromLobby()
-        {
-            throw new NotImplementedException();
-        }
-
-        public void StartGame()
-        {
-            throw new NotImplementedException();
-        }
     }
 }

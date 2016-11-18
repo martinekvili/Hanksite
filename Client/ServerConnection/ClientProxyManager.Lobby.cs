@@ -24,5 +24,25 @@ namespace Client.ServerConnection
         {
             return Task.Factory.StartNew(() => proxy.ListLobbies().Select(lobby => lobby.ToViewModel()).ToList());
         }
+
+        public Task<bool> CreateLobby(Lobby settings)
+        {
+            return Task.Factory.StartNew(() => proxy.CreateLobby(settings.ToDto()));
+        }
+
+        public Task<Lobby> ConnectToLobby(string lobbyName)
+        {
+            return Task.Factory.StartNew(() => proxy.ConnectToLobby(lobbyName).ToViewModel());
+        }
+
+        public void DisconnectFromLobby()
+        {
+            proxy.DisconnectFromLobby();
+        }
+
+        public void StartGame()
+        {
+            proxy.StartGame();
+        }
     }
 }

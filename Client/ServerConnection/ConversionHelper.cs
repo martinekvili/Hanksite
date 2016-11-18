@@ -9,6 +9,8 @@ namespace Client.ServerConnection
 {
     public static class ConversionHelper
     {
+        #region To ViewModel
+
         public static List<Player> ToViewModel(this Common.Lobby.LobbyMembersSnapshot lobbyMembers)
         {
             return lobbyMembers.LobbyMembers.Select(user => new Player { Username = user.UserName }).ToList();
@@ -40,5 +42,27 @@ namespace Client.ServerConnection
                 ConnectedPlayers = snapshot.LobbyMembers.Select(user => new Player {Username = user.UserName}).ToList()
             };
         }
+
+        #endregion
+
+        #region To DTO
+
+        public static Common.Lobby.LobbySettings ToDto(this Lobby settings)
+        {
+            return new Common.Lobby.LobbySettings
+            {
+                Name = settings.Name,
+                NumberOfPlayers = settings.NumberOfPlayers,
+                NumberOfColours = settings.NumberOfColours,
+                BotNumbers = new Common.Lobby.LobbySettingsBotNumber[]
+                {
+                    new Common.Lobby.LobbySettingsBotNumber { Difficulty = Common.Game.AIDifficulty.Easy, Number = settings.Bots[BotDifficulty.EASY] },
+                    new Common.Lobby.LobbySettingsBotNumber { Difficulty = Common.Game.AIDifficulty.Medium, Number = settings.Bots[BotDifficulty.MEDIUM] },
+                    new Common.Lobby.LobbySettingsBotNumber { Difficulty = Common.Game.AIDifficulty.Hard, Number = settings.Bots[BotDifficulty.HARD] }
+                }
+            };
+        } 
+
+        #endregion
     }
 }
