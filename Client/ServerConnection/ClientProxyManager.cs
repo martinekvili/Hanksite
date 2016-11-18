@@ -19,6 +19,7 @@ namespace Client.ServerConnection
 
         private string serverUrl;
         private string userName;
+        public string UserName => userName;
         private string password;
 
         private ClientCallback callback;

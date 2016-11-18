@@ -235,6 +235,9 @@ namespace Client.ViewModel
             IsReady = true;
             IsPageEnabled = false;
 
+            ConnectedPlayers.Add(new Player() { Username = ClientProxyManager.Instance.UserName });
+            NotifyPropertyChanged("ConnectedPlayers");
+
             bool result = await lobbyServer.CreateLobby(CreateLobbySettings());
             ClientProxyManager.Instance.RegisterLobby(this);
 
