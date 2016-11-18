@@ -279,7 +279,7 @@ namespace Client.ViewModel
             Lobby settings = new Lobby();
             settings.Name = Name;
             settings.NumberOfPlayers = SelectedNumberOfPlayers;
-            settings.NumberOfColours = SelectedNumberOfColours;
+            settings.NumberOfColours = NumberOfColours[SelectedNumberOfColours];
             settings.Bots = bots;
            
             return settings;

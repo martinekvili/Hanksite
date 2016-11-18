@@ -87,7 +87,7 @@ namespace Client.ViewModel
 
             if (lobby == null)
             {
-                MessageBox.Show("The selected lobby is full!", "Hanksite", MessageBoxButton.OK);
+                MessageBox.Show("The selected lobby is full or cancelled!", "Hanksite", MessageBoxButton.OK);
                 IsPageEnabled = true;
                 return;
             }
