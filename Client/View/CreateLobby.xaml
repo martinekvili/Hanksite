@@ -10,7 +10,8 @@
     xmlns:model="clr-namespace:Client.Model"
     mc:Ignorable="d"
     d:DesignHeight="300"
-    d:DesignWidth="300">
+    d:DesignWidth="300"
+    IsEnabled="{Binding IsPageEnabled}">
     <UserControl.Resources>
         <Style
             x:Key="QuantityButton"

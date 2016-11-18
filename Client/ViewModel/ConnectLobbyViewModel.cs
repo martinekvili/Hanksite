@@ -26,6 +26,13 @@ namespace Client.ViewModel
         public ICommand ConnectCommand { get; set; }
         public ICommand DisconnectCommand { get; set; }
 
+        private bool isPageEnabled;
+        public bool IsPageEnabled
+        {
+            get { return isPageEnabled; }
+            set { isPageEnabled = value; NotifyPropertyChanged("IsPageEnabled"); }
+        }
+
         private IAvailableLobbyProvider availableLobbyProvider;
         private List<Lobby> availableLobbies;
         public List<Lobby> AvailableLobbies
@@ -48,6 +55,8 @@ namespace Client.ViewModel
 
         public ConnectLobbyViewModel()
         {
+            IsPageEnabled = true;
+
             availableLobbyProvider = ClientProxyManager.Instance;
             BackCommand = new CommandHandler(Back, true);
             RefreshCommand = new CommandHandler(Refresh, true);
@@ -63,11 +72,14 @@ namespace Client.ViewModel
 
         private async void Refresh()
         {
+            IsPageEnabled = false;
             AvailableLobbies = await availableLobbyProvider.GetLobbies();
+            IsPageEnabled = true;
         }
 
         private async void Connect()
         {
+            IsPageEnabled = false;
             Lobby lobby = await lobbyServer.ConnectToLobby(selectedLobby.Name);
             NavigationService.GetNavigationService(View).Navigate(new CreateLobby(lobby));
         }

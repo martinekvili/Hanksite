@@ -34,6 +34,13 @@ namespace Client.ViewModel
         public ICommand StartCommand { get; set; }
         public ICommand BackCommand { get; set; }
 
+        private bool isPageEnabled;
+        public bool IsPageEnabled
+        {
+            get { return isPageEnabled; }
+            set { isPageEnabled = value; NotifyPropertyChanged("IsPageEnabled"); }
+        }
+
         #region lobby properties
         private string name;
         public string Name
@@ -124,6 +131,8 @@ namespace Client.ViewModel
 
         public CreateLobbyViewModel()
         {
+            IsPageEnabled = true;
+
             NumberOfColours = new ObservableCollection<int>();
             SetNumberOfColours(2);
 
@@ -158,6 +167,7 @@ namespace Client.ViewModel
         {
             IsJoiner = true;
             IsReady = true;
+            ClientProxyManager.Instance.RegisterLobby(this);
 
             Name = lobby.Name;
             SelectedNumberOfPlayers = lobby.NumberOfPlayers;
@@ -218,7 +228,12 @@ namespace Client.ViewModel
         private async void Ready()
         {
             IsReady = true;
+            IsPageEnabled = false;
+
             bool result = await lobbyServer.CreateLobby(CreateLobbySettings());
+            ClientProxyManager.Instance.RegisterLobby(this);
+
+            IsPageEnabled = true;
             if (!result)
             {
                 MessageBox.Show("The given server name is already used.", "Hanksite", MessageBoxButton.OK);
@@ -230,10 +245,13 @@ namespace Client.ViewModel
         {
             IsReady = false;
             lobbyServer.DisconnectFromLobby();
+            ClientProxyManager.Instance.RemoveLobby();
+            ConnectedPlayers.Clear();
         }
 
         private void Start()
         {
+            IsPageEnabled = false;
             lobbyServer.StartGame();
             NavigationService.GetNavigationService(View).Navigate(new GameView());
         }
@@ -243,6 +261,7 @@ namespace Client.ViewModel
             if (IsJoiner)
             {
                 lobbyServer.DisconnectFromLobby();
+                ClientProxyManager.Instance.RemoveLobby();
             }
             NavigationService.GetNavigationService(View).GoBack();
         }
