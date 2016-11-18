@@ -17,7 +17,7 @@ namespace Client.ViewModel
 
         public SettingsViewModel()
         {
-            BackCommand = new CommandHandler(Back, true);
+            BackCommand = new CommandHandler(Back);
         }
 
         private void Back()

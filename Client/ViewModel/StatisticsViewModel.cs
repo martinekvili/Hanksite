@@ -13,7 +13,7 @@ namespace Client.ViewModel
 
         public StatisticsViewModel()
         {
-            BackCommand = new CommandHandler(Back, true);
+            BackCommand = new CommandHandler(Back);
         }
 
         private void Back()

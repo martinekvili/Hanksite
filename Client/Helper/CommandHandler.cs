@@ -6,19 +6,17 @@ namespace Client.Helper
     class CommandHandler : ICommand
     {
         private Action action;
-        private bool canExecute;
 
         public event EventHandler CanExecuteChanged;
 
-        public CommandHandler(Action action, bool canExecute)
+        public CommandHandler(Action action)
         {
             this.action = action;
-            this.canExecute = canExecute;
         }
 
         public bool CanExecute(object parameter)
         {
-            return canExecute;
+            return true;
         }
 
         public void Execute(object parameter)

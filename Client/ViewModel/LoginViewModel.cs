@@ -56,8 +56,8 @@ namespace Client.ViewModel
                 Username = lastLoginData.Username;
             }
 
-            SignInCommand = new CommandHandler(SignIn, true);
-            CreateAccountCommand = new CommandHandler(CreateAccount, true);
+            SignInCommand = new CommandHandler(SignIn);
+            CreateAccountCommand = new CommandHandler(CreateAccount);
         }
 
         private async void SignIn()

@@ -42,8 +42,8 @@ namespace Client.ViewModel
 
         public MainWindowViewModel()
         {
-            OpenChangeServerDialogCommand = new CommandHandler(OpenChangeServerDialog, true);
-            QuitCommand = new CommandHandler(Quit, true);
+            OpenChangeServerDialogCommand = new CommandHandler(OpenChangeServerDialog);
+            QuitCommand = new CommandHandler(Quit);
             IsChangeServerButtonVisible = true;
             IsQuitButtonVisible = true;
 

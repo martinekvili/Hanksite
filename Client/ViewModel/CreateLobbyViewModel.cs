@@ -126,6 +126,11 @@ namespace Client.ViewModel
             get { return !isCreator; }
             set { isCreator = !value; NotifyPropertyChanged("IsCreator"); NotifyPropertyChanged("IsJoiner"); }
         }
+        
+        public bool IsLobbyFull
+        {
+            get { return SelectedNumberOfPlayers - (ConnectedPlayers.Count + bots[BotDifficulty.EASY] + bots[BotDifficulty.MEDIUM] + bots[BotDifficulty.HARD]) == 0; }
+        }
 
         private ILobbyServer lobbyServer;
 
@@ -144,10 +149,10 @@ namespace Client.ViewModel
 
             connectedPlayerProvider = new Players();
 
-            ReadyCommand = new CommandHandler(Ready, true);
-            CancelCommand = new CommandHandler(Cancel, true);
-            StartCommand = new CommandHandler(Start, true);
-            BackCommand = new CommandHandler(Back, true);
+            ReadyCommand = new CommandHandler(Ready);
+            CancelCommand = new CommandHandler(Cancel);
+            StartCommand = new CommandHandler(Start);
+            BackCommand = new CommandHandler(Back);
 
             bots = new Dictionary<BotDifficulty, int>();
             bots[BotDifficulty.EASY] = 0;
@@ -236,7 +241,7 @@ namespace Client.ViewModel
             IsPageEnabled = true;
             if (!result)
             {
-                MessageBox.Show("The given server name is already used.", "Hanksite", MessageBoxButton.OK);
+                MessageBox.Show("The given lobby name is already used.", "Hanksite", MessageBoxButton.OK);
                 IsReady = false;
             }
         }
@@ -319,6 +324,7 @@ namespace Client.ViewModel
         public void SendLobbyMembersSnapshot(List<Player> lobbySnapshot)
         {
             ConnectedPlayers = new ObservableCollection<Player>(lobbySnapshot);
+            NotifyPropertyChanged("IsLobbyFull");
         }
 
         public void SendLobbyClosed()
@@ -338,24 +344,6 @@ namespace Client.ViewModel
         private void NotifyPropertyChanged(string propertyName)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
-        
-        private void SimulatePlayers()
-        {
-            Task.Factory.StartNew(() =>
-            {
-                List<Player> playerContainer = connectedPlayerProvider.GetPlayers();
-
-                Thread.Sleep(1000);
-                connectedPlayerAdapter.Add(playerContainer[0]);
-                SendLobbyMembersSnapshot(connectedPlayerAdapter);
-                Thread.Sleep(500);
-                connectedPlayerAdapter.Add(playerContainer[1]);
-                SendLobbyMembersSnapshot(connectedPlayerAdapter);
-                Thread.Sleep(1000);
-                connectedPlayerAdapter.Add(playerContainer[2]);
-                SendLobbyMembersSnapshot(connectedPlayerAdapter);
-            });
         }
     }
 }

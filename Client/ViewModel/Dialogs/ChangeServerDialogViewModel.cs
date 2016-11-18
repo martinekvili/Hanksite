@@ -14,7 +14,7 @@ namespace Client.ViewModel.Dialogs
 
         public ChangeServerDialogViewModel()
         {
-            ChangeCommand = new CommandHandler(Change, true);
+            ChangeCommand = new CommandHandler(Change);
         }
 
         private void Change()

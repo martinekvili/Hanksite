@@ -48,7 +48,10 @@ namespace Client.ViewModel
         }
         public bool IsConnectable
         {
-            get { return (selectedLobby == null) ? false : true; }
+            get
+            {
+                return (selectedLobby == null ||
+                    GetFreeSpaces(selectedLobby) == 0) ? false : true; }
         }
 
         private ILobbyServer lobbyServer;
@@ -58,9 +61,9 @@ namespace Client.ViewModel
             IsPageEnabled = true;
 
             availableLobbyProvider = ClientProxyManager.Instance;
-            BackCommand = new CommandHandler(Back, true);
-            RefreshCommand = new CommandHandler(Refresh, true);
-            ConnectCommand = new CommandHandler(Connect, true);
+            BackCommand = new CommandHandler(Back);
+            RefreshCommand = new CommandHandler(Refresh);
+            ConnectCommand = new CommandHandler(Connect);
 
             lobbyServer = ClientProxyManager.Instance;
         }
@@ -81,7 +84,21 @@ namespace Client.ViewModel
         {
             IsPageEnabled = false;
             Lobby lobby = await lobbyServer.ConnectToLobby(selectedLobby.Name);
+
+            if (lobby == null)
+            {
+                MessageBox.Show("The selected lobby is full!", "Hanksite", MessageBoxButton.OK);
+                IsPageEnabled = true;
+                return;
+            }
+
             NavigationService.GetNavigationService(View).Navigate(new CreateLobby(lobby));
+            IsPageEnabled = true;
+        }
+
+        private int GetFreeSpaces(Lobby lobby)
+        {
+            return lobby.NumberOfPlayers - lobby.ConnectedPlayers.Count - (lobby.Bots[BotDifficulty.EASY] + lobby.Bots[BotDifficulty.MEDIUM] + lobby.Bots[BotDifficulty.HARD]);
         }
 
         private void NotifyPropertyChanged(string propertyName)
@@ -96,8 +113,22 @@ namespace Client.ViewModel
         {
             int maxPlayers = int.Parse(values[0].ToString());
             int connectedPlayers = ((List<Player>)values[1]).Count;
-            int bots = ((Dictionary<BotDifficulty, int>)values[2]).Count;
-            return maxPlayers - connectedPlayers - bots;
+            Dictionary<BotDifficulty, int> bots = ((Dictionary<BotDifficulty, int>)values[2]);
+            return maxPlayers - connectedPlayers - (bots[BotDifficulty.EASY] + bots[BotDifficulty.MEDIUM] + bots[BotDifficulty.HARD]);
+        }
+
+        public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture)
+        {
+            throw new NotImplementedException();
+        }
+    }
+
+    public class BotCounter : IMultiValueConverter
+    {
+        public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
+        {
+            Dictionary<BotDifficulty, int> bots = (Dictionary<BotDifficulty, int>)values[0];
+            return bots[BotDifficulty.EASY] + bots[BotDifficulty.MEDIUM] + bots[BotDifficulty.HARD];
         }
 
         public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture)

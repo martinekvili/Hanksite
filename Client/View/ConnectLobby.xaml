@@ -16,6 +16,8 @@
     <UserControl.Resources>
         <viewmodel:FreeSpaceCounter
             x:Key="FreeSpaceCounter" />
+        <viewmodel:BotCounter
+            x:Key="BotCounter" />
     </UserControl.Resources>
     <DockPanel
         Margin="24">
@@ -71,8 +73,15 @@
                             <GridViewColumn>
                                 <GridViewColumn.CellTemplate>
                                     <DataTemplate>
-                                        <Label
-                                            Content="{Binding Bots.Count}" />
+                                        <Label>
+                                            <Label.Content>
+                                                <MultiBinding
+                                                    Converter="{StaticResource BotCounter}">
+                                                    <Binding
+                                                        Path="Bots" />
+                                                </MultiBinding>
+                                            </Label.Content>
+                                        </Label>
                                     </DataTemplate>
                                 </GridViewColumn.CellTemplate>
                                 <GridViewColumn.Header>

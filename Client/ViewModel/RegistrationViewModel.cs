@@ -40,8 +40,8 @@ namespace Client.ViewModel
             IsPageEnabled = true;
             accounts = ClientProxyManager.Instance;
 
-            CreateAccountCommand = new CommandHandler(CreateAccount, true);
-            BackCommand = new CommandHandler(Back, true);
+            CreateAccountCommand = new CommandHandler(CreateAccount);
+            BackCommand = new CommandHandler(Back);
         }
 
         private async void CreateAccount()

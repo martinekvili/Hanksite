@@ -157,6 +157,7 @@
             </Button>
             <Button
                 Margin="4"
+                IsEnabled="{Binding IsLobbyFull}"
                 Visibility="{Binding IsReady, Converter={StaticResource BooleanToVisibility}}"
                 Command="{Binding StartCommand}">
                 Start

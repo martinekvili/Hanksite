@@ -18,11 +18,11 @@ namespace Client.ViewModel
 
         public MainMenuViewModel()
         {
-            CreateLobbyCommand = new CommandHandler(NavigateToCreateLobby, true);
-            ConnectLobbyCommand = new CommandHandler(NavigateToConnectLobby, true);
-            ShowStatisticsCommand = new CommandHandler(NavigateToStatistics, true);
-            ShowSettingsCommand = new CommandHandler(NavigateToSettings, true);
-            QuitCommand = new CommandHandler(Quit, true);
+            CreateLobbyCommand = new CommandHandler(NavigateToCreateLobby);
+            ConnectLobbyCommand = new CommandHandler(NavigateToConnectLobby);
+            ShowStatisticsCommand = new CommandHandler(NavigateToStatistics);
+            ShowSettingsCommand = new CommandHandler(NavigateToSettings);
+            QuitCommand = new CommandHandler(Quit);
         }
 
         private void NavigateToCreateLobby()
