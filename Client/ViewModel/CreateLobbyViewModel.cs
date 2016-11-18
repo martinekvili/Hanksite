@@ -219,6 +219,11 @@ namespace Client.ViewModel
         {
             IsReady = true;
             bool result = await lobbyServer.CreateLobby(CreateLobbySettings());
+            if (!result)
+            {
+                MessageBox.Show("The given server name is already used.", "Hanksite", MessageBoxButton.OK);
+                IsReady = false;
+            }
         }
 
         private void Cancel()
