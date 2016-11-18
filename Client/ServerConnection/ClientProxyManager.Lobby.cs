@@ -32,7 +32,7 @@ namespace Client.ServerConnection
 
         public Task<Lobby> ConnectToLobby(string lobbyName)
         {
-            return Task.Factory.StartNew(() => proxy.ConnectToLobby(lobbyName).ToViewModel());
+            return Task.Factory.StartNew(() => proxy.ConnectToLobby(lobbyName)?.ToViewModel());
         }
 
         public void DisconnectFromLobby()
