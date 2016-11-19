@@ -1,8 +1,10 @@
-﻿using Common.Game;
+﻿using Client.Model;
+using Common.Game;
+using System.Collections.Generic;
 
 namespace Client.ViewModel.Interfaces
 {
-    interface IGameActions
+    public interface IGameActions
     {
         void SendGameSnapshot(GameSnapshot snapshot);
         

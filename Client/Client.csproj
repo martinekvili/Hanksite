@@ -65,6 +65,7 @@
     <Compile Include="Model\DrawableField.cs" />
     <Compile Include="Model\Field.cs" />
     <Compile Include="Model\Dummy\MapProvider.cs" />
+    <Compile Include="Model\Interfaces\IGameServer.cs" />
     <Compile Include="Model\Interfaces\ILobbyServer.cs" />
     <Compile Include="Model\Interfaces\IMapProvider.cs" />
     <Compile Include="Model\LoginData.cs" />
@@ -213,7 +214,9 @@
   <ItemGroup>
     <Resource Include="Resources\logo.png" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Content Include="Resources\lastseconds.wav" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

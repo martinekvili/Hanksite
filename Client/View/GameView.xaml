@@ -11,29 +11,53 @@
     Height="650"
     Width="1280"
     d:DesignHeight="300"
-    d:DesignWidth="300"
-    Background="#2A2A2A">
+    d:DesignWidth="300">
     <UserControl.DataContext>
         <viewmodel:GameViewModel />
     </UserControl.DataContext>
     <DockPanel>
-        <StackPanel
+        <Grid
             DockPanel.Dock="Right"
-            Orientation="Horizontal">
-            <Button>
-                step
-            </Button>
-        </StackPanel>
+            VerticalAlignment="Top"
+            Width="200">
+            <Grid.RowDefinitions>
+                <RowDefinition
+                    Height="60" />
+                <RowDefinition
+                    Height="Auto" />
+                <RowDefinition
+                    Height="Auto" />
+            </Grid.RowDefinitions>
+            <Label
+                Grid.Row="0"
+                FontSize="24"
+                Foreground="{Binding CounterColour}"
+                HorizontalAlignment="Center"
+                Content="{Binding RemainingSeconds}"
+                Visibility="{Binding IsCounterRunning, Converter={StaticResource BooleanToVisibility}}"/>
+            <ListBox
+                Grid.Row="1"
+                ItemsSource="{Binding Players}">
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <Label
+                            Content="{Binding User.UserName}"
+                            Foreground="{Binding }"/>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+            <Button
+                Grid.Row="2"
+                Command="{Binding TestCommand}"
+                Content="test" />
+        </Grid>
         <ItemsControl
-            HorizontalAlignment="Center"
-            VerticalAlignment="Center"
             ItemsSource="{Binding Map}"
             Height="650"
-            Width="800"
-            Margin="12">
+            Width="800">
             <ItemsControl.ItemsPanel>
                 <ItemsPanelTemplate>
-                    <Canvas Name="Hexa"/>
+                    <Canvas Name="Map"/>
                 </ItemsPanelTemplate>
             </ItemsControl.ItemsPanel>
             <ItemsControl.ItemContainerStyle>
@@ -50,7 +74,7 @@
             <ItemsControl.ItemTemplate>
                 <DataTemplate>
                     <Path
-                        MouseUp="OnClickHexa"
+                        MouseUp="OnClickHexagon"
                         Fill="{Binding Colour}"
                         Width="{Binding Width}"
                         Height="{Binding Height}"

@@ -17,10 +17,15 @@ namespace Client.View
             viewModel = (GameViewModel)base.DataContext;
         }
 
-        private void OnClickHexa(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        private void OnClickHexagon(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
+            if (!viewModel.IsCounterRunning)
+            {
+                return;
+            }
+
             Path p = sender as Path;
-            viewModel.DecodeColor(p.Fill);
+            viewModel.ChooseColor(p.Fill);
         }
     }
 }

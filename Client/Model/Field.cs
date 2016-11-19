@@ -3,7 +3,7 @@ using System.Windows.Media;
 
 namespace Client.Model
 {
-    class Field
+    public class Field
     {
         public int X { get; }
         public int Y { get; }

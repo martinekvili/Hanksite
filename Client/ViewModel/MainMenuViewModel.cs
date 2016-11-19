@@ -16,6 +16,9 @@ namespace Client.ViewModel
         public ICommand ShowSettingsCommand { get; set; }
         public ICommand QuitCommand { get; set; }
 
+        // Temporary hack
+        public ICommand GameCommand { get; set; }
+
         public MainMenuViewModel()
         {
             CreateLobbyCommand = new CommandHandler(NavigateToCreateLobby);
@@ -23,6 +26,9 @@ namespace Client.ViewModel
             ShowGameHistoryCommand = new CommandHandler(NavigateToGameHistory);
             ShowSettingsCommand = new CommandHandler(NavigateToSettings);
             QuitCommand = new CommandHandler(Quit);
+
+            // Temporary hack
+            GameCommand = new CommandHandler(Game);
         }
 
         private void NavigateToCreateLobby()
@@ -48,6 +54,12 @@ namespace Client.ViewModel
         private void Quit()
         {
             Application.Current.Shutdown();
+        }
+
+        // Temporary hack
+        private void Game()
+        {
+            NavigationService.GetNavigationService(View).Navigate(new GameView());
         }
     }
 }

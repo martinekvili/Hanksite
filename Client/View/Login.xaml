@@ -25,7 +25,13 @@
             Text="{Binding Username}" />
         <Label>Password</Label>
         <PasswordBox
-            Name="passwordBox" />
+            Name="passwordBox">
+            <PasswordBox.InputBindings>
+                <KeyBinding
+                    Key="Return"
+                    Command="{Binding SignInCommand}" />
+            </PasswordBox.InputBindings>
+        </PasswordBox>
         <Button
             Command="{Binding SignInCommand}">
             Sign in
