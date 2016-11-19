@@ -1,4 +1,5 @@
 ﻿using Common.Game;
+using System.Threading.Tasks;
 
 namespace Client.Model.Interfaces
 {
@@ -8,8 +9,8 @@ namespace Client.Model.Interfaces
 
         void DisconnectFromGame();
 
-        GameSnapshotForDisconnected[] GetRunningGames();
+        Task<GameStateForDisconnected[]> GetRunningGames();
 
-        GameSnapshot ReconnectToGame(int gameId);
+        Task<GameState> ReconnectToGame(int gameId);
     }
 }

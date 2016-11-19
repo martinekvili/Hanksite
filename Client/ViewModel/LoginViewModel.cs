@@ -11,6 +11,8 @@ using Client.ServerConnection;
 using Client.ViewModel.Interfaces;
 using System.IO;
 using Client.View.Interfaces;
+using Client.View.Dialogs;
+using System.Collections.Generic;
 
 namespace Client.ViewModel
 {
@@ -42,6 +44,7 @@ namespace Client.ViewModel
         }
 
         private LoginDataManager loginDataManager;
+        private IGameServer gameServer;
 
         public LoginViewModel()
         {
@@ -58,6 +61,8 @@ namespace Client.ViewModel
 
             SignInCommand = new CommandHandler(SignIn);
             CreateAccountCommand = new CommandHandler(CreateAccount);
+
+            gameServer = ClientProxyManager.Instance;
         }
 
         private async void SignIn()
@@ -81,7 +86,28 @@ namespace Client.ViewModel
             window.Disable();
             if (await Accounts.IsAccountValid(window.GetServer(), Username, password))
             {
-                NavigationService.GetNavigationService(View).Navigate(new MainMenu());
+                //GameStateForDisconnected[] games = await gameServer.GetRunningGames();
+
+                // Temporary hack
+                GameStateForDisconnected[] games = null;
+
+                if (games == null)
+                {
+                    NavigationService.GetNavigationService(View).Navigate(new MainMenu());
+                }
+                else
+                {
+                    ReconnectDialog dialog = new ReconnectDialog(Window.GetWindow(View), games);
+                    if (dialog.ShowDialog() == true)
+                    {
+                        NavigationService.GetNavigationService(View).Navigate(new GameView(dialog.GetConnectedGameState()));
+                    }
+                    else
+                    {
+                        NavigationService.GetNavigationService(View).Navigate(new MainMenu());
+                    }
+                }
+
                 window.HideChangeServerButton();
                 window.HideQuitButton();
 

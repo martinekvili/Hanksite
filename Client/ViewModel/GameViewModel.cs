@@ -22,6 +22,7 @@ using System.Windows.Resources;
 using Client.Properties;
 using System.Windows.Navigation;
 using Client.View;
+using Client.ServerConnection;
 
 namespace Client.ViewModel
 {
@@ -76,6 +77,8 @@ namespace Client.ViewModel
             #endregion
 
             TestCommand = new CommandHandler(Test);
+
+            gameServer = ClientProxyManager.Instance;
         }
 
         private void Test()
@@ -164,7 +167,7 @@ namespace Client.ViewModel
         }
         #endregion
 
-        private void RefreshGame(GameState state)
+        public void RefreshGame(GameState state)
         {
             map = mapConverter.ConvertToDrawable(state.Map, CanvasWidth, CanvasHeight);
             NotifyPropertyChanged("Map");

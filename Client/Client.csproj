@@ -81,7 +81,11 @@
     <Compile Include="ServerConnection\ClientProxyManager.Lobby.cs" />
     <Compile Include="ServerConnection\ConversionHelper.cs" />
     <Compile Include="ViewModel\Dialogs\ChangeServerDialogViewModel.cs" />
+    <Compile Include="ViewModel\Dialogs\ReconnectDialogViewModel.cs" />
     <Compile Include="ViewModel\Interfaces\IGameActions.cs" />
+    <Compile Include="View\Dialogs\ReconnectDialog.xaml.cs">
+      <DependentUpon>ReconnectDialog.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\Interfaces\IServerChanger.cs" />
     <Compile Include="ViewModel\Interfaces\ILobbyActions.cs" />
     <Compile Include="ViewModel\MainWindowViewModel.cs" />
@@ -140,6 +144,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\CreateLobby.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Dialogs\ReconnectDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

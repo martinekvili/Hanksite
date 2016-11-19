@@ -11,7 +11,7 @@ using Common.Lobby;
 
 namespace Client.ServerConnection
 {
-    public partial class ClientProxyManager : IAccountProvider, IAvailableLobbyProvider, ILobbyServer
+    public partial class ClientProxyManager : IAccountProvider, IAvailableLobbyProvider, ILobbyServer, IGameServer
     {
         private static ClientProxyManager instance = new ClientProxyManager();
 
@@ -85,6 +85,26 @@ namespace Client.ServerConnection
                     return false;
                 }
             });
+        }
+
+        public void ChooseColour(int colour)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void DisconnectFromGame()
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<GameStateForDisconnected[]> GetRunningGames()
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<GameState> ReconnectToGame(int gameId)
+        {
+            throw new NotImplementedException();
         }
     }
 }

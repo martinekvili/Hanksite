@@ -235,9 +235,6 @@ namespace Client.ViewModel
             IsReady = true;
             IsPageEnabled = false;
 
-            ConnectedPlayers.Add(new Player() { Username = ClientProxyManager.Instance.UserName });
-            NotifyPropertyChanged("ConnectedPlayers");
-
             bool result = await lobbyServer.CreateLobby(CreateLobbySettings());
             ClientProxyManager.Instance.RegisterLobby(this);
 
@@ -246,7 +243,11 @@ namespace Client.ViewModel
             {
                 MessageBox.Show("The given lobby name is already used.", "Hanksite", MessageBoxButton.OK);
                 IsReady = false;
+                return;
             }
+
+            ConnectedPlayers.Add(new Player() { Username = ClientProxyManager.Instance.UserName });
+            NotifyPropertyChanged("ConnectedPlayers");
         }
 
         private void Cancel()

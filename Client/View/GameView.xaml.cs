@@ -1,4 +1,5 @@
-﻿using Client.ViewModel;
+﻿using Client.Model;
+using Client.ViewModel;
 using System;
 using System.Windows;
 using System.Windows.Controls;
@@ -12,6 +13,17 @@ namespace Client.View
         private GameViewModel viewModel;
 
         public GameView()
+        {
+            Initialize();
+        }
+
+        public GameView(GameState state)
+        {
+            Initialize();
+            viewModel.RefreshGame(state);
+        }
+
+        private void Initialize()
         {
             InitializeComponent();
             viewModel = (GameViewModel)base.DataContext;

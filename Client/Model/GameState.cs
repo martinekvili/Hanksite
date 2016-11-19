@@ -11,4 +11,11 @@ namespace Client.Model
         public List<Field> Map { get; set; }
         public List<GamePlayer> Players { get; set; }
     }
+
+    public class GameStateForDisconnected
+    {
+        public int ID { get; set; }
+        public string Name { get; set; }
+        public List<Player> Players { get; set; }
+    }
 }

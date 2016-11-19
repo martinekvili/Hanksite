@@ -34,15 +34,14 @@
                 Foreground="{Binding CounterColour}"
                 HorizontalAlignment="Center"
                 Content="{Binding RemainingSeconds}"
-                Visibility="{Binding IsCounterRunning, Converter={StaticResource BooleanToVisibility}}"/>
+                Visibility="{Binding IsCounterRunning, Converter={StaticResource BooleanToVisibility}}" />
             <ListBox
                 Grid.Row="1"
                 ItemsSource="{Binding Players}">
                 <ListBox.ItemTemplate>
                     <DataTemplate>
                         <Label
-                            Content="{Binding Username}"
-                            Foreground="{Binding }"/>
+                            Content="{Binding Username}" />
                     </DataTemplate>
                 </ListBox.ItemTemplate>
             </ListBox>
@@ -57,7 +56,8 @@
             Width="800">
             <ItemsControl.ItemsPanel>
                 <ItemsPanelTemplate>
-                    <Canvas Name="Map"/>
+                    <Canvas
+                        Name="Map" />
                 </ItemsPanelTemplate>
             </ItemsControl.ItemsPanel>
             <ItemsControl.ItemContainerStyle>

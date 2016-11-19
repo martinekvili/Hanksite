@@ -1,5 +1,8 @@
 ﻿using Client.Helper;
+using Client.Model;
 using Client.View;
+using Client.View.Dialogs;
+using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Navigation;
