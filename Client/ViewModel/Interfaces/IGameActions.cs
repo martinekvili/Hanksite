@@ -6,12 +6,12 @@ namespace Client.ViewModel.Interfaces
 {
     public interface IGameActions
     {
-        void SendGameSnapshot(GameSnapshot snapshot);
+        void SendGameSnapshot(GameState state);
         
-        void DoNextStep(GameSnapshotForNextPlayer snapshot);
+        void DoNextStep(GameState state, List<Coordinate> availableCells);
         
-        void SendGamePlayerSnapshot(GamePlayersSnapshot snapshot);
+        void SendGamePlayerSnapshot(List<GamePlayer> players);
         
-        void SendGameOver(GameSnapshot snapshot);
+        void SendGameOver(GameState state);
     }
 }

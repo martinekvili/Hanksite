@@ -25,7 +25,7 @@ namespace Client.View
             }
 
             Path p = sender as Path;
-            viewModel.ChooseColor(p.Fill);
+            viewModel.ChooseColour((float)p.GetValue(Canvas.LeftProperty), (float)p.GetValue(Canvas.TopProperty));
         }
     }
 }

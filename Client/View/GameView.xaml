@@ -41,7 +41,7 @@
                 <ListBox.ItemTemplate>
                     <DataTemplate>
                         <Label
-                            Content="{Binding User.UserName}"
+                            Content="{Binding Username}"
                             Foreground="{Binding }"/>
                     </DataTemplate>
                 </ListBox.ItemTemplate>

@@ -20,6 +20,8 @@ using System.Threading;
 using System.Media;
 using System.Windows.Resources;
 using Client.Properties;
+using System.Windows.Navigation;
+using Client.View;
 
 namespace Client.ViewModel
 {
@@ -39,6 +41,8 @@ namespace Client.ViewModel
 
         public event PropertyChangedEventHandler PropertyChanged;
 
+        public DependencyObject View { get; set; }
+
         #region counter
         public bool IsCounterRunning { get; set; }
         public int RemainingSeconds { get; set; }
@@ -48,7 +52,8 @@ namespace Client.ViewModel
         private SoundPlayer soundPlayer;
         #endregion
 
-        public Common.Game.Player[] Players { get; set; }
+        public List<GamePlayer> Players { get; set; }
+        public List<Coordinate> AvailableCells { get; set; }
 
         private IGameServer gameServer;
 
@@ -113,47 +118,58 @@ namespace Client.ViewModel
         }
         #endregion
 
-        public void ChooseColor(Brush brush)
+        public void ChooseColour(float x, float y)
         {
-            gameServer.ChooseColour(DecodeColor(brush));
+            DrawableField chosenField = map.FirstOrDefault(field => field.X == x && field.Y == y);
+            if (AvailableCells.FirstOrDefault(cell => cell.X == chosenField.LogicalPosition.X && cell.Y == chosenField.LogicalPosition.Y) == null)
+            {
+                return;
+            }
+
+            int chosenColour = DecodeColur(chosenField.Colour);
+            IsCounterRunning = false;
+            gameServer.ChooseColour(chosenColour);
         }
 
-        private int DecodeColor(Brush brush)
+        private int DecodeColur(Brush brush)
         {
             return colours.FirstOrDefault(x => x.Value == ((SolidColorBrush)brush).Color).Key;
         }
 
         #region callbacks
-        public void SendGameSnapshot(GameSnapshot snapshot)
+        public void SendGameSnapshot(GameState state)
         {
-            RefreshGame(snapshot);
+            RefreshGame(state);
         }
 
-        public void DoNextStep(GameSnapshotForNextPlayer snapshot)
+        public void DoNextStep(GameState state, List<Coordinate> availableCells)
         {
-            RefreshGame(snapshot);
+            AvailableCells = availableCells;
+            RefreshGame(state);
             StartCounter();
         }
 
-        public void SendGamePlayerSnapshot(GamePlayersSnapshot snapshot)
+        public void SendGamePlayerSnapshot(List<GamePlayer> players)
         {
-            throw new NotImplementedException();
+            Players = players;
+            NotifyPropertyChanged("Players");
         }
 
-        public void SendGameOver(GameSnapshot snapshot)
+        public void SendGameOver(GameState state)
         {
-            RefreshGame(snapshot);
-
+            RefreshGame(state);
+            MessageBox.Show("Game Over", "Hanksite", MessageBoxButton.OK);
+            gameServer.DisconnectFromGame();
+            NavigationService.GetNavigationService(View).Navigate(new MainMenu());
         }
         #endregion
 
-        private void RefreshGame(GameSnapshot snapshot)
+        private void RefreshGame(GameState state)
         {
-            List<Field> fields = mapConverter.ConvertToFields(snapshot.Map);
-            map = mapConverter.ConvertToDrawable(fields, CanvasWidth, CanvasHeight);
+            map = mapConverter.ConvertToDrawable(state.Map, CanvasWidth, CanvasHeight);
             NotifyPropertyChanged("Map");
 
-            Players = snapshot.Players;
+            Players = state.Players;
             NotifyPropertyChanged("Players");
         }
 

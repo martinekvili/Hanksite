@@ -62,9 +62,11 @@
     <Compile Include="Helper\CommandHandler.cs" />
     <Compile Include="Helper\ParameterizedCommandHandler.cs" />
     <Compile Include="Model\ColourProvider.cs" />
+    <Compile Include="Model\Coordinate.cs" />
     <Compile Include="Model\DrawableField.cs" />
     <Compile Include="Model\Field.cs" />
     <Compile Include="Model\Dummy\MapProvider.cs" />
+    <Compile Include="Model\GameState.cs" />
     <Compile Include="Model\Interfaces\IGameServer.cs" />
     <Compile Include="Model\Interfaces\ILobbyServer.cs" />
     <Compile Include="Model\Interfaces\IMapProvider.cs" />

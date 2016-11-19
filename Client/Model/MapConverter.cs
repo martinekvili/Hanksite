@@ -27,7 +27,7 @@ namespace Client.Model
             {
                 float x = (item.X * FIELD_WIDTH) + item.Y * (FIELD_WIDTH / 2) - centerPositionX + (canvasWidth / 2);
                 float y = item.Y * fieldHeight - (item.Y * (fieldHeight / 4f)) - centerPositionY + (canvasHeight / 2);
-                drawableMap.Add(new DrawableField(x, y, FIELD_WIDTH, fieldHeight, new SolidColorBrush(colours[item.Colour])));
+                drawableMap.Add(new DrawableField(new Coordinate(item.X, item.Y), x, y, FIELD_WIDTH, fieldHeight, new SolidColorBrush(colours[item.Colour])));
             }
 
             return drawableMap;
