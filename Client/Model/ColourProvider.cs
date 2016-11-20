@@ -26,11 +26,10 @@ namespace Client.Model
             Colours[9] = Colors.LightSlateGray;
             Colours[10] = Colors.YellowGreen;
             Colours[11] = Colors.RoyalBlue;
-            Colours[12] = Colors.LightSalmon;
-            Colours[13] = Colors.SteelBlue;
-            Colours[14] = Colors.Tan;
-            Colours[15] = Colors.LightSeaGreen;
-            Colours[16] = Colors.DarkSlateBlue;
+            Colours[12] = Colors.Orange;
+            Colours[13] = Colors.Tan;
+            Colours[14] = Colors.OrangeRed;
+            Colours[15] = Colors.HotPink;
         }
     }
 }

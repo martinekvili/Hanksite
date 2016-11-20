@@ -116,8 +116,6 @@ namespace Client.ViewModel
                 {
                     Thread.Sleep(1000);
 
-                    Console.WriteLine(round + " - " + actualRound);
-
                     if (round != actualRound)
                     {
                         break;
@@ -145,7 +143,6 @@ namespace Client.ViewModel
 
         private void StopCounter()
         {
-            Console.WriteLine("stop");
             actualRound++;
             remainingSecondsByRound[actualRound] = 0;
             AvailableCells = new List<DrawableField>();
