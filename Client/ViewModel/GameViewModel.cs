@@ -25,6 +25,7 @@ using Client.View;
 using Client.ServerConnection;
 using System.Windows.Data;
 using System.Globalization;
+using Client.View.Dialogs;
 
 namespace Client.ViewModel
 {
@@ -184,7 +185,10 @@ namespace Client.ViewModel
         {
             RefreshGame(state);
             ClientProxyManager.Instance.RemoveGame();
-            MessageBox.Show("Game Over", "Hanksite", MessageBoxButton.OK);
+
+            GameOverDialog dialog = new GameOverDialog(Window.GetWindow(View), state.Players);
+            dialog.ShowDialog();
+
             NavigationService.GetNavigationService(View).Navigate(new MainMenu());
         }
         #endregion

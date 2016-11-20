@@ -83,8 +83,12 @@
     <Compile Include="ServerConnection\ClientProxyManager.Lobby.cs" />
     <Compile Include="ServerConnection\ConversionHelper.cs" />
     <Compile Include="ViewModel\Dialogs\ChangeServerDialogViewModel.cs" />
+    <Compile Include="ViewModel\Dialogs\GameOverDialogViewModel.cs" />
     <Compile Include="ViewModel\Dialogs\ReconnectDialogViewModel.cs" />
     <Compile Include="ViewModel\Interfaces\IGameActions.cs" />
+    <Compile Include="View\Dialogs\GameOverDialog.xaml.cs">
+      <DependentUpon>GameOverDialog.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\Dialogs\ReconnectDialog.xaml.cs">
       <DependentUpon>ReconnectDialog.xaml</DependentUpon>
     </Compile>
@@ -146,6 +150,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\CreateLobby.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Dialogs\GameOverDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
