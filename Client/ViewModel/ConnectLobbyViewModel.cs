@@ -51,7 +51,8 @@ namespace Client.ViewModel
             get
             {
                 return (selectedLobby == null ||
-                    GetFreeSpaces(selectedLobby) == 0) ? false : true; }
+                    GetFreeSpaces(selectedLobby) == 0) ? false : true;
+            }
         }
 
         private ILobbyServer lobbyServer;

@@ -23,13 +23,13 @@ using Client.Properties;
 using System.Windows.Navigation;
 using Client.View;
 using Client.ServerConnection;
+using System.Windows.Data;
+using System.Globalization;
 
 namespace Client.ViewModel
 {
     class GameViewModel : INotifyPropertyChanged, IGameActions
     {
-        public ICommand TestCommand { get; set; }
-
         private MapProvider mapProvider;
         private Dictionary<int, Color> colours;
         private MapConverter mapConverter;
@@ -52,12 +52,8 @@ namespace Client.ViewModel
         private SolidColorBrush defaultColour;
         private SolidColorBrush lastSecondsColour;
         private SoundPlayer soundPlayer;
-        //private CancellationTokenSource tokenSource;
-        //private CancellationToken counterToken;
         private int actualRound;
         private Dictionary<int, int> remainingSecondsByRound;
-        //private Dictionary<int, CancellationTokenSource> tokenSources;
-        //private Dictionary<int, bool> rounds;
         #endregion
 
         public List<GamePlayer> Players { get; set; }
@@ -85,18 +81,10 @@ namespace Client.ViewModel
             actualRound = 0;
             remainingSecondsByRound = new Dictionary<int, int>();
             remainingSecondsByRound[0] = 0;
-            //tokenSources = new Dictionary<int, CancellationTokenSource>();
             #endregion
-
-            TestCommand = new CommandHandler(Test);
 
             gameServer = ClientProxyManager.Instance;
             ClientProxyManager.Instance.RegisterGame(this);
-        }
-
-        private void Test()
-        {
-            StartCounter();
         }
 
         #region counter
@@ -110,10 +98,7 @@ namespace Client.ViewModel
 
             CounterColour = defaultColour;
             NotifyPropertyChanged("CounterColour");
-
-            //CancellationTokenSource tokenSource = new CancellationTokenSource();
-            //CancellationToken counterToken = tokenSource.Token;
-            //tokenSources[actualRound] = tokenSource;
+            
             Task.Factory.StartNew(() =>
             {
                 int round = actualRound;
@@ -139,17 +124,12 @@ namespace Client.ViewModel
                         soundPlayer.Play();
                     }
                 }
-
-                Console.WriteLine("check for round");
+                
                 if (round == actualRound)
                 {
                     StopCounter();
                 }
                 remainingSecondsByRound.Remove(round);
-                //if (round != actualRound)
-                //{
-                //    StopCounter(round);
-                //}
             });
         }
 
@@ -162,7 +142,6 @@ namespace Client.ViewModel
             NotifyPropertyChanged("AvailableCells");
             IsCounterRunning = false;
             NotifyPropertyChanged("IsCounterRunning");
-            //tokenSources[round].Cancel();
         }
         #endregion
 
@@ -182,14 +161,12 @@ namespace Client.ViewModel
         #region callbacks
         public void SendGameSnapshot(GameState state)
         {
-            Console.WriteLine("SendGameSnapshot");
             RefreshGame(state);
         }
 
         public void DoNextStep(GameState state, List<Coordinate> availableCells)
         {
             actualRound++;
-            Console.WriteLine("DoNextStep");
             AvailableCells = mapConverter.ConvertToDrawable(availableCells, mapAttributes, CanvasWidth, CanvasHeight);
             NotifyPropertyChanged("AvailableCells");
 
@@ -199,14 +176,12 @@ namespace Client.ViewModel
 
         public void SendGamePlayerSnapshot(List<GamePlayer> players)
         {
-            Console.WriteLine("SendGamePlayerSnapshot");
             Players = players;
             NotifyPropertyChanged("Players");
         }
 
         public void SendGameOver(GameState state)
         {
-            Console.WriteLine("SendGameOver");
             RefreshGame(state);
             ClientProxyManager.Instance.RemoveGame();
             MessageBox.Show("Game Over", "Hanksite", MessageBoxButton.OK);
@@ -226,6 +201,20 @@ namespace Client.ViewModel
         private void NotifyPropertyChanged(string propertyName)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+    }
+
+    public class ColourConverter : IMultiValueConverter
+    {
+        public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
+        {
+            int colourNumber = int.Parse(values[0].ToString());
+            return new SolidColorBrush(new ColourProvider().Colours[colourNumber]);
+        }
+
+        public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture)
+        {
+            throw new NotImplementedException();
         }
     }
 }

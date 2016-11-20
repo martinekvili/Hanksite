@@ -15,6 +15,10 @@
     <UserControl.DataContext>
         <viewmodel:GameViewModel />
     </UserControl.DataContext>
+    <UserControl.Resources>
+        <viewmodel:ColourConverter
+            x:Key="ColourConverter"/>
+    </UserControl.Resources>
     <DockPanel>
         <Grid
             DockPanel.Dock="Right"
@@ -41,14 +45,18 @@
                 <ListBox.ItemTemplate>
                     <DataTemplate>
                         <Label
-                            Content="{Binding Username}" />
+                            Content="{Binding Username}">
+                            <Label.Background>
+                                <MultiBinding
+                                    Converter="{StaticResource ColourConverter}">
+                                    <Binding
+                                        Path="Colour" />
+                                </MultiBinding>
+                            </Label.Background>
+                        </Label>
                     </DataTemplate>
                 </ListBox.ItemTemplate>
             </ListBox>
-            <Button
-                Grid.Row="2"
-                Command="{Binding TestCommand}"
-                Content="test" />
         </Grid>
         <Grid>
             <ItemsControl
@@ -111,7 +119,9 @@
                         <Path
                             Tag="{Binding Tag}"
                             MouseUp="OnClickHexagon"
-                            Fill="{Binding Colour}"
+                            Fill="Transparent"
+                            Stroke="{Binding Colour}"
+                            StrokeThickness="8"
                             Width="{Binding Width}"
                             Height="{Binding Height}"
                             Stretch="Fill"
