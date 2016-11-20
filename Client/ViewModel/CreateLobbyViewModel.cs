@@ -248,6 +248,7 @@ namespace Client.ViewModel
 
             ConnectedPlayers.Add(new Player() { Username = ClientProxyManager.Instance.UserName });
             NotifyPropertyChanged("ConnectedPlayers");
+            NotifyPropertyChanged("IsLobbyFull");
         }
 
         private void Cancel()
@@ -262,7 +263,6 @@ namespace Client.ViewModel
         {
             IsPageEnabled = false;
             lobbyServer.StartGame();
-            NavigationService.GetNavigationService(View).Navigate(new GameView());
         }
 
         private void Back()
@@ -346,7 +346,7 @@ namespace Client.ViewModel
 
         public void SendGameStarted()
         {
-            throw new NotImplementedException();
+            NavigationService.GetNavigationService(View).Navigate(new GameView());
         }
         #endregion
 

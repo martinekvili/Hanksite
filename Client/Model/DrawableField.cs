@@ -12,6 +12,8 @@ namespace Client.Model
         public float Height { get; }
         public Brush Colour { get; }
 
+        public string Tag => LogicalPosition.X + "-" + LogicalPosition.Y;
+
         public DrawableField(Coordinate position, float x, float y, float width, float height, Brush colour)
         {
             LogicalPosition = position;

@@ -50,39 +50,76 @@
                 Command="{Binding TestCommand}"
                 Content="test" />
         </Grid>
-        <ItemsControl
-            ItemsSource="{Binding Map}"
-            Height="650"
-            Width="800">
-            <ItemsControl.ItemsPanel>
-                <ItemsPanelTemplate>
-                    <Canvas
-                        Name="Map" />
-                </ItemsPanelTemplate>
-            </ItemsControl.ItemsPanel>
-            <ItemsControl.ItemContainerStyle>
-                <Style
-                    TargetType="ContentPresenter">
-                    <Setter
-                        Property="Canvas.Left"
-                        Value="{Binding X}" />
-                    <Setter
-                        Property="Canvas.Top"
-                        Value="{Binding Y}" />
-                </Style>
-            </ItemsControl.ItemContainerStyle>
-            <ItemsControl.ItemTemplate>
-                <DataTemplate>
-                    <Path
-                        MouseUp="OnClickHexagon"
-                        Fill="{Binding Colour}"
-                        Width="{Binding Width}"
-                        Height="{Binding Height}"
-                        Stretch="Fill"
-                        Data="M8.660254,0 L17.320508,5 17.320508,15 8.660254,20 0,15 0,5 8.660254,0 z">
-                    </Path>
-                </DataTemplate>
-            </ItemsControl.ItemTemplate>
-        </ItemsControl>
+        <Grid>
+            <ItemsControl
+                ItemsSource="{Binding Map}"
+                Height="650"
+                Width="800">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <Canvas
+                            Name="Map" />
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+                <ItemsControl.ItemContainerStyle>
+                    <Style
+                        TargetType="ContentPresenter">
+                        <Setter
+                            Property="Canvas.Left"
+                            Value="{Binding X}" />
+                        <Setter
+                            Property="Canvas.Top"
+                            Value="{Binding Y}" />
+                    </Style>
+                </ItemsControl.ItemContainerStyle>
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <Path
+                            Tag="{Binding Tag}"
+                            Fill="{Binding Colour}"
+                            Width="{Binding Width}"
+                            Height="{Binding Height}"
+                            Stretch="Fill"
+                            Data="M8.660254,0 L17.320508,5 17.320508,15 8.660254,20 0,15 0,5 8.660254,0 z">
+                        </Path>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+            <ItemsControl
+                ItemsSource="{Binding AvailableCells}"
+                Height="650"
+                Width="800">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <Canvas
+                            Name="AvailableCells" />
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+                <ItemsControl.ItemContainerStyle>
+                    <Style
+                        TargetType="ContentPresenter">
+                        <Setter
+                            Property="Canvas.Left"
+                            Value="{Binding X}" />
+                        <Setter
+                            Property="Canvas.Top"
+                            Value="{Binding Y}" />
+                    </Style>
+                </ItemsControl.ItemContainerStyle>
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <Path
+                            Tag="{Binding Tag}"
+                            MouseUp="OnClickHexagon"
+                            Fill="{Binding Colour}"
+                            Width="{Binding Width}"
+                            Height="{Binding Height}"
+                            Stretch="Fill"
+                            Data="M8.660254,0 L17.320508,5 17.320508,15 8.660254,20 0,15 0,5 8.660254,0 z">
+                        </Path>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </Grid>
     </DockPanel>
 </UserControl>

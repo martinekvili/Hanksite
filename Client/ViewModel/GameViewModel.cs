@@ -33,6 +33,7 @@ namespace Client.ViewModel
         private MapProvider mapProvider;
         private Dictionary<int, Color> colours;
         private MapConverter mapConverter;
+        private MapAttributes mapAttributes;
 
         public float CanvasWidth { get; set; }
         public float CanvasHeight { get; set; }
@@ -51,10 +52,12 @@ namespace Client.ViewModel
         private SolidColorBrush defaultColour;
         private SolidColorBrush lastSecondsColour;
         private SoundPlayer soundPlayer;
+        private CancellationTokenSource tokenSource;
+        private CancellationToken counterToken;
         #endregion
 
         public List<GamePlayer> Players { get; set; }
-        public List<Coordinate> AvailableCells { get; set; }
+        public List<DrawableField> AvailableCells { get; set; }
 
         private IGameServer gameServer;
 
@@ -67,6 +70,7 @@ namespace Client.ViewModel
             CanvasWidth = 800;
             CanvasHeight = 650;
 
+            mapAttributes = mapConverter.GetMapAttributes(mapProvider.GetMap());
             map = mapConverter.ConvertToDrawable(mapProvider.GetMap(), CanvasWidth, CanvasHeight);
 
             #region counter
@@ -79,6 +83,7 @@ namespace Client.ViewModel
             TestCommand = new CommandHandler(Test);
 
             gameServer = ClientProxyManager.Instance;
+            ClientProxyManager.Instance.RegisterGame(this);
         }
 
         private void Test()
@@ -98,11 +103,19 @@ namespace Client.ViewModel
             CounterColour = defaultColour;
             NotifyPropertyChanged("CounterColour");
 
+            tokenSource = new CancellationTokenSource();
+            counterToken = tokenSource.Token;
             Task.Factory.StartNew(() =>
             {
                 while (IsCounterRunning && 0 < RemainingSeconds)
                 {
+                    if (counterToken.IsCancellationRequested)
+                    {
+                        break;
+                    }
+
                     Thread.Sleep(1000);
+
                     RemainingSeconds--;
                     NotifyPropertyChanged("RemainingSeconds");
 
@@ -113,24 +126,31 @@ namespace Client.ViewModel
 
                         soundPlayer.Play();
                     }
-                }
 
-                IsCounterRunning = false;
-                NotifyPropertyChanged("IsCounterRunning");
-            });
+                    if (counterToken.IsCancellationRequested)
+                    {
+                        break;
+                    }
+                }
+                StopCounter();
+            }, counterToken);
+        }
+
+        private void StopCounter()
+        {
+            tokenSource.Cancel();
+            AvailableCells = new List<DrawableField>();
+            NotifyPropertyChanged("AvailableCells");
+            IsCounterRunning = false;
+            NotifyPropertyChanged("IsCounterRunning");
         }
         #endregion
 
-        public void ChooseColour(float x, float y)
+        public void ChooseColour(string tag)
         {
-            DrawableField chosenField = map.FirstOrDefault(field => field.X == x && field.Y == y);
-            if (AvailableCells.FirstOrDefault(cell => cell.X == chosenField.LogicalPosition.X && cell.Y == chosenField.LogicalPosition.Y) == null)
-            {
-                return;
-            }
-
+            StopCounter();
+            DrawableField chosenField = map.FirstOrDefault(field => field.Tag == tag);
             int chosenColour = DecodeColur(chosenField.Colour);
-            IsCounterRunning = false;
             gameServer.ChooseColour(chosenColour);
         }
 
@@ -142,27 +162,33 @@ namespace Client.ViewModel
         #region callbacks
         public void SendGameSnapshot(GameState state)
         {
+            Console.WriteLine("SendGameSnapshot");
             RefreshGame(state);
         }
 
         public void DoNextStep(GameState state, List<Coordinate> availableCells)
         {
-            AvailableCells = availableCells;
+            Console.WriteLine("DoNextStep");
+            AvailableCells = mapConverter.ConvertToDrawable(availableCells, mapAttributes, CanvasWidth, CanvasHeight);
+            NotifyPropertyChanged("AvailableCells");
+
             RefreshGame(state);
             StartCounter();
         }
 
         public void SendGamePlayerSnapshot(List<GamePlayer> players)
         {
+            Console.WriteLine("SendGamePlayerSnapshot");
             Players = players;
             NotifyPropertyChanged("Players");
         }
 
         public void SendGameOver(GameState state)
         {
+            Console.WriteLine("SendGameOver");
             RefreshGame(state);
+            ClientProxyManager.Instance.RemoveGame();
             MessageBox.Show("Game Over", "Hanksite", MessageBoxButton.OK);
-            gameServer.DisconnectFromGame();
             NavigationService.GetNavigationService(View).Navigate(new MainMenu());
         }
         #endregion

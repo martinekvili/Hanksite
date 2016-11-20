@@ -72,6 +72,7 @@
     <Compile Include="Model\Interfaces\IMapProvider.cs" />
     <Compile Include="Model\LoginData.cs" />
     <Compile Include="Model\LoginDataManager.cs" />
+    <Compile Include="Model\MapAttributes.cs" />
     <Compile Include="Model\MapConverter.cs" />
     <Compile Include="Model\Server.cs" />
     <Compile Include="ServerConnection\ClientProxyManager.Game.cs" />

@@ -27,17 +27,13 @@ namespace Client.View
         {
             InitializeComponent();
             viewModel = (GameViewModel)base.DataContext;
+            viewModel.View = this;
         }
 
         private void OnClickHexagon(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
-            if (!viewModel.IsCounterRunning)
-            {
-                return;
-            }
-
             Path p = sender as Path;
-            viewModel.ChooseColour((float)p.GetValue(Canvas.LeftProperty), (float)p.GetValue(Canvas.TopProperty));
+            viewModel.ChooseColour(p.GetValue(TagProperty).ToString());
         }
     }
 }
