@@ -48,17 +48,6 @@
                 Command="{Binding QuitCommand}">
                 Quit
             </Button>
-            
-            <!--Temporary hack-->
-            <Button
-                Style="{StaticResource MenuButton}"
-                Command="{Binding GameCommand}"
-                Foreground="Red">
-                Game
-            </Button>
-
-
-
         </StackPanel>
     </DockPanel>
 </UserControl>

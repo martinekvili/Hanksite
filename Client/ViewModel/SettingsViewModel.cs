@@ -10,6 +10,7 @@ namespace Client.ViewModel
         public DependencyObject View { get; set; }
 
         public ICommand BackCommand { get; set; }
+        public ICommand ChangeProperty { get; set; }
 
         public string Password { get; set; }
         public string NewPassword { get; set; }
@@ -18,11 +19,17 @@ namespace Client.ViewModel
         public SettingsViewModel()
         {
             BackCommand = new CommandHandler(Back);
+            ChangeProperty = new CommandHandler(Change);
         }
 
         private void Back()
         {
             NavigationService.GetNavigationService(View).GoBack();
         }
-    }
+
+        private void Change()
+        {
+
+        }
+     }
 }

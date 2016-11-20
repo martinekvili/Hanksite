@@ -19,12 +19,14 @@
         <Label>Password</Label>
         <TextBox/>
         <Label>New password</Label>
-        <TextBox/>
+        <PasswordBox
+            Name="passwordBox" />
         <Label>Confirm new password</Label>
-        <TextBox/>
+        <PasswordBox
+            Name="confirmedPasswordBox" />
         <TextBlock/>
         <Button>
-            Change password
+            Change
         </Button>
         <Button
             Command="{Binding BackCommand}">

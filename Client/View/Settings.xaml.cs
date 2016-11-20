@@ -1,11 +1,13 @@
-﻿using Client.ViewModel;
+﻿using Client.View.Interfaces;
+using Client.ViewModel;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Navigation;
+using System;
 
 namespace Client.View
 {
-    public partial class Settings : UserControl
+    public partial class Settings : UserControl, IConfirmedPasswordProvider
     {
         private SettingsViewModel viewModel;
 
@@ -20,6 +22,16 @@ namespace Client.View
         {
             NavigationService navigationService = NavigationService.GetNavigationService(this);
             navigationService.GoBack();
+        }
+
+        public string GetPassword()
+        {
+            return passwordBox.Password;
+        }
+
+        public string GetConfirmedPassword()
+        {
+            return confirmedPasswordBox.Password;
         }
     }
 }
