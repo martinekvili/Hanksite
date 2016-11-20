@@ -47,13 +47,17 @@ namespace Client.ViewModel
 
         #region counter
         public bool IsCounterRunning { get; set; }
-        public int RemainingSeconds { get; set; }
+        public int RemainingSeconds => remainingSecondsByRound[actualRound];
         public Brush CounterColour { get; set; }
         private SolidColorBrush defaultColour;
         private SolidColorBrush lastSecondsColour;
         private SoundPlayer soundPlayer;
-        private CancellationTokenSource tokenSource;
-        private CancellationToken counterToken;
+        //private CancellationTokenSource tokenSource;
+        //private CancellationToken counterToken;
+        private int actualRound;
+        private Dictionary<int, int> remainingSecondsByRound;
+        //private Dictionary<int, CancellationTokenSource> tokenSources;
+        //private Dictionary<int, bool> rounds;
         #endregion
 
         public List<GamePlayer> Players { get; set; }
@@ -78,6 +82,10 @@ namespace Client.ViewModel
             defaultColour = new SolidColorBrush(Color.FromScRgb(1, 0, 0, 0));
             lastSecondsColour = new SolidColorBrush(Color.FromScRgb(1, 1, 0, 0));
             soundPlayer = new SoundPlayer(Resources.lastseconds);
+            actualRound = 0;
+            remainingSecondsByRound = new Dictionary<int, int>();
+            remainingSecondsByRound[0] = 0;
+            //tokenSources = new Dictionary<int, CancellationTokenSource>();
             #endregion
 
             TestCommand = new CommandHandler(Test);
@@ -94,7 +102,7 @@ namespace Client.ViewModel
         #region counter
         private void StartCounter()
         {
-            RemainingSeconds = 15;
+            remainingSecondsByRound[actualRound] = 15;
             NotifyPropertyChanged("RemainingSeconds");
 
             IsCounterRunning = true;
@@ -103,46 +111,58 @@ namespace Client.ViewModel
             CounterColour = defaultColour;
             NotifyPropertyChanged("CounterColour");
 
-            tokenSource = new CancellationTokenSource();
-            counterToken = tokenSource.Token;
+            //CancellationTokenSource tokenSource = new CancellationTokenSource();
+            //CancellationToken counterToken = tokenSource.Token;
+            //tokenSources[actualRound] = tokenSource;
             Task.Factory.StartNew(() =>
             {
-                while (IsCounterRunning && 0 < RemainingSeconds)
+                int round = actualRound;
+                while (round == actualRound && 0 < remainingSecondsByRound[round])
                 {
-                    if (counterToken.IsCancellationRequested)
+                    Thread.Sleep(1000);
+
+                    Console.WriteLine(round + " - " + actualRound);
+
+                    if (round != actualRound)
                     {
                         break;
                     }
 
-                    Thread.Sleep(1000);
-
-                    RemainingSeconds--;
+                    remainingSecondsByRound[round]--;
                     NotifyPropertyChanged("RemainingSeconds");
 
-                    if (RemainingSeconds <= 3)
+                    if (remainingSecondsByRound[round] <= 3)
                     {
                         CounterColour = lastSecondsColour;
                         NotifyPropertyChanged("CounterColour");
 
                         soundPlayer.Play();
                     }
-
-                    if (counterToken.IsCancellationRequested)
-                    {
-                        break;
-                    }
                 }
-                StopCounter();
-            }, counterToken);
+
+                Console.WriteLine("check for round");
+                if (round == actualRound)
+                {
+                    StopCounter();
+                }
+                remainingSecondsByRound.Remove(round);
+                //if (round != actualRound)
+                //{
+                //    StopCounter(round);
+                //}
+            });
         }
 
         private void StopCounter()
         {
-            tokenSource.Cancel();
+            Console.WriteLine("stop");
+            actualRound++;
+            remainingSecondsByRound[actualRound] = 0;
             AvailableCells = new List<DrawableField>();
             NotifyPropertyChanged("AvailableCells");
             IsCounterRunning = false;
             NotifyPropertyChanged("IsCounterRunning");
+            //tokenSources[round].Cancel();
         }
         #endregion
 
@@ -168,6 +188,7 @@ namespace Client.ViewModel
 
         public void DoNextStep(GameState state, List<Coordinate> availableCells)
         {
+            actualRound++;
             Console.WriteLine("DoNextStep");
             AvailableCells = mapConverter.ConvertToDrawable(availableCells, mapAttributes, CanvasWidth, CanvasHeight);
             NotifyPropertyChanged("AvailableCells");
