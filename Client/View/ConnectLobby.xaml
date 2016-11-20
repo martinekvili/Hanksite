@@ -20,7 +20,8 @@
             x:Key="BotCounter" />
     </UserControl.Resources>
     <DockPanel
-        Margin="24">
+        Margin="24"
+        HorizontalAlignment="Center">
         <StackPanel
             Margin="24"
             Orientation="Vertical"

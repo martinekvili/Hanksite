@@ -12,7 +12,8 @@
         <viewmodel:GameHistoryViewModel/>
     </UserControl.DataContext>
     <DockPanel
-        Margin="24">
+        Margin="24"
+        HorizontalAlignment="Center">
         <StackPanel
             Orientation="Horizontal"
             DockPanel.Dock="Top"

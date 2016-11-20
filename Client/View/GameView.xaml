@@ -39,24 +39,61 @@
                 HorizontalAlignment="Center"
                 Content="{Binding RemainingSeconds}"
                 Visibility="{Binding IsCounterRunning, Converter={StaticResource BooleanToVisibility}}" />
-            <ListBox
+            <ListView
                 Grid.Row="1"
+                Margin="4"
                 ItemsSource="{Binding Players}">
-                <ListBox.ItemTemplate>
-                    <DataTemplate>
-                        <Label
-                            Content="{Binding Username}">
-                            <Label.Background>
-                                <MultiBinding
-                                    Converter="{StaticResource ColourConverter}">
-                                    <Binding
-                                        Path="Colour" />
-                                </MultiBinding>
-                            </Label.Background>
-                        </Label>
-                    </DataTemplate>
-                </ListBox.ItemTemplate>
-            </ListBox>
+                <ListView.View>
+                    <GridView>
+                        <GridView.Columns>
+                            <GridViewColumn>
+                                <GridViewColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <Label
+                                            Content="{Binding Position}" />
+                                    </DataTemplate>
+                                </GridViewColumn.CellTemplate>
+                                <GridViewColumn.Header>
+                                    <Label
+                                        Content="No" />
+                                </GridViewColumn.Header>
+                            </GridViewColumn>
+                            <GridViewColumn>
+                                <GridViewColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <Label
+                                            Content="{Binding Username}">
+                                            <Label.Background>
+                                                <MultiBinding
+                                                    Converter="{StaticResource ColourConverter}">
+                                                    <Binding
+                                                        Path="Colour" />
+                                                </MultiBinding>
+                                            </Label.Background>
+                                        </Label>
+                                    </DataTemplate>
+                                </GridViewColumn.CellTemplate>
+                                <GridViewColumn.Header>
+                                    <Label
+                                        Content="Name" />
+                                </GridViewColumn.Header>
+                            </GridViewColumn>
+                            <GridViewColumn>
+                                <GridViewColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <Label
+                                            Content="{Binding Points}" />
+                                    </DataTemplate>
+                                </GridViewColumn.CellTemplate>
+                                <GridViewColumn.Header>
+                                    <Label
+                                        Content="Points" />
+                                </GridViewColumn.Header>
+                            </GridViewColumn>
+                        </GridView.Columns>
+                    </GridView>
+                </ListView.View>
+            </ListView>
         </Grid>
         <Grid>
             <ItemsControl

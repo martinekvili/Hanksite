@@ -57,7 +57,16 @@ namespace Client.ViewModel
         private Dictionary<int, int> remainingSecondsByRound;
         #endregion
 
-        public List<GamePlayer> Players { get; set; }
+        private List<GamePlayer> players;
+        public List<GamePlayer> Players
+        {
+            get { return players; }
+            set
+            {
+                players = value.OrderBy(player => player.Position).ToList();
+                NotifyPropertyChanged("Players");
+            }
+        }
         public List<DrawableField> AvailableCells { get; set; }
 
         private IGameServer gameServer;
@@ -178,7 +187,6 @@ namespace Client.ViewModel
         public void SendGamePlayerSnapshot(List<GamePlayer> players)
         {
             Players = players;
-            NotifyPropertyChanged("Players");
         }
 
         public void SendGameOver(GameState state)
@@ -199,7 +207,6 @@ namespace Client.ViewModel
             NotifyPropertyChanged("Map");
 
             Players = state.Players;
-            NotifyPropertyChanged("Players");
         }
 
         private void NotifyPropertyChanged(string propertyName)
