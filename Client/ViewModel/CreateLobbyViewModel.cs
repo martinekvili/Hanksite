@@ -343,6 +343,11 @@ namespace Client.ViewModel
             string message = "There are not enough players in the lobby.";
             MessageBox.Show(message, "Hanksite", MessageBoxButton.OK);
         }
+
+        public void SendGameStarted()
+        {
+            throw new NotImplementedException();
+        }
         #endregion
 
         private void NotifyPropertyChanged(string propertyName)

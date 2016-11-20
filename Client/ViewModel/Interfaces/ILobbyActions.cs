@@ -10,5 +10,7 @@ namespace Client.ViewModel.Interfaces
         void SendLobbyClosed();
         
         void SendNotEnoughPlayers();
+
+        void SendGameStarted();
     }
 }

@@ -86,25 +86,5 @@ namespace Client.ServerConnection
                 }
             });
         }
-
-        public void ChooseColour(int colour)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void DisconnectFromGame()
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<GameStateForDisconnected[]> GetRunningGames()
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<GameState> ReconnectToGame(int gameId)
-        {
-            throw new NotImplementedException();
-        }
     }
 }

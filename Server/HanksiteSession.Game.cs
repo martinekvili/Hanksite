@@ -12,6 +12,12 @@ namespace Server
     {
         public RealPlayer RealPlayer { get; set; }
 
+        public void ClientReady()
+        {
+            log("is ready for game");
+            RealPlayer.ClientReady();
+        }
+
         public void ChooseColour(int colour)
         {
             log($"chose colour: {colour}");

@@ -72,6 +72,19 @@ namespace Server
             
         }
 
+        public void SendGameStarted()
+        {
+            try
+            {
+                log("is sent GameStarted");
+                callback.SendGameStarted();
+            }
+            catch (Exception ex)
+            {
+                logError("sending GameStarted", ex);
+            }
+        }
+
         public void SendLobbyClosed()
         {
             try

@@ -27,6 +27,7 @@ namespace Server.Game
         private Timer playerTimeoutTimer;
         private readonly object syncObject = new object();
 
+        private bool isGameStarted = false;
         private bool isGameOver = false;
 
         private int currentPlayerNum;
@@ -66,9 +67,23 @@ namespace Server.Game
             initializePlayers(realPlayers, settings);
 
             this.map = MapBuilder.CreateMap(players.Select(player => player.ID).ToList(), settings.NumberOfColours);
+        }
 
-            this.currentPlayerNum = this.players.Count - 1;
-            stepNextPlayer();
+        public void ClientReady()
+        {
+            lock (syncObject)
+            {
+                if (isGameStarted)
+                    return;
+
+                if (players.All(player => player.IsReady))
+                {
+                    isGameStarted = true;
+
+                    this.currentPlayerNum = this.players.Count - 1;
+                    stepNextPlayer();
+                }
+            }
         }
 
         private void initializePlayers(List<HanksiteSession> realPlayers, LobbySettings settings)

@@ -45,6 +45,7 @@ namespace Server.Game.Player
         public abstract void DoNextStep(List<Hexagon> availableCells);
         public abstract void SendGamePlayersSnapshot();
         public abstract void SendGameOver();
+        public abstract bool IsReady { get; }
         public abstract Common.Game.Player ToDto();
     }
 }

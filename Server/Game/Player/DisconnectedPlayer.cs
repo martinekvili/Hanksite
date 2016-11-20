@@ -18,6 +18,8 @@ namespace Server.Game.Player
 
         public override bool CanDoStep => false;
 
+        public override bool IsReady => true;
+
         public override void DoNextStep(List<Hexagon> availableCells)
         { }
 

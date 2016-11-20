@@ -74,6 +74,7 @@
     <Compile Include="Model\LoginDataManager.cs" />
     <Compile Include="Model\MapConverter.cs" />
     <Compile Include="Model\Server.cs" />
+    <Compile Include="ServerConnection\ClientProxyManager.Game.cs" />
     <Compile Include="ServerConnection\ClientCallback.cs" />
     <Compile Include="ServerConnection\ClientCallback.Game.cs" />
     <Compile Include="ServerConnection\ClientCallback.Lobby.cs" />

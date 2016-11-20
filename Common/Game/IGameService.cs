@@ -21,6 +21,9 @@ namespace Common.Game
 
         [OperationContract(IsOneWay = false)]
         GameSnapshot ReconnectToGame(int gameId);
+
+        [OperationContract(IsOneWay = true)]
+        void ClientReady();
     }
 
     public interface IGameServiceCallback

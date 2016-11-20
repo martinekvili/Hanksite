@@ -11,11 +11,25 @@ namespace Server.Game.Player
     {
         private readonly HanksiteSession session;
 
+        private bool isClientReady;
+
+        public override bool IsReady => isClientReady;
+
         public RealPlayer(HanksiteSession session, GameManager game) : base(session.User, game)
         {
             this.session = session;
+            session.SendGameStarted();
+
+            this.isClientReady = false;
 
             session.RealPlayer = this;
+        }
+
+        public void ClientReady()
+        {
+            isClientReady = true;
+
+            game.ClientReady();
         }
 
         public RealPlayer(HanksiteSession session, DisconnectedPlayer player) : base(player)

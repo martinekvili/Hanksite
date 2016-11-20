@@ -19,9 +19,7 @@ namespace Client.ServerConnection
             set
             {
                 lock (syncObject)
-                {
                     lobby = value;
-                }
             }
         }
 
@@ -51,7 +49,16 @@ namespace Client.ServerConnection
             lock (syncObject)
             {
                 if (lobby != null)
-                    Application.Current.Dispatcher.InvokeAsync(() => lobby.SendLobbyClosed());
+                    Application.Current.Dispatcher.InvokeAsync(() => lobby.SendNotEnoughPlayers());
+            }
+        }
+
+        public void SendGameStarted()
+        {
+            lock (syncObject)
+            {
+                if (lobby != null)
+                    Application.Current.Dispatcher.InvokeAsync(() => lobby.SendGameStarted());
             }
         }
     }

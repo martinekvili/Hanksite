@@ -46,6 +46,10 @@ namespace Server
                     {
                         break;
                     }
+                    else if (command == String.Empty)
+                    {
+                        continue;
+                    }
                     else
                     {
                         Console.WriteLine($"Unrecognized command: '{command}'. Please enter 'help' for help.");

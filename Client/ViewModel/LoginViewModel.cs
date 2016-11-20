@@ -86,12 +86,9 @@ namespace Client.ViewModel
             window.Disable();
             if (await Accounts.IsAccountValid(window.GetServer(), Username, password))
             {
-                //GameStateForDisconnected[] games = await gameServer.GetRunningGames();
+                GameStateForDisconnected[] games = await gameServer.GetRunningGames();
 
-                // Temporary hack
-                GameStateForDisconnected[] games = null;
-
-                if (games == null)
+                if (games.Length == 0)
                 {
                     NavigationService.GetNavigationService(View).Navigate(new MainMenu());
                 }

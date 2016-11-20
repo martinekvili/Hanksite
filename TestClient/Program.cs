@@ -69,6 +69,11 @@ namespace TestClient
         {
             Console.WriteLine("Players changed.");
         }
+
+        public void SendGameStarted()
+        {
+            Console.WriteLine("Game started");
+        }
     }
 
     class Program
@@ -158,6 +163,10 @@ namespace TestClient
                     else if (message[0] == "startgame")
                     {
                         proxy.StartGame();
+                    }
+                    else if (message[0] == "ready")
+                    {
+                        proxy.ClientReady();
                     }
                     else if (message[0] == "choosecolour")
                     {

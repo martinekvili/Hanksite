@@ -36,5 +36,8 @@ namespace Common.Lobby
 
         [OperationContract(IsOneWay = true)]
         void SendNotEnoughPlayers();
+
+        [OperationContract(IsOneWay = true)]
+        void SendGameStarted();
     }
 }
