@@ -7,7 +7,7 @@ using System;
 
 namespace Client.View
 {
-    public partial class Settings : UserControl, IConfirmedPasswordProvider
+    public partial class Settings : UserControl, IPasswordChanger
     {
         private SettingsViewModel viewModel;
 
@@ -27,6 +27,11 @@ namespace Client.View
         public string GetPassword()
         {
             return passwordBox.Password;
+        }
+
+        public string GetNewPassword()
+        {
+            return newPasswordBox.Password;
         }
 
         public string GetConfirmedPassword()

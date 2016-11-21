@@ -6,7 +6,8 @@
              xmlns:local="clr-namespace:Client.View"
              xmlns:viewmodel="clr-namespace:Client.ViewModel"
              mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="300">
+             d:DesignHeight="300" d:DesignWidth="300"
+             IsEnabled="{Binding IsPageEnabled}">
     <UserControl.DataContext>
         <viewmodel:SettingsViewModel/>
     </UserControl.DataContext>
@@ -17,15 +18,17 @@
             Settings
         </TextBlock>
         <Label>Password</Label>
-        <TextBox/>
-        <Label>New password</Label>
         <PasswordBox
             Name="passwordBox" />
+        <Label>New password</Label>
+        <PasswordBox
+            Name="newPasswordBox" />
         <Label>Confirm new password</Label>
         <PasswordBox
             Name="confirmedPasswordBox" />
         <TextBlock/>
-        <Button>
+        <Button
+            Command="{Binding ChangeCommand}">
             Change
         </Button>
         <Button

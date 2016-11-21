@@ -11,5 +11,7 @@ namespace Client.Model.Interfaces
         Task<bool> CreateAccount(string serverUrl, string username, string password);
 
         Task<bool> IsAccountValid(string serverUrl, string username, string password);
+
+        Task<bool> ChangePassword(string password, string newPassword);
     }
 }

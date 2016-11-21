@@ -86,5 +86,10 @@ namespace Client.ServerConnection
                 }
             });
         }
+
+        public Task<bool> ChangePassword(string password, string newPassword)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

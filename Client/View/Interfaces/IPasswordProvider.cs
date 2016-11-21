@@ -15,4 +15,9 @@ namespace Client.View.Interfaces
     {
         string GetConfirmedPassword();
     }
+
+    interface IPasswordChanger : IConfirmedPasswordProvider
+    {
+        string GetNewPassword();
+    }
 }
