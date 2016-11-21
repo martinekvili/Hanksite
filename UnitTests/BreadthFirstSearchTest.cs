@@ -84,6 +84,38 @@ xxxx...
             assertMatchingCells();
         }
 
+        [TestMethod]
+        public void BreadthFirstSearchTest_PerimeterOnly_2()
+        {
+            string initialMap = @"
+...xxxx
+..xaaax
+.xaaaax
+xaaxaax
+xaaaax.
+xaaax..
+xxxx...
+";
+            expectedMap = @"
+...####
+..#...#
+.#....#
+#..#..#
+#....#.
+#...#..
+####...
+";
+
+            map = MapTestHelper.FromMapString(initialMap);
+
+            matchingCells = BreadthFirstSearch.Search(
+                map.Single(cell => cell.Coord == new Coord(1, 4)),
+                cell => cell.Colour == 0,
+                true);
+
+            assertMatchingCells();
+        }
+
         private void assertMatchingCells()
         {
             foreach (var cell in matchingCells)
