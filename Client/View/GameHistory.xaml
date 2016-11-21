@@ -11,6 +11,12 @@
     <UserControl.DataContext>
         <viewmodel:GameHistoryViewModel/>
     </UserControl.DataContext>
+    <UserControl.Resources>
+        <viewmodel:StartTimeConverter
+            x:Key="StartTimeConverter" />
+        <viewmodel:LengthConverter
+            x:Key="LengthConverter" />
+    </UserControl.Resources>
     <DockPanel
         Margin="24"
         HorizontalAlignment="Center">
@@ -39,6 +45,7 @@
                                     </GridViewColumn.CellTemplate>
                                     <GridViewColumn.Header>
                                         <Label
+                                            Width="100"
                                             Content="Name" />
                                     </GridViewColumn.Header>
                                 </GridViewColumn>
@@ -46,11 +53,12 @@
                                     <GridViewColumn.CellTemplate>
                                         <DataTemplate>
                                             <Label
-                                                Content="{Binding StartTime}" />
+                                                Content="{Binding StartTime, Converter={StaticResource StartTimeConverter}}" />
                                         </DataTemplate>
                                     </GridViewColumn.CellTemplate>
                                     <GridViewColumn.Header>
                                         <Label
+                                            Width="100"
                                             Content="Start" />
                                     </GridViewColumn.Header>
                                 </GridViewColumn>
@@ -58,11 +66,12 @@
                                     <GridViewColumn.CellTemplate>
                                         <DataTemplate>
                                             <Label
-                                                Content="{Binding Length}" />
+                                                Content="{Binding Length, Converter={StaticResource LengthConverter}}" />
                                         </DataTemplate>
                                     </GridViewColumn.CellTemplate>
                                     <GridViewColumn.Header>
                                         <Label
+                                            Width="50"
                                             Content="Length" />
                                     </GridViewColumn.Header>
                                 </GridViewColumn>
@@ -75,6 +84,7 @@
                                     </GridViewColumn.CellTemplate>
                                     <GridViewColumn.Header>
                                         <Label
+                                            Width="40"
                                             Content="Place" />
                                     </GridViewColumn.Header>
                                 </GridViewColumn>
@@ -87,7 +97,8 @@
                                     </GridViewColumn.CellTemplate>
                                     <GridViewColumn.Header>
                                         <Label
-                                            Content="Number of enemies" />
+                                            Width="60"
+                                            Content="Enemies" />
                                     </GridViewColumn.Header>
                                 </GridViewColumn>
                             </GridView.Columns>
@@ -106,17 +117,43 @@
                 Margin="24"
                 Orientation="Vertical">
                 <Label>Enemies</Label>
-                <ListBox
+                <ListView
                     Width="150"
                     Height="300"
                     ItemsSource="{Binding Enemies}">
-                    <ListBox.ItemTemplate>
-                        <DataTemplate>
-                            <Label
-                                Content="{Binding Username}" />
-                        </DataTemplate>
-                    </ListBox.ItemTemplate>
-                </ListBox>
+                    <ListView.View>
+                        <GridView>
+                            <GridView.Columns>
+                                <GridViewColumn>
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <Label
+                                                Content="{Binding Position}" />
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                    <GridViewColumn.Header>
+                                        <Label
+                                            Width="100"
+                                            Content="Position" />
+                                    </GridViewColumn.Header>
+                                </GridViewColumn>
+                                <GridViewColumn>
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <Label
+                                                Content="{Binding Username}" />
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                    <GridViewColumn.Header>
+                                        <Label
+                                            Width="100"
+                                            Content="Name" />
+                                    </GridViewColumn.Header>
+                                </GridViewColumn>
+                            </GridView.Columns>
+                        </GridView>
+                    </ListView.View>
+                </ListView>
             </StackPanel>
         </StackPanel>
         <StackPanel

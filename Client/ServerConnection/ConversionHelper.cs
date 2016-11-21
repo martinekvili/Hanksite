@@ -120,7 +120,7 @@ namespace Client.ServerConnection
                 Place = game.Position,
                 StartTime = game.StartTime,
                 Length = game.Duration,
-                Enemies = game.Enemies.Select(player => new Player { Username = player.User.UserName }).ToList()
+                Enemies = game.Enemies.Select(player => new GamePlayer { Username = player.User.UserName, Position = player.Position }).ToList()
             };
         }
 

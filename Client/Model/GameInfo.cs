@@ -9,6 +9,6 @@ namespace Client.Model
         public DateTime StartTime { get; set; }
         public TimeSpan Length { get; set; }
         public int Place { get; set; }
-        public List<Player> Enemies { get; set; }
+        public List<GamePlayer> Enemies { get; set; }
     }
 }

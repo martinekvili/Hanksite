@@ -113,7 +113,6 @@
       <DependentUpon>Login.xaml</DependentUpon>
     </Compile>
     <Compile Include="Model\BotDifficulty.cs" />
-    <Compile Include="Model\Dummy\GameHistory.cs" />
     <Compile Include="Model\Dummy\Players.cs" />
     <Compile Include="Model\GameInfo.cs" />
     <Compile Include="Model\Interfaces\IGameInfoProvider.cs" />

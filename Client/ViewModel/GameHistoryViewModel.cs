@@ -4,10 +4,14 @@ using Client.Model.Dummy;
 using Client.Model.Interfaces;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Linq;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Navigation;
 using Client.ServerConnection;
+using System.Windows.Data;
+using System;
+using System.Globalization;
 
 namespace Client.ViewModel
 {
@@ -20,7 +24,12 @@ namespace Client.ViewModel
 
         public List<GameInfo> GameHistory { get; set; }
         public GameInfo SelectedGameHistory { get; set; }
-        public List<Player> Enemies { get; set; }
+        private List<GamePlayer> enemies;
+        public List<GamePlayer> Enemies
+        {
+            get { return enemies; }
+            set { enemies = value.OrderBy(enemy => enemy.Position).ToList(); NotifyPropertyChanged(nameof(Enemies)); }
+        }
 
         private IGameInfoProvider historyProvider;
 
@@ -44,7 +53,6 @@ namespace Client.ViewModel
         private void RefreshEnemies()
         {
             Enemies = SelectedGameHistory.Enemies;
-            NotifyPropertyChanged("Enemies");
         }
 
         private void Back()
@@ -55,6 +63,34 @@ namespace Client.ViewModel
         private void NotifyPropertyChanged(string propertyName)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+    }
+
+    public class StartTimeConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            DateTime time = (DateTime)value;
+            return time.ToString("yyyy. MM. dd. HH:mm");
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            throw new NotImplementedException();
+        }
+    }
+
+    public class LengthConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            TimeSpan time = (TimeSpan)value;
+            return time.ToString("mm':'ss");
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            throw new NotImplementedException();
         }
     }
 }
