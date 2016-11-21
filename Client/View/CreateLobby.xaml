@@ -50,7 +50,7 @@
                 <Label>Number of colours</Label>
                 <ComboBox
                     ItemsSource="{Binding NumberOfColours}"
-                    SelectedIndex="{Binding SelectedNumberOfColours}"
+                    SelectedItem="{Binding SelectedNumberOfColours}"
                     IsEnabled="{Binding IsCanceled}" />
             </StackPanel>
             <DockPanel

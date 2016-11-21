@@ -337,7 +337,7 @@ namespace Client.ViewModel
             Lobby settings = new Lobby();
             settings.Name = Name;
             settings.NumberOfPlayers = SelectedNumberOfPlayers;
-            settings.NumberOfColours = NumberOfColours[SelectedNumberOfColours];
+            settings.NumberOfColours = SelectedNumberOfColours;
             settings.Bots = bots;
 
             return settings;
@@ -355,17 +355,17 @@ namespace Client.ViewModel
 
         private void RefreshNumberOfColours()
         {
-            int actualNumberOfColours = NumberOfColours[SelectedNumberOfColours];
+            int actualNumberOfColours = SelectedNumberOfColours;
 
             SetNumberOfColours(SelectedNumberOfPlayers);
 
             if (NumberOfColours.Contains(actualNumberOfColours))
             {
-                SelectedNumberOfColours = NumberOfColours.IndexOf(actualNumberOfColours);
+                SelectedNumberOfColours = actualNumberOfColours;
             }
             else
             {
-                SelectedNumberOfColours = 0;
+                SelectedNumberOfColours = NumberOfColours[0];
             }
         }
 
