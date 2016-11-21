@@ -98,27 +98,9 @@ namespace Client.ServerConnection
                     connectAndStoreCredentials(serverUrl, username, password, (u, p) => proxy.ConnectUser(u, p)));
         }
 
-        public Task<bool> TryReconnect()
-        {
-            return Task.Factory.StartNew(() =>
-            {
-                try
-                {
-                    getProxyForServer(serverUrl);
-                    proxy.ConnectUser(userName, password);
-
-                    return true;
-                }
-                catch (Exception)
-                {
-                    return false;
-                }
-            });
-        }
-
         public Task<bool> ChangePassword(string password, string newPassword)
         {
-            throw new NotImplementedException();
+            return Task.Factory.StartNew(() => proxy.ChangePassword(password, newPassword));
         }
     }
 }
