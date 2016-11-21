@@ -1,10 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.ServiceModel;
 using System.Text;
 using System.Threading.Tasks;
 using log4net;
+using System.ServiceModel.Security;
+using Common;
 
 namespace Server
 {
@@ -16,6 +19,10 @@ namespace Server
 
             using (ServiceHost host = new ServiceHost(typeof(HanksiteSession)))
             {
+                var certificate = CertificateManager.GetCertificate();
+                host.Credentials.ServiceCertificate.Certificate = certificate;
+                host.Credentials.ClientCertificate.Authentication.CertificateValidationMode = X509CertificateValidationMode.None;
+
                 host.Open();
 
                 LogManager.GetLogger(nameof(Program)).Info($"The service started.");
