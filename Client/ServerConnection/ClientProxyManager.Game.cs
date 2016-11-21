@@ -41,5 +41,10 @@ namespace Client.ServerConnection
         {
             return Task.Factory.StartNew(() => proxy.ReconnectToGame(gameId)?.ToViewModel());
         }
+
+        public Task<List<GameInfo>> GetGameInfos()
+        {
+            return Task.Factory.StartNew(() => proxy.GetPlayedGames().Select(game => game.ToViewModel()).ToList());
+        }
     }
 }

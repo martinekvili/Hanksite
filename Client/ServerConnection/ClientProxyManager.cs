@@ -11,7 +11,7 @@ using Common.Lobby;
 
 namespace Client.ServerConnection
 {
-    public partial class ClientProxyManager : IAccountProvider, IAvailableLobbyProvider, ILobbyServer, IGameServer
+    public partial class ClientProxyManager : IAccountProvider, IAvailableLobbyProvider, ILobbyServer, IGameServer, IGameInfoProvider
     {
         private static ClientProxyManager instance = new ClientProxyManager();
 

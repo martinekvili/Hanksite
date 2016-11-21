@@ -33,9 +33,9 @@ namespace Client.Model.Dummy
             games.Add(game2);
         }
 
-        public List<GameInfo> GetGameInfos()
+        public Task<List<GameInfo>> GetGameInfos()
         {
-            return games;
+            return Task.Factory.StartNew(() => games);
         }
     }
 }

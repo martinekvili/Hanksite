@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Client.Model
 {
-    class GameInfo
+    public class GameInfo
     {
         public string Name { get; set; }
         public DateTime StartTime { get; set; }

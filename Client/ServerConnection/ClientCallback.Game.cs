@@ -29,7 +29,7 @@ namespace Client.ServerConnection
                 if (game != null)
                 {
                     var viewModel = snapshot.ToViewModel();
-                    var availableCells = snapshot.AvailableCells.Select(coord => coord.ToViewModel()).ToList();
+                    var availableCells = snapshot.AvailableCells?.Select(coord => coord.ToViewModel()).ToList();
 
                     Application.Current.Dispatcher.InvokeAsync(() => game.DoNextStep(viewModel, availableCells));
                 }

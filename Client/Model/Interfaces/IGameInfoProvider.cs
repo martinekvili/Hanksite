@@ -8,6 +8,6 @@ namespace Client.Model.Interfaces
 {
     interface IGameInfoProvider
     {
-        List<GameInfo> GetGameInfos();
+        Task<List<GameInfo>> GetGameInfos();
     }
 }

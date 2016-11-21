@@ -7,6 +7,7 @@ using System.ComponentModel;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Navigation;
+using Client.ServerConnection;
 
 namespace Client.ViewModel
 {
@@ -30,9 +31,13 @@ namespace Client.ViewModel
             GameHistorySelectionChangedCommand = new CommandHandler(RefreshEnemies);
             BackCommand = new CommandHandler(Back);
 
-            historyProvider = new GameHistory();
+            historyProvider = ClientProxyManager.Instance;
+            getGameHistory();
+        }
 
-            GameHistory = historyProvider.GetGameInfos();
+        private async void getGameHistory()
+        {
+            GameHistory = await historyProvider.GetGameInfos();
             NotifyPropertyChanged("GameHistory");
         }
 

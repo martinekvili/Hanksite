@@ -111,6 +111,18 @@ namespace Client.ServerConnection
             };
         }
 
+        public static GameInfo ToViewModel(this Common.Game.PlayedGameInfo game)
+        {
+            return new GameInfo
+            {
+                Name = game.Name,
+                Place = game.Position,
+                StartTime = game.StartTime,
+                Length = game.Duration,
+                Enemies = game.Enemies.Select(player => new Player { Username = player.User.UserName }).ToList()
+            };
+        }
+
         #endregion
 
         #region To DTO
