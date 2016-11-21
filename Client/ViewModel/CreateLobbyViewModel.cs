@@ -158,7 +158,7 @@ namespace Client.ViewModel
             ReadyCommand = new CommandHandler(Ready);
             CancelCommand = new CommandHandler(Cancel);
             StartCommand = new CommandHandler(Start);
-            BackCommand = new CommandHandler(Back);
+            BackCommand = new CommandHandler(DisconnectAndBack);
 
             bots = new Dictionary<BotDifficulty, int>();
             bots[BotDifficulty.EASY] = 0;
@@ -314,7 +314,6 @@ namespace Client.ViewModel
             {
                 try
                 {
-                    lobbyServer.DisconnectFromLobby();
                     ClientProxyManager.Instance.RemoveLobby();
                 }
                 catch (Exception)
@@ -325,6 +324,22 @@ namespace Client.ViewModel
                 }
             }
             NavigationService.GetNavigationService(View).GoBack();
+        }
+
+        private void DisconnectAndBack()
+        {
+            try
+            {
+                lobbyServer.DisconnectFromLobby();
+            }
+            catch (Exception)
+            {
+                MessageBox.Show("Connection lost.", "Hanksite", MessageBoxButton.OK);
+                Application.Current.Shutdown();
+                return;
+            }
+
+            Back();
         }
 
         private Lobby CreateLobbySettings()
