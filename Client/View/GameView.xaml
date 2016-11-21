@@ -16,8 +16,10 @@
         <viewmodel:GameViewModel />
     </UserControl.DataContext>
     <UserControl.Resources>
-        <viewmodel:ColourConverter
-            x:Key="ColourConverter"/>
+        <viewmodel:ForegroundColourConverter
+            x:Key="ForegroundColourConverter" />
+        <viewmodel:BackgroundColourConverter
+            x:Key="BackgroundColourConverter" />
         <viewmodel:PlayerNameConverter
             x:Key="PlayerNameConverter" />
         <VisualBrush
@@ -98,9 +100,11 @@
                                     </DataTemplate>
                                 </GridViewColumn.CellTemplate>
                                 <GridViewColumn.Header>
-                                    <Label
-                                        Content="No" />
+                                    <GridViewColumnHeader
+                                        Content="No"
+                                        IsHitTestVisible="False" />
                                 </GridViewColumn.Header>
+                                <GridViewColumn.Width>30</GridViewColumn.Width>
                             </GridViewColumn>
                             <GridViewColumn>
                                 <GridViewColumn.CellTemplate>
@@ -112,9 +116,16 @@
                                                     <Binding />
                                                 </MultiBinding>
                                             </Label.Content>
+                                            <Label.Foreground>
+                                                <MultiBinding
+                                                    Converter="{StaticResource ForegroundColourConverter}">
+                                                    <Binding
+                                                        Path="Colour" />
+                                                </MultiBinding>
+                                            </Label.Foreground>
                                             <Label.Background>
                                                 <MultiBinding
-                                                    Converter="{StaticResource ColourConverter}">
+                                                    Converter="{StaticResource BackgroundColourConverter}">
                                                     <Binding
                                                         Path="Colour" />
                                                 </MultiBinding>
@@ -123,10 +134,11 @@
                                     </DataTemplate>
                                 </GridViewColumn.CellTemplate>
                                 <GridViewColumn.Header>
-                                    <Label
-                                        Width="200"
-                                        Content="Name" />
+                                    <GridViewColumnHeader
+                                        Content="Name"
+                                        IsHitTestVisible="False" />
                                 </GridViewColumn.Header>
+                                <GridViewColumn.Width>200</GridViewColumn.Width>
                             </GridViewColumn>
                             <GridViewColumn>
                                 <GridViewColumn.CellTemplate>
@@ -136,9 +148,11 @@
                                     </DataTemplate>
                                 </GridViewColumn.CellTemplate>
                                 <GridViewColumn.Header>
-                                    <Label
-                                        Content="Points" />
+                                    <GridViewColumnHeader
+                                        Content="Points"
+                                        IsHitTestVisible="False" />
                                 </GridViewColumn.Header>
+                                <GridViewColumn.Width>50</GridViewColumn.Width>
                             </GridViewColumn>
                         </GridView.Columns>
                     </GridView>
@@ -152,7 +166,7 @@
                 Width="800">
                 <ItemsControl.ItemsPanel>
                     <ItemsPanelTemplate>
-                        <Canvas/>
+                        <Canvas />
                     </ItemsPanelTemplate>
                 </ItemsControl.ItemsPanel>
                 <ItemsControl.ItemContainerStyle>
@@ -258,7 +272,7 @@
                 Width="800">
                 <ItemsControl.ItemsPanel>
                     <ItemsPanelTemplate>
-                        <Canvas/>
+                        <Canvas />
                     </ItemsPanelTemplate>
                 </ItemsControl.ItemsPanel>
                 <ItemsControl.ItemContainerStyle>

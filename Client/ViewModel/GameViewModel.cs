@@ -287,12 +287,34 @@ namespace Client.ViewModel
         }
     }
 
-    public class ColourConverter : IMultiValueConverter
+    public class BackgroundColourConverter : IMultiValueConverter
     {
         public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
         {
             int colourNumber = int.Parse(values[0].ToString());
             return new SolidColorBrush(new ColourProvider().Colours[colourNumber]);
+        }
+
+        public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture)
+        {
+            throw new NotImplementedException();
+        }
+    }
+
+    public class ForegroundColourConverter : IMultiValueConverter
+    {
+        public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
+        {
+            int colourNumber = int.Parse(values[0].ToString());
+            Color colour = new ColourProvider().Colours[colourNumber];
+            float magic = 0.299f * colour.R + 0.587f * colour.G + 0.114f * colour.B;
+
+            if (magic < 127)
+            {
+                return new SolidColorBrush(Colors.White);
+            }
+
+            return new SolidColorBrush(Colors.Black);
         }
 
         public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture)
