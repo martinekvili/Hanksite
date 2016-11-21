@@ -64,12 +64,17 @@ namespace Client.ServerConnection
             if (channelFactory == null)
                 return;
 
-            if (channelFactory.State != CommunicationState.Faulted)
+            try
             {
-                channelFactory.Close();
+                if (channelFactory.State != CommunicationState.Faulted)
+                {
+                    ((IClientChannel) proxy).Close();
+                    channelFactory.Close();
+                }
             }
-            else
+            catch
             {
+                ((IClientChannel) proxy).Abort();
                 channelFactory.Abort();
             }
         }
@@ -79,7 +84,7 @@ namespace Client.ServerConnection
             getProxyForServer(serverUrl);
             User connectedUser = doConnect(userName, password);
 
-            if (user == null)
+            if (connectedUser == null)
                 return false;
 
             this.serverUrl = serverUrl;
