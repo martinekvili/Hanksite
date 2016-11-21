@@ -77,9 +77,9 @@ namespace Client.ViewModel
             {
                 success = await accounts.CreateAccount(window.GetServer(), Username, password);
             }
-            catch (System.Exception)
+            catch (System.Exception e)
             {
-                MessageBox.Show("An error has occured while connecting to the server.", "Hanksite", MessageBoxButton.OK);
+                MessageBox.Show("An error has occured while connecting to the server.\n" + e.Message, "Hanksite", MessageBoxButton.OK);
                 IsPageEnabled = true;
                 window.Enable();
                 return;
