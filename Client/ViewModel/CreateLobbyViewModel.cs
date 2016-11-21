@@ -68,7 +68,13 @@ namespace Client.ViewModel
         public int SelectedNumberOfPlayers
         {
             get { return selectedNumberOfPlayers; }
-            set { selectedNumberOfPlayers = value; RefreshNumberOfColours(); RefreshBots(); }
+            set
+            {
+                selectedNumberOfPlayers = value;
+                RefreshNumberOfColours();
+                RefreshBots();
+                NotifyPropertyChanged(nameof(SelectedNumberOfPlayers));
+            }
         }
         public ObservableCollection<int> NumberOfColours { get; set; }
         private int selectedNumberOfColours;
