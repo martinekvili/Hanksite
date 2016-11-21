@@ -10,6 +10,7 @@ using Common;
 using Common.Lobby;
 using System.Security.Cryptography.X509Certificates;
 using System.ServiceModel.Security;
+using Common.Users;
 
 namespace Client.ServerConnection
 {
@@ -21,9 +22,11 @@ namespace Client.ServerConnection
         public static ClientProxyManager Instance => instance;
 
         private string serverUrl;
-        private string userName;
-        public string UserName => userName;
+        private User user;
         private string password;
+
+        public long UserID => user.ID;
+        public string UserName => user.UserName;
 
         private ClientCallback callback;
         private DuplexChannelFactory<IHanksiteService> channelFactory;
@@ -71,19 +74,19 @@ namespace Client.ServerConnection
             }
         }
 
-        private bool connectAndStoreCredentials(string serverUrl, string userName, string password, Func<string, string, bool> doConnect)
+        private bool connectAndStoreCredentials(string serverUrl, string userName, string password, Func<string, string, User> doConnect)
         {
             getProxyForServer(serverUrl);
+            User connectedUser = doConnect(userName, password);
 
-            bool result = doConnect(userName, password);
-            if (result)
-            {
-                this.serverUrl = serverUrl;
-                this.userName = userName;
-                this.password = password;
-            }
+            if (user == null)
+                return false;
 
-            return result;
+            this.serverUrl = serverUrl;
+            this.user = connectedUser;
+            this.password = password;
+
+            return true;
         }
 
         public Task<bool> CreateAccount(string serverUrl, string username, string password)

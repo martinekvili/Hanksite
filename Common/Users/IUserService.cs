@@ -13,10 +13,10 @@ namespace Common.Users
     public interface IUserService
     {
         [OperationContract(IsOneWay = false)]
-        bool ConnectUser(string userName, string password);
+        User ConnectUser(string userName, string password);
 
         [OperationContract(IsOneWay = false)]
-        bool RegisterUser(string userName, string password);
+        User RegisterUser(string userName, string password);
 
         [OperationContract(IsOneWay = false)]
         bool ChangePassword(string oldPassword, string newPassword);

@@ -14,22 +14,22 @@ namespace Server
         private Common.Users.User user;
         public Common.Users.User User => user;
 
-        public bool ConnectUser(string userName, string password)
+        public Common.Users.User ConnectUser(string userName, string password)
         {
             var dbUser = UserDAL.GetUserByName(userName);
 
             if (dbUser == null || !dbUser.IsPasswordForUser(password))
             {
                 logger.Info($"Unsuccessful attempt to login with username '{userName}'.");
-                return false;
+                return null;
             }
 
             user = new Common.Users.User { ID = dbUser.ID, UserName = userName };
             log("connected");
-            return true;
+            return user;
         }
 
-        public bool RegisterUser(string userName, string password)
+        public Common.Users.User RegisterUser(string userName, string password)
         {
             try
             {
@@ -40,12 +40,12 @@ namespace Server
 
                 user = new Common.Users.User { ID = id, UserName = userName };
                 log("registered");
-                return true;
+                return user;
             }
             catch (Exception)
             {
                 logger.Info($"Unsuccessful attept to register with username '{userName}'.");
-                return false;
+                return null;
             }
         }
 
