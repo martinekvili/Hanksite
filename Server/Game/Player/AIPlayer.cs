@@ -14,7 +14,7 @@ namespace Server.Game.Player
 
         public override bool IsReady => true;
 
-        public AIPlayer(int botNumber, AIDifficulty type, GameManager game) : base(new User { ID = botNumber, UserName = $"AI{botNumber + 1}" }, game)
+        public AIPlayer(int botNumber, AIDifficulty type, GameManager game) : base(new User { ID = botNumber + 1, UserName = $"AI{botNumber + 1}" }, game)
         {
             this.strategy = AIStrategyFactory.CreateAIStrategy(type);
         }
