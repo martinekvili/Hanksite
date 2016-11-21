@@ -65,7 +65,6 @@
     <Compile Include="Model\Coordinate.cs" />
     <Compile Include="Model\DrawableField.cs" />
     <Compile Include="Model\Field.cs" />
-    <Compile Include="Model\Dummy\MapProvider.cs" />
     <Compile Include="Model\GameState.cs" />
     <Compile Include="Model\Interfaces\IGameServer.cs" />
     <Compile Include="Model\Interfaces\ILobbyServer.cs" />

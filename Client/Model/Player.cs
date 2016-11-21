@@ -20,6 +20,7 @@ namespace Client.Model
 
     public class GamePlayer : Player
     {
+        public long ID { get; set; }
         public int Position { get; set; }
         public int Colour { get; set; }
         public int Points { get; set; }

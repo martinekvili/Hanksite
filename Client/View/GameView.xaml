@@ -31,6 +31,10 @@
                         Stroke="Black"
                         StrokeThickness="1"
                         Data="M 0 0 l 10 10" />
+                    <Path
+                        Stroke="Black"
+                        StrokeThickness="1"
+                        Data="M 0 10 l 10 -10" />
                 </Canvas>
             </VisualBrush.Visual>
         </VisualBrush>

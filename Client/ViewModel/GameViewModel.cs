@@ -228,8 +228,8 @@ namespace Client.ViewModel
 
             foreach (var field in state.Map)
             {
-                List<int> playerColours = state.Players.Select(player => player.Colour).ToList();
-                if (playerColours.Contains(field.Colour)) {
+                List<long> playerIDs = state.Players.Select(player => player.ID).ToList();
+                if (playerIDs.Contains(field.OwnerId)) {
                     fields.Add(new Coordinate(field.X, field.Y));
                 }
             }

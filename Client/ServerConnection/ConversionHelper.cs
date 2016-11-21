@@ -84,6 +84,7 @@ namespace Client.ServerConnection
             viewModel.Points = player.Points;
             viewModel.Position = player.Position;
             viewModel.Type = player.Type.ToViewModel();
+            viewModel.ID = player.User.ID;
         }
 
         public static PlayerType ToViewModel(this Common.Game.PlayerType type)
