@@ -31,7 +31,6 @@ namespace Client.ViewModel
 {
     class GameViewModel : INotifyPropertyChanged, IGameActions
     {
-        private MapProvider mapProvider;
         private Dictionary<int, Color> colours;
         private MapConverter mapConverter;
         private MapAttributes mapAttributes;
@@ -61,27 +60,27 @@ namespace Client.ViewModel
         public List<GamePlayer> Players
         {
             get { return players; }
-            set
-            {
-                players = value.OrderBy(player => player.Position).ToList();
-                NotifyPropertyChanged("Players");
-            }
+            set { players = value.OrderBy(player => player.Position).ToList(); NotifyPropertyChanged("Players"); }
         }
-        public List<DrawableField> AvailableCells { get; set; }
+
+        private List<DrawableField> availableCells;
+        public List<DrawableField> AvailableCells
+        {
+            get { return availableCells; }
+            set { availableCells = value; NotifyPropertyChanged(nameof(AvailableCells)); }
+        }
 
         private IGameServer gameServer;
 
         public GameViewModel()
         {
-            mapProvider = new MapProvider();
             colours = new ColourProvider().Colours;
             mapConverter = new MapConverter();
 
             CanvasWidth = 800;
             CanvasHeight = 650;
-
-            mapAttributes = mapConverter.GetMapAttributes(mapProvider.GetMap());
-            map = mapConverter.ConvertToDrawable(mapProvider.GetMap(), CanvasWidth, CanvasHeight);
+            
+            map = new List<DrawableField>();
 
             #region counter
             IsCounterRunning = false;
@@ -108,7 +107,7 @@ namespace Client.ViewModel
 
             CounterColour = defaultColour;
             NotifyPropertyChanged("CounterColour");
-            
+
             Task.Factory.StartNew(() =>
             {
                 int round = actualRound;
@@ -132,7 +131,7 @@ namespace Client.ViewModel
                         soundPlayer.Play();
                     }
                 }
-                
+
                 if (round == actualRound)
                 {
                     StopCounter();
@@ -146,7 +145,6 @@ namespace Client.ViewModel
             actualRound++;
             remainingSecondsByRound[actualRound] = 0;
             AvailableCells = new List<DrawableField>();
-            NotifyPropertyChanged("AvailableCells");
             IsCounterRunning = false;
             NotifyPropertyChanged("IsCounterRunning");
         }
@@ -173,11 +171,15 @@ namespace Client.ViewModel
 
         public void DoNextStep(GameState state, List<Coordinate> availableCells)
         {
-            actualRound++;
-            AvailableCells = mapConverter.ConvertToDrawable(availableCells, mapAttributes, CanvasWidth, CanvasHeight);
-            NotifyPropertyChanged("AvailableCells");
-
             RefreshGame(state);
+            actualRound++;
+
+            if (availableCells == null)
+            {
+                return;
+            }
+            AvailableCells = mapConverter.ConvertToDrawable(availableCells, mapAttributes, CanvasWidth, CanvasHeight);
+
             StartCounter();
         }
 
@@ -200,6 +202,11 @@ namespace Client.ViewModel
 
         public void RefreshGame(GameState state)
         {
+            if (mapAttributes == null)
+            {
+                mapAttributes = mapConverter.GetMapAttributes(state.Map);
+            }
+
             map = mapConverter.ConvertToDrawable(state.Map, CanvasWidth, CanvasHeight);
             NotifyPropertyChanged("Map");
 
