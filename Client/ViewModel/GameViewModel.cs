@@ -63,11 +63,18 @@ namespace Client.ViewModel
             set { players = value.OrderBy(player => player.Position).ToList(); NotifyPropertyChanged("Players"); }
         }
 
-        private List<DrawableField> availableCells;
-        public List<DrawableField> AvailableCells
+        private List<DrawableField> availableFields;
+        public List<DrawableField> AvailableFields
         {
-            get { return availableCells; }
-            set { availableCells = value; NotifyPropertyChanged(nameof(AvailableCells)); }
+            get { return availableFields; }
+            set { availableFields = value; NotifyPropertyChanged(nameof(AvailableFields)); }
+        }
+
+        private List<DrawableField> enemyColorFields;
+        public List<DrawableField> EnemyColorFields
+        {
+            get { return enemyColorFields; }
+            set { enemyColorFields = value; NotifyPropertyChanged(nameof(EnemyColorFields)); }
         }
 
         private IGameServer gameServer;
@@ -79,7 +86,7 @@ namespace Client.ViewModel
 
             CanvasWidth = 800;
             CanvasHeight = 650;
-            
+
             map = new List<DrawableField>();
 
             #region counter
@@ -144,7 +151,7 @@ namespace Client.ViewModel
         {
             actualRound++;
             remainingSecondsByRound[actualRound] = 0;
-            AvailableCells = new List<DrawableField>();
+            AvailableFields = new List<DrawableField>();
             IsCounterRunning = false;
             NotifyPropertyChanged("IsCounterRunning");
         }
@@ -178,7 +185,7 @@ namespace Client.ViewModel
             {
                 return;
             }
-            AvailableCells = mapConverter.ConvertToDrawable(availableCells, mapAttributes, CanvasWidth, CanvasHeight);
+            AvailableFields = mapConverter.ConvertToDrawable(availableCells, mapAttributes, CanvasWidth, CanvasHeight);
 
             StartCounter();
         }
@@ -211,6 +218,23 @@ namespace Client.ViewModel
             NotifyPropertyChanged("Map");
 
             Players = state.Players;
+
+            RefreshFieldsToStripe(state);
+        }
+
+        private void RefreshFieldsToStripe(GameState state)
+        {
+            List<Coordinate> fields = new List<Coordinate>();
+
+            foreach (var field in state.Map)
+            {
+                List<int> playerColours = state.Players.Select(player => player.Colour).ToList();
+                if (playerColours.Contains(field.Colour)) {
+                    fields.Add(new Coordinate(field.X, field.Y));
+                }
+            }
+
+            EnemyColorFields = mapConverter.ConvertToDrawable(fields, mapAttributes, CanvasWidth, CanvasHeight);
         }
 
         private void NotifyPropertyChanged(string propertyName)

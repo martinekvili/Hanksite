@@ -18,6 +18,22 @@
     <UserControl.Resources>
         <viewmodel:ColourConverter
             x:Key="ColourConverter"/>
+        <VisualBrush
+            x:Key="StripedBrush"
+            TileMode="Tile"
+            Viewport="0,0,10,6"
+            ViewportUnits="Absolute"
+            Viewbox="0,0,10,10"
+            ViewboxUnits="Absolute">
+            <VisualBrush.Visual>
+                <Canvas>
+                    <Path
+                        Stroke="Black"
+                        StrokeThickness="1"
+                        Data="M 0 0 l 10 10" />
+                </Canvas>
+            </VisualBrush.Visual>
+        </VisualBrush>
     </UserControl.Resources>
     <DockPanel>
         <Grid
@@ -122,6 +138,8 @@
                         <Path
                             Tag="{Binding Tag}"
                             Fill="{Binding Colour}"
+                            Stroke="White"
+                            StrokeThickness="2"
                             Width="{Binding Width}"
                             Height="{Binding Height}"
                             Stretch="Fill"
@@ -131,13 +149,13 @@
                 </ItemsControl.ItemTemplate>
             </ItemsControl>
             <ItemsControl
-                ItemsSource="{Binding AvailableCells}"
+                ItemsSource="{Binding AvailableFields}"
                 Height="650"
                 Width="800">
                 <ItemsControl.ItemsPanel>
                     <ItemsPanelTemplate>
                         <Canvas
-                            Name="AvailableCells" />
+                            Name="AvailableFields" />
                     </ItemsPanelTemplate>
                 </ItemsControl.ItemsPanel>
                 <ItemsControl.ItemContainerStyle>
@@ -159,6 +177,42 @@
                             Fill="Transparent"
                             Stroke="{Binding Colour}"
                             StrokeThickness="8"
+                            Width="{Binding Width}"
+                            Height="{Binding Height}"
+                            Stretch="Fill"
+                            Data="M8.660254,0 L17.320508,5 17.320508,15 8.660254,20 0,15 0,5 8.660254,0 z">
+                        </Path>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+            <ItemsControl
+                ItemsSource="{Binding EnemyColorFields}"
+                Height="650"
+                Width="800">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <Canvas
+                            Name="EnemyColorFields" />
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+                <ItemsControl.ItemContainerStyle>
+                    <Style
+                        TargetType="ContentPresenter">
+                        <Setter
+                            Property="Canvas.Left"
+                            Value="{Binding X}" />
+                        <Setter
+                            Property="Canvas.Top"
+                            Value="{Binding Y}" />
+                    </Style>
+                </ItemsControl.ItemContainerStyle>
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <Path
+                            Tag="{Binding Tag}"
+                            Fill="{StaticResource StripedBrush}"
+                            Stroke="White"
+                            StrokeThickness="2"
                             Width="{Binding Width}"
                             Height="{Binding Height}"
                             Stretch="Fill"
