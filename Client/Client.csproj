@@ -234,6 +234,7 @@
     <Resource Include="Resources\logo.png" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Resources\disconnected.wav" />
     <Content Include="Resources\lastseconds.wav" />
     <None Include="Resources\nextturn.wav" />
   </ItemGroup>

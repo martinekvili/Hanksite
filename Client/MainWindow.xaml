@@ -10,7 +10,7 @@
     Title="Hanksite"
     Height="720"
     Width="1280"
-    ResizeMode="CanResize">
+    ResizeMode="NoResize">
     <Window.DataContext>
         <viewmodel:MainWindowViewModel />
     </Window.DataContext>

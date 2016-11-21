@@ -63,6 +63,15 @@ namespace Client.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.IO.UnmanagedMemoryStream similar to System.IO.MemoryStream.
         /// </summary>
+        internal static System.IO.UnmanagedMemoryStream disconnected {
+            get {
+                return ResourceManager.GetStream("disconnected", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.IO.UnmanagedMemoryStream similar to System.IO.MemoryStream.
+        /// </summary>
         internal static System.IO.UnmanagedMemoryStream lastseconds {
             get {
                 return ResourceManager.GetStream("lastseconds", resourceCulture);

@@ -18,6 +18,8 @@
     <UserControl.Resources>
         <viewmodel:ColourConverter
             x:Key="ColourConverter"/>
+        <viewmodel:PlayerNameConverter
+            x:Key="PlayerNameConverter" />
         <VisualBrush
             x:Key="WhiteStripedBrush"
             TileMode="Tile"
@@ -61,9 +63,10 @@
     </UserControl.Resources>
     <DockPanel>
         <Grid
+            Margin="8"
             DockPanel.Dock="Right"
             VerticalAlignment="Top"
-            Width="200">
+            Width="350">
             <Grid.RowDefinitions>
                 <RowDefinition
                     Height="60" />
@@ -82,6 +85,7 @@
             <ListView
                 Grid.Row="1"
                 Margin="4"
+                Width="300"
                 ItemsSource="{Binding Players}">
                 <ListView.View>
                     <GridView>
@@ -101,8 +105,13 @@
                             <GridViewColumn>
                                 <GridViewColumn.CellTemplate>
                                     <DataTemplate>
-                                        <Label
-                                            Content="{Binding Username}">
+                                        <Label>
+                                            <Label.Content>
+                                                <MultiBinding
+                                                    Converter="{StaticResource PlayerNameConverter}">
+                                                    <Binding />
+                                                </MultiBinding>
+                                            </Label.Content>
                                             <Label.Background>
                                                 <MultiBinding
                                                     Converter="{StaticResource ColourConverter}">
@@ -115,6 +124,7 @@
                                 </GridViewColumn.CellTemplate>
                                 <GridViewColumn.Header>
                                     <Label
+                                        Width="200"
                                         Content="Name" />
                                 </GridViewColumn.Header>
                             </GridViewColumn>

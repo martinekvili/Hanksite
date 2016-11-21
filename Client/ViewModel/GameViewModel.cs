@@ -300,4 +300,26 @@ namespace Client.ViewModel
             throw new NotImplementedException();
         }
     }
+
+    public class PlayerNameConverter : IMultiValueConverter
+    {
+        public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
+        {
+            GamePlayer player = (GamePlayer)values[0];
+            if (player.Type == Model.PlayerType.BOT)
+            {
+                return $"{player.Username} [{((BotPlayer)player).difficulty}]";
+            }
+            else if (player.Type == Model.PlayerType.DISCONNECTED)
+            {
+                return $"{player.Username} [DISCONNECTED]";
+            }
+            return player.Username;
+        }
+
+        public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture)
+        {
+            throw new NotImplementedException();
+        }
+    }
 }
