@@ -31,6 +31,10 @@ namespace Client.ViewModel
 {
     class GameViewModel : INotifyPropertyChanged, IGameActions
     {
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        public DependencyObject View { get; set; }
+
         private Dictionary<int, Color> colours;
         private MapConverter mapConverter;
         private MapAttributes mapAttributes;
@@ -38,20 +42,39 @@ namespace Client.ViewModel
         public float CanvasWidth { get; set; }
         public float CanvasHeight { get; set; }
 
+        #region fields
         private List<DrawableField> map;
         public ObservableCollection<DrawableField> Map => new ObservableCollection<DrawableField>(map);
 
-        public event PropertyChangedEventHandler PropertyChanged;
+        private List<DrawableField> availableFields;
+        public List<DrawableField> AvailableFields
+        {
+            get { return availableFields; }
+            set { availableFields = value; NotifyPropertyChanged(nameof(AvailableFields)); }
+        }
 
-        public DependencyObject View { get; set; }
+        private List<DrawableField> enemyFields;
+        public List<DrawableField> EnemyFields
+        {
+            get { return enemyFields; }
+            set { enemyFields = value; NotifyPropertyChanged(nameof(EnemyFields)); }
+        }
 
+        private List<DrawableField> playerFields;
+        public List<DrawableField> PlayerFields
+        {
+            get { return playerFields; }
+            set { playerFields = value; NotifyPropertyChanged(nameof(PlayerFields)); }
+        }
+        #endregion
+        
         #region counter
         public bool IsCounterRunning { get; set; }
         public int RemainingSeconds => remainingSecondsByRound[actualRound];
         public Brush CounterColour { get; set; }
         private SolidColorBrush defaultColour;
         private SolidColorBrush lastSecondsColour;
-        private SoundPlayer soundPlayer;
+        private SoundPlayer counterSoundPlayer;
         private int actualRound;
         private Dictionary<int, int> remainingSecondsByRound;
         #endregion
@@ -62,20 +85,8 @@ namespace Client.ViewModel
             get { return players; }
             set { players = value.OrderBy(player => player.Position).ToList(); NotifyPropertyChanged("Players"); }
         }
-
-        private List<DrawableField> availableFields;
-        public List<DrawableField> AvailableFields
-        {
-            get { return availableFields; }
-            set { availableFields = value; NotifyPropertyChanged(nameof(AvailableFields)); }
-        }
-
-        private List<DrawableField> enemyColorFields;
-        public List<DrawableField> EnemyColorFields
-        {
-            get { return enemyColorFields; }
-            set { enemyColorFields = value; NotifyPropertyChanged(nameof(EnemyColorFields)); }
-        }
+        
+        private SoundPlayer nextTurnSoundPlayer;
 
         private IGameServer gameServer;
 
@@ -93,11 +104,13 @@ namespace Client.ViewModel
             IsCounterRunning = false;
             defaultColour = new SolidColorBrush(Color.FromScRgb(1, 0, 0, 0));
             lastSecondsColour = new SolidColorBrush(Color.FromScRgb(1, 1, 0, 0));
-            soundPlayer = new SoundPlayer(Resources.lastseconds);
+            counterSoundPlayer = new SoundPlayer(Resources.lastseconds);
             actualRound = 0;
             remainingSecondsByRound = new Dictionary<int, int>();
             remainingSecondsByRound[0] = 0;
             #endregion
+
+            nextTurnSoundPlayer = new SoundPlayer(Resources.nextturn);
 
             gameServer = ClientProxyManager.Instance;
             try
@@ -144,7 +157,7 @@ namespace Client.ViewModel
                         CounterColour = lastSecondsColour;
                         NotifyPropertyChanged("CounterColour");
 
-                        soundPlayer.Play();
+                        counterSoundPlayer.Play();
                     }
                 }
 
@@ -204,9 +217,12 @@ namespace Client.ViewModel
             {
                 return;
             }
+
             AvailableFields = mapConverter.ConvertToDrawable(availableCells, mapAttributes, CanvasWidth, CanvasHeight);
 
             StartCounter();
+
+            nextTurnSoundPlayer.Play();
         }
 
         public void SendGamePlayerSnapshot(List<GamePlayer> players)
@@ -243,17 +259,20 @@ namespace Client.ViewModel
 
         private void RefreshFieldsToStripe(GameState state)
         {
-            List<Coordinate> fields = new List<Coordinate>();
+            
+
+            List<Coordinate> playerCoordinates = new List<Coordinate>();
+            List<Coordinate> enemyCoordinates = new List<Coordinate>();
 
             foreach (var field in state.Map)
             {
                 List<long> playerIDs = state.Players.Select(player => player.ID).ToList();
                 if (playerIDs.Contains(field.OwnerId)) {
-                    fields.Add(new Coordinate(field.X, field.Y));
+                    enemyCoordinates.Add(new Coordinate(field.X, field.Y));
                 }
             }
 
-            EnemyColorFields = mapConverter.ConvertToDrawable(fields, mapAttributes, CanvasWidth, CanvasHeight);
+            EnemyFields = mapConverter.ConvertToDrawable(enemyCoordinates, mapAttributes, CanvasWidth, CanvasHeight);
         }
 
         private void NotifyPropertyChanged(string propertyName)

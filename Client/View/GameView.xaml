@@ -122,8 +122,7 @@
                 Width="800">
                 <ItemsControl.ItemsPanel>
                     <ItemsPanelTemplate>
-                        <Canvas
-                            Name="Map" />
+                        <Canvas/>
                     </ItemsPanelTemplate>
                 </ItemsControl.ItemsPanel>
                 <ItemsControl.ItemContainerStyle>
@@ -158,8 +157,7 @@
                 Width="800">
                 <ItemsControl.ItemsPanel>
                     <ItemsPanelTemplate>
-                        <Canvas
-                            Name="AvailableFields" />
+                        <Canvas />
                     </ItemsPanelTemplate>
                 </ItemsControl.ItemsPanel>
                 <ItemsControl.ItemContainerStyle>
@@ -190,13 +188,12 @@
                 </ItemsControl.ItemTemplate>
             </ItemsControl>
             <ItemsControl
-                ItemsSource="{Binding EnemyColorFields}"
+                ItemsSource="{Binding EnemyFields}"
                 Height="650"
                 Width="800">
                 <ItemsControl.ItemsPanel>
                     <ItemsPanelTemplate>
-                        <Canvas
-                            Name="EnemyColorFields" />
+                        <Canvas/>
                     </ItemsPanelTemplate>
                 </ItemsControl.ItemsPanel>
                 <ItemsControl.ItemContainerStyle>

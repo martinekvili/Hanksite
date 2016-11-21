@@ -68,5 +68,14 @@ namespace Client.Properties {
                 return ResourceManager.GetStream("lastseconds", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.IO.UnmanagedMemoryStream similar to System.IO.MemoryStream.
+        /// </summary>
+        internal static System.IO.UnmanagedMemoryStream nextturn {
+            get {
+                return ResourceManager.GetStream("nextturn", resourceCulture);
+            }
+        }
     }
 }
