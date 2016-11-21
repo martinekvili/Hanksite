@@ -84,7 +84,21 @@ namespace Client.ViewModel
 
             IsPageEnabled = false;
             window.Disable();
-            if (await Accounts.IsAccountValid(window.GetServer(), Username, password))
+
+            bool success;
+            try
+            {
+                success = await Accounts.IsAccountValid(window.GetServer(), Username, password);
+            }
+            catch (System.Exception)
+            {
+                MessageBox.Show("An error has occured while connecting to the server.", "Hanksite", MessageBoxButton.OK);
+                IsPageEnabled = true;
+                window.Enable();
+                return;
+            }
+
+            if (success)
             {
                 GameStateForDisconnected[] games = await gameServer.GetRunningGames();
 

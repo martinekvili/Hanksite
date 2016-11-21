@@ -172,7 +172,16 @@ namespace Client.ViewModel
         {
             IsJoiner = true;
             IsReady = true;
-            ClientProxyManager.Instance.RegisterLobby(this);
+            try
+            {
+                ClientProxyManager.Instance.RegisterLobby(this);
+            }
+            catch (Exception)
+            {
+                MessageBox.Show("Connection lost.", "Hanksite", MessageBoxButton.OK);
+                Application.Current.Shutdown();
+                return;
+            }
 
             Name = lobby.Name;
             SelectedNumberOfPlayers = lobby.NumberOfPlayers;
@@ -235,8 +244,18 @@ namespace Client.ViewModel
             IsReady = true;
             IsPageEnabled = false;
 
-            bool result = await lobbyServer.CreateLobby(CreateLobbySettings());
-            ClientProxyManager.Instance.RegisterLobby(this);
+            bool result;
+            try
+            {
+                result = await lobbyServer.CreateLobby(CreateLobbySettings());
+                ClientProxyManager.Instance.RegisterLobby(this);
+            }
+            catch (Exception)
+            {
+                MessageBox.Show("Connection lost.", "Hanksite", MessageBoxButton.OK);
+                Application.Current.Shutdown();
+                return;
+            }
 
             IsPageEnabled = true;
             if (!result)
@@ -254,23 +273,50 @@ namespace Client.ViewModel
         private void Cancel()
         {
             IsReady = false;
-            lobbyServer.DisconnectFromLobby();
-            ClientProxyManager.Instance.RemoveLobby();
+            try
+            {
+                lobbyServer.DisconnectFromLobby();
+                ClientProxyManager.Instance.RemoveLobby();
+            }
+            catch (Exception)
+            {
+                MessageBox.Show("Connection lost.", "Hanksite", MessageBoxButton.OK);
+                Application.Current.Shutdown();
+                return;
+            }
             ConnectedPlayers.Clear();
         }
 
         private void Start()
         {
             IsPageEnabled = false;
-            lobbyServer.StartGame();
+            try
+            {
+                lobbyServer.StartGame();
+            }
+            catch (Exception)
+            {
+                MessageBox.Show("Connection lost.", "Hanksite", MessageBoxButton.OK);
+                Application.Current.Shutdown();
+                return;
+            }
         }
 
         private void Back()
         {
             if (IsJoiner)
             {
-                lobbyServer.DisconnectFromLobby();
-                ClientProxyManager.Instance.RemoveLobby();
+                try
+                {
+                    lobbyServer.DisconnectFromLobby();
+                    ClientProxyManager.Instance.RemoveLobby();
+                }
+                catch (Exception)
+                {
+                    MessageBox.Show("Connection lost.", "Hanksite", MessageBoxButton.OK);
+                    Application.Current.Shutdown();
+                    return;
+                }
             }
             NavigationService.GetNavigationService(View).GoBack();
         }

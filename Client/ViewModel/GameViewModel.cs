@@ -100,7 +100,16 @@ namespace Client.ViewModel
             #endregion
 
             gameServer = ClientProxyManager.Instance;
-            ClientProxyManager.Instance.RegisterGame(this);
+            try
+            {
+                ClientProxyManager.Instance.RegisterGame(this);
+            }
+            catch (Exception)
+            {
+                MessageBox.Show("Connection lost.", "Hanksite", MessageBoxButton.OK);
+                Application.Current.Shutdown();
+                return;
+            }
         }
 
         #region counter
@@ -162,7 +171,17 @@ namespace Client.ViewModel
             StopCounter();
             DrawableField chosenField = map.FirstOrDefault(field => field.Tag == tag);
             int chosenColour = DecodeColur(chosenField.Colour);
-            gameServer.ChooseColour(chosenColour);
+
+            try
+            {
+                gameServer.ChooseColour(chosenColour);
+            }
+            catch (Exception)
+            {
+                MessageBox.Show("Connection lost.", "Hanksite", MessageBoxButton.OK);
+                Application.Current.Shutdown();
+                return;
+            }
         }
 
         private int DecodeColur(Brush brush)

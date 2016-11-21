@@ -22,7 +22,12 @@ namespace Client.ViewModel
         public ICommand GameHistorySelectionChangedCommand { get; set; }
         public ICommand BackCommand { get; set; }
 
-        public List<GameInfo> GameHistory { get; set; }
+        private List<GameInfo> gameHistory;
+        public List<GameInfo> GameHistory
+        {
+            get { return gameHistory; }
+            set { gameHistory = value; NotifyPropertyChanged(nameof(GameHistory)); }
+        }
         public GameInfo SelectedGameHistory { get; set; }
         private List<GamePlayer> enemies;
         public List<GamePlayer> Enemies
@@ -46,8 +51,16 @@ namespace Client.ViewModel
 
         private async void getGameHistory()
         {
-            GameHistory = await historyProvider.GetGameInfos();
-            NotifyPropertyChanged("GameHistory");
+            try
+            {
+                GameHistory = await historyProvider.GetGameInfos();
+            }
+            catch (Exception)
+            {
+                MessageBox.Show("Connection lost.", "Hanksite", MessageBoxButton.OK);
+                Application.Current.Shutdown();
+                return;
+            }
         }
 
         private void RefreshEnemies()

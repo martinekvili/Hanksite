@@ -133,8 +133,8 @@
                                     </GridViewColumn.CellTemplate>
                                     <GridViewColumn.Header>
                                         <Label
-                                            Width="100"
-                                            Content="Position" />
+                                            Width="30"
+                                            Content="#" />
                                     </GridViewColumn.Header>
                                 </GridViewColumn>
                                 <GridViewColumn>

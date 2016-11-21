@@ -71,7 +71,20 @@ namespace Client.ViewModel
 
             IsPageEnabled = false;
             window.Disable();
-            bool success = await accounts.CreateAccount(window.GetServer(), Username, password);
+
+            bool success;
+            try
+            {
+                success = await accounts.CreateAccount(window.GetServer(), Username, password);
+            }
+            catch (System.Exception)
+            {
+                MessageBox.Show("An error has occured while connecting to the server.", "Hanksite", MessageBoxButton.OK);
+                IsPageEnabled = true;
+                window.Enable();
+                return;
+            }
+
             if (!success)
             {
                 IsPageEnabled = true;

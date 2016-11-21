@@ -69,7 +69,19 @@ namespace Client.ViewModel
             }
 
             IsPageEnabled = false;
-            bool success = await accountProvider.ChangePassword(password, newPassword);
+
+            bool success;
+            try
+            {
+                success = await accountProvider.ChangePassword(password, newPassword);
+            }
+            catch (System.Exception)
+            {
+                MessageBox.Show("Connection lost.", "Hanksite", MessageBoxButton.OK);
+                Application.Current.Shutdown();
+                return;
+            }
+
             IsPageEnabled = true;
             if (!success)
             {

@@ -77,14 +77,33 @@ namespace Client.ViewModel
         private async void Refresh()
         {
             IsPageEnabled = false;
-            AvailableLobbies = await availableLobbyProvider.GetLobbies();
+            try
+            {
+                AvailableLobbies = await availableLobbyProvider.GetLobbies();
+            }
+            catch (Exception)
+            {
+                MessageBox.Show("Connection lost.", "Hanksite", MessageBoxButton.OK);
+                Application.Current.Shutdown();
+                return;
+            }
             IsPageEnabled = true;
         }
 
         private async void Connect()
         {
             IsPageEnabled = false;
-            Lobby lobby = await lobbyServer.ConnectToLobby(selectedLobby.Name);
+            Lobby lobby;
+            try
+            {
+                lobby = await lobbyServer.ConnectToLobby(selectedLobby.Name);
+            }
+            catch (Exception)
+            {
+                MessageBox.Show("Connection lost.", "Hanksite", MessageBoxButton.OK);
+                Application.Current.Shutdown();
+                return;
+            }
 
             if (lobby == null)
             {
