@@ -67,7 +67,7 @@ namespace Client.ViewModel
             set { playerFields = value; NotifyPropertyChanged(nameof(PlayerFields)); }
         }
         #endregion
-        
+
         #region counter
         public bool IsCounterRunning { get; set; }
         public int RemainingSeconds => remainingSecondsByRound[actualRound];
@@ -85,7 +85,7 @@ namespace Client.ViewModel
             get { return players; }
             set { players = value.OrderBy(player => player.Position).ToList(); NotifyPropertyChanged("Players"); }
         }
-        
+
         private SoundPlayer nextTurnSoundPlayer;
 
         private IGameServer gameServer;
@@ -259,7 +259,7 @@ namespace Client.ViewModel
 
         private void RefreshFieldsToStripe(GameState state)
         {
-            
+            long playerID = ClientProxyManager.Instance.UserID;
 
             List<Coordinate> playerCoordinates = new List<Coordinate>();
             List<Coordinate> enemyCoordinates = new List<Coordinate>();
@@ -267,11 +267,17 @@ namespace Client.ViewModel
             foreach (var field in state.Map)
             {
                 List<long> playerIDs = state.Players.Select(player => player.ID).ToList();
-                if (playerIDs.Contains(field.OwnerId)) {
+                if (field.OwnerId == playerID)
+                {
+                    playerCoordinates.Add(new Coordinate(field.X, field.Y));
+                }
+                else if (playerIDs.Contains(field.OwnerId))
+                {
                     enemyCoordinates.Add(new Coordinate(field.X, field.Y));
                 }
             }
 
+            PlayerFields = mapConverter.ConvertToDrawable(playerCoordinates, mapAttributes, CanvasWidth, CanvasHeight);
             EnemyFields = mapConverter.ConvertToDrawable(enemyCoordinates, mapAttributes, CanvasWidth, CanvasHeight);
         }
 

@@ -19,7 +19,27 @@
         <viewmodel:ColourConverter
             x:Key="ColourConverter"/>
         <VisualBrush
-            x:Key="StripedBrush"
+            x:Key="WhiteStripedBrush"
+            TileMode="Tile"
+            Viewport="0,0,10,6"
+            ViewportUnits="Absolute"
+            Viewbox="0,0,10,10"
+            ViewboxUnits="Absolute">
+            <VisualBrush.Visual>
+                <Canvas>
+                    <Path
+                        Stroke="White"
+                        StrokeThickness="1"
+                        Data="M 0 0 l 10 10" />
+                    <Path
+                        Stroke="White"
+                        StrokeThickness="1"
+                        Data="M 0 10 l 10 -10" />
+                </Canvas>
+            </VisualBrush.Visual>
+        </VisualBrush>
+        <VisualBrush
+            x:Key="BlackStripedBrush"
             TileMode="Tile"
             Viewport="0,0,10,6"
             ViewportUnits="Absolute"
@@ -188,6 +208,41 @@
                 </ItemsControl.ItemTemplate>
             </ItemsControl>
             <ItemsControl
+                ItemsSource="{Binding PlayerFields}"
+                Height="650"
+                Width="800">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <Canvas />
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+                <ItemsControl.ItemContainerStyle>
+                    <Style
+                        TargetType="ContentPresenter">
+                        <Setter
+                            Property="Canvas.Left"
+                            Value="{Binding X}" />
+                        <Setter
+                            Property="Canvas.Top"
+                            Value="{Binding Y}" />
+                    </Style>
+                </ItemsControl.ItemContainerStyle>
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <Path
+                            Tag="{Binding Tag}"
+                            Fill="{StaticResource WhiteStripedBrush}"
+                            Stroke="White"
+                            StrokeThickness="2"
+                            Width="{Binding Width}"
+                            Height="{Binding Height}"
+                            Stretch="Fill"
+                            Data="M8.660254,0 L17.320508,5 17.320508,15 8.660254,20 0,15 0,5 8.660254,0 z">
+                        </Path>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+            <ItemsControl
                 ItemsSource="{Binding EnemyFields}"
                 Height="650"
                 Width="800">
@@ -211,7 +266,7 @@
                     <DataTemplate>
                         <Path
                             Tag="{Binding Tag}"
-                            Fill="{StaticResource StripedBrush}"
+                            Fill="{StaticResource BlackStripedBrush}"
                             Stroke="White"
                             StrokeThickness="2"
                             Width="{Binding Width}"
