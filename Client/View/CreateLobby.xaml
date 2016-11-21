@@ -171,7 +171,7 @@
             <Button
                 Margin="4"
                 Visibility="{Binding IsJoiner, Converter={StaticResource BooleanToVisibility}}"
-                Command="{Binding BackCommand}">
+                Command="{Binding DisconnectCommand}">
                 Disconnect
             </Button>
         </StackPanel>

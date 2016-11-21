@@ -23,18 +23,18 @@
             TileMode="Tile"
             Viewport="0,0,10,6"
             ViewportUnits="Absolute"
-            Viewbox="0,0,10,10"
+            Viewbox="0,0,20,20"
             ViewboxUnits="Absolute">
             <VisualBrush.Visual>
                 <Canvas>
                     <Path
                         Stroke="White"
-                        StrokeThickness="1"
-                        Data="M 0 0 l 10 10" />
+                        StrokeThickness="2"
+                        Data="M 0 0 l 20 20" />
                     <Path
                         Stroke="White"
-                        StrokeThickness="1"
-                        Data="M 0 10 l 10 -10" />
+                        StrokeThickness="2"
+                        Data="M 0 20 l 20 -20" />
                 </Canvas>
             </VisualBrush.Visual>
         </VisualBrush>
@@ -43,18 +43,18 @@
             TileMode="Tile"
             Viewport="0,0,10,6"
             ViewportUnits="Absolute"
-            Viewbox="0,0,10,10"
+            Viewbox="0,0,20,20"
             ViewboxUnits="Absolute">
             <VisualBrush.Visual>
                 <Canvas>
                     <Path
                         Stroke="Black"
-                        StrokeThickness="1"
-                        Data="M 0 0 l 10 10" />
+                        StrokeThickness="2"
+                        Data="M 0 0 l 20 20" />
                     <Path
                         Stroke="Black"
-                        StrokeThickness="1"
-                        Data="M 0 10 l 10 -10" />
+                        StrokeThickness="2"
+                        Data="M 0 20 l 20 -20" />
                 </Canvas>
             </VisualBrush.Visual>
         </VisualBrush>

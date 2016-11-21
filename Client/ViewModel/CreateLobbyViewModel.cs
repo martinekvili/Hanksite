@@ -33,6 +33,7 @@ namespace Client.ViewModel
         public ICommand CancelCommand { get; set; }
         public ICommand StartCommand { get; set; }
         public ICommand BackCommand { get; set; }
+        public ICommand DisconnectCommand { get; set; }
 
         private bool isPageEnabled;
         public bool IsPageEnabled
@@ -132,7 +133,7 @@ namespace Client.ViewModel
             get { return !isCreator; }
             set { isCreator = !value; NotifyPropertyChanged("IsCreator"); NotifyPropertyChanged("IsJoiner"); }
         }
-        
+
         public bool IsLobbyFull
         {
             get { return SelectedNumberOfPlayers - (ConnectedPlayers.Count + bots[BotDifficulty.EASY] + bots[BotDifficulty.MEDIUM] + bots[BotDifficulty.HARD]) == 0; }
@@ -158,7 +159,8 @@ namespace Client.ViewModel
             ReadyCommand = new CommandHandler(Ready);
             CancelCommand = new CommandHandler(Cancel);
             StartCommand = new CommandHandler(Start);
-            BackCommand = new CommandHandler(DisconnectAndBack);
+            BackCommand = new CommandHandler(Back);
+            DisconnectCommand = new CommandHandler(Disconnect);
 
             bots = new Dictionary<BotDifficulty, int>();
             bots[BotDifficulty.EASY] = 0;
@@ -310,27 +312,15 @@ namespace Client.ViewModel
 
         private void Back()
         {
-            if (IsJoiner)
-            {
-                try
-                {
-                    ClientProxyManager.Instance.RemoveLobby();
-                }
-                catch (Exception)
-                {
-                    MessageBox.Show("Connection lost.", "Hanksite", MessageBoxButton.OK);
-                    Application.Current.Shutdown();
-                    return;
-                }
-            }
             NavigationService.GetNavigationService(View).GoBack();
         }
 
-        private void DisconnectAndBack()
+        private void Disconnect()
         {
             try
             {
                 lobbyServer.DisconnectFromLobby();
+                ClientProxyManager.Instance.RemoveLobby();
             }
             catch (Exception)
             {
@@ -349,7 +339,7 @@ namespace Client.ViewModel
             settings.NumberOfPlayers = SelectedNumberOfPlayers;
             settings.NumberOfColours = NumberOfColours[SelectedNumberOfColours];
             settings.Bots = bots;
-           
+
             return settings;
         }
 
@@ -402,6 +392,18 @@ namespace Client.ViewModel
         {
             string message = "The lobby you connected to has closed.";
             MessageBox.Show(message, "Hanksite", MessageBoxButton.OK);
+
+            try
+            {
+                ClientProxyManager.Instance.RemoveLobby();
+            }
+            catch (Exception)
+            {
+                MessageBox.Show("Connection lost.", "Hanksite", MessageBoxButton.OK);
+                Application.Current.Shutdown();
+                return;
+            }
+
             Back();
         }
 
