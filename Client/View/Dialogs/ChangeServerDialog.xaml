@@ -31,7 +31,7 @@
                 Grid.Column="0"
                 Content="Server:" />
             <TextBox
-                Width="120"
+                Width="180"
                 Grid.Column="1" 
                 Text="{Binding Server}"/>
         </Grid>

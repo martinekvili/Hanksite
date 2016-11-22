@@ -32,7 +32,8 @@
                                 </DataTemplate>
                             </GridViewColumn.CellTemplate>
                             <GridViewColumn.Header>
-                                <Label
+                                <GridViewColumnHeader
+                                    Width="30"
                                     Content="No" />
                             </GridViewColumn.Header>
                         </GridViewColumn>
@@ -44,7 +45,8 @@
                                 </DataTemplate>
                             </GridViewColumn.CellTemplate>
                             <GridViewColumn.Header>
-                                <Label
+                                <GridViewColumnHeader
+                                    Width="140"
                                     Content="Name" />
                             </GridViewColumn.Header>
                         </GridViewColumn>
@@ -56,7 +58,8 @@
                                 </DataTemplate>
                             </GridViewColumn.CellTemplate>
                             <GridViewColumn.Header>
-                                <Label
+                                <GridViewColumnHeader
+                                    Width="50"
                                     Content="Points" />
                             </GridViewColumn.Header>
                         </GridViewColumn>

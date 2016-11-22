@@ -16,12 +16,13 @@
         <Style
             x:Key="QuantityButton"
             TargetType="Button">
-            <Setter
-                Property="Width"
-                Value="20" />
-            <Setter
-                Property="Height"
-                Value="20" />
+            <Setter Property="Width" Value="20" />
+            <Setter Property="Height" Value="20" />
+            <Setter Property="Background" Value="Black"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="FontFamily" Value="Segoe UI Semibold" />
+            <Setter Property="FontSize" Value="14" />
+            <Setter Property="BorderThickness" Value="0" />
         </Style>
     </UserControl.Resources>
     <UserControl.DataContext>
@@ -63,7 +64,7 @@
                     <StackPanel
                         Orientation="Horizontal">
                         <Label
-                            Width="60">Easy</Label>
+                            Width="80">Easy</Label>
                         <Button
                             Style="{StaticResource QuantityButton}"
                             Command="{Binding DecreaseBotCommand}"
@@ -71,6 +72,8 @@
                             IsEnabled="{Binding IsCanceled}"
                             Content="-" />
                         <Label
+                            Width="24"
+                            HorizontalContentAlignment="Center"
                             Content="{Binding NumberOfEasyBots}" />
                         <Button
                             Style="{StaticResource QuantityButton}"
@@ -82,7 +85,7 @@
                     <StackPanel
                         Orientation="Horizontal">
                         <Label
-                            Width="60">Medium</Label>
+                            Width="80">Medium</Label>
                         <Button
                             Style="{StaticResource QuantityButton}"
                             Command="{Binding DecreaseBotCommand}"
@@ -90,6 +93,8 @@
                             IsEnabled="{Binding IsCanceled}"
                             Content="-" />
                         <Label
+                            Width="24"
+                            HorizontalContentAlignment="Center"
                             Content="{Binding NumberOfMediumBots}" />
                         <Button
                             Style="{StaticResource QuantityButton}"
@@ -101,7 +106,7 @@
                     <StackPanel
                         Orientation="Horizontal">
                         <Label
-                            Width="60">Hard</Label>
+                            Width="80">Hard</Label>
                         <Button
                             Style="{StaticResource QuantityButton}"
                             Command="{Binding DecreaseBotCommand}"
@@ -109,6 +114,8 @@
                             IsEnabled="{Binding IsCanceled}"
                             Content="-" />
                         <Label
+                            Width="24"
+                            HorizontalContentAlignment="Center"
                             Content="{Binding NumberOfHardBots}" />
                         <Button
                             Style="{StaticResource QuantityButton}"

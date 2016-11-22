@@ -14,31 +14,37 @@
     <UserControl.DataContext>
         <viewmodel:LoginViewModel />
     </UserControl.DataContext>
-    <StackPanel
-        Style="{StaticResource MenuStyle}">
-        <TextBlock
-            Style="{StaticResource TitleStyle}">
+    <Grid
+        Height="400">
+        <StackPanel
+            Style="{StaticResource MenuStyle}"
+            VerticalAlignment="Bottom">
+            <TextBlock
+                Style="{StaticResource TitleStyle}">
             Sign in
-        </TextBlock>
-        <Label>Username</Label>
-        <TextBox
-            Text="{Binding Username}" />
-        <Label>Password</Label>
-        <PasswordBox
-            Name="passwordBox">
-            <PasswordBox.InputBindings>
-                <KeyBinding
-                    Key="Return"
-                    Command="{Binding SignInCommand}" />
-            </PasswordBox.InputBindings>
-        </PasswordBox>
-        <Button
-            Command="{Binding SignInCommand}">
-            Sign in
-        </Button>
-        <Button
-            Command="{Binding CreateAccountCommand}">
-            Sign up
-        </Button>
-    </StackPanel>
+            </TextBlock>
+            <Label>Username</Label>
+            <TextBox
+                Text="{Binding Username}"
+                Margin="0, 0, 0, 8" />
+            <Label>Password</Label>
+            <PasswordBox
+                Name="passwordBox"
+                Margin="0, 0, 0, 16">
+                <PasswordBox.InputBindings>
+                    <KeyBinding
+                        Key="Return"
+                        Command="{Binding SignInCommand}" />
+                </PasswordBox.InputBindings>
+            </PasswordBox>
+            <Button
+                Command="{Binding SignInCommand}">
+                Sign in
+            </Button>
+            <Button
+                Command="{Binding CreateAccountCommand}">
+                Sign up
+            </Button>
+        </StackPanel>
+    </Grid>
 </UserControl>

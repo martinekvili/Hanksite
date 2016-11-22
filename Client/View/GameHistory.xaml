@@ -1,15 +1,17 @@
-﻿<UserControl x:Class="Client.View.GameHistory"
-             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
-             xmlns:local="clr-namespace:Client.View"
-             xmlns:viewmodel="clr-namespace:Client.ViewModel"
-             mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="300">
+﻿<UserControl
+    x:Class="Client.View.GameHistory"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+    xmlns:local="clr-namespace:Client.View"
+    xmlns:viewmodel="clr-namespace:Client.ViewModel"
+    mc:Ignorable="d"
+    d:DesignHeight="300"
+    d:DesignWidth="300">
     <UserControl.DataContext>
-        <viewmodel:GameHistoryViewModel/>
+        <viewmodel:GameHistoryViewModel />
     </UserControl.DataContext>
     <UserControl.Resources>
         <viewmodel:StartTimeConverter
@@ -44,7 +46,7 @@
                                         </DataTemplate>
                                     </GridViewColumn.CellTemplate>
                                     <GridViewColumn.Header>
-                                        <Label
+                                        <GridViewColumnHeader
                                             Width="100"
                                             Content="Name" />
                                     </GridViewColumn.Header>
@@ -57,8 +59,8 @@
                                         </DataTemplate>
                                     </GridViewColumn.CellTemplate>
                                     <GridViewColumn.Header>
-                                        <Label
-                                            Width="100"
+                                        <GridViewColumnHeader
+                                            Width="140"
                                             Content="Start" />
                                     </GridViewColumn.Header>
                                 </GridViewColumn>
@@ -70,8 +72,8 @@
                                         </DataTemplate>
                                     </GridViewColumn.CellTemplate>
                                     <GridViewColumn.Header>
-                                        <Label
-                                            Width="50"
+                                        <GridViewColumnHeader
+                                            Width="60"
                                             Content="Length" />
                                     </GridViewColumn.Header>
                                 </GridViewColumn>
@@ -83,8 +85,8 @@
                                         </DataTemplate>
                                     </GridViewColumn.CellTemplate>
                                     <GridViewColumn.Header>
-                                        <Label
-                                            Width="40"
+                                        <GridViewColumnHeader
+                                            Width="50"
                                             Content="Place" />
                                     </GridViewColumn.Header>
                                 </GridViewColumn>
@@ -96,8 +98,8 @@
                                         </DataTemplate>
                                     </GridViewColumn.CellTemplate>
                                     <GridViewColumn.Header>
-                                        <Label
-                                            Width="60"
+                                        <GridViewColumnHeader
+                                            Width="70"
                                             Content="Enemies" />
                                     </GridViewColumn.Header>
                                 </GridViewColumn>
@@ -108,7 +110,7 @@
                         <i:EventTrigger
                             EventName="SelectionChanged">
                             <i:InvokeCommandAction
-                                Command="{Binding GameHistorySelectionChangedCommand}"/>
+                                Command="{Binding GameHistorySelectionChangedCommand}" />
                         </i:EventTrigger>
                     </i:Interaction.Triggers>
                 </ListView>
@@ -132,7 +134,7 @@
                                         </DataTemplate>
                                     </GridViewColumn.CellTemplate>
                                     <GridViewColumn.Header>
-                                        <Label
+                                        <GridViewColumnHeader
                                             Width="30"
                                             Content="#" />
                                     </GridViewColumn.Header>
@@ -145,7 +147,7 @@
                                         </DataTemplate>
                                     </GridViewColumn.CellTemplate>
                                     <GridViewColumn.Header>
-                                        <Label
+                                        <GridViewColumnHeader
                                             Width="100"
                                             Content="Name" />
                                     </GridViewColumn.Header>

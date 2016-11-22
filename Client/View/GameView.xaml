@@ -101,8 +101,7 @@
                                 </GridViewColumn.CellTemplate>
                                 <GridViewColumn.Header>
                                     <GridViewColumnHeader
-                                        Content="No"
-                                        IsHitTestVisible="False" />
+                                        Content="No" />
                                 </GridViewColumn.Header>
                                 <GridViewColumn.Width>30</GridViewColumn.Width>
                             </GridViewColumn>
@@ -135,8 +134,7 @@
                                 </GridViewColumn.CellTemplate>
                                 <GridViewColumn.Header>
                                     <GridViewColumnHeader
-                                        Content="Name"
-                                        IsHitTestVisible="False" />
+                                        Content="Name" />
                                 </GridViewColumn.Header>
                                 <GridViewColumn.Width>200</GridViewColumn.Width>
                             </GridViewColumn>
@@ -149,8 +147,7 @@
                                 </GridViewColumn.CellTemplate>
                                 <GridViewColumn.Header>
                                     <GridViewColumnHeader
-                                        Content="Points"
-                                        IsHitTestVisible="False" />
+                                        Content="Points" />
                                 </GridViewColumn.Header>
                                 <GridViewColumn.Width>50</GridViewColumn.Width>
                             </GridViewColumn>

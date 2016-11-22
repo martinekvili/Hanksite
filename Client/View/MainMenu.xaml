@@ -10,44 +10,41 @@
     <UserControl.DataContext>
         <viewmodel:MainMenuViewModel/>
     </UserControl.DataContext>
-    <DockPanel>
-        <Image
-            DockPanel.Dock="Left"
-            Width="500"
-            Source="../Resources/logo.png"
-            Stretch="None"/>
+    <DockPanel
+        VerticalAlignment="Center">
         <StackPanel
             DockPanel.Dock="Right"
             Style="{StaticResource MenuStyle}">
-            <TextBlock
-                Style="{StaticResource TitleStyle}">
-                Main Menu
-            </TextBlock>
             <Button
-                Style="{StaticResource MenuButton}"
+                Width="auto"
                 Command="{Binding CreateLobbyCommand}">
                 Create new game
             </Button>
             <Button
-                Style="{StaticResource MenuButton}"
+                Width="auto"
                 Command="{Binding ConnectLobbyCommand}">
                 Connect to a lobby
             </Button>
             <Button
-                Style="{StaticResource MenuButton}"
+                Width="auto"
                 Command="{Binding ShowGameHistoryCommand}">
                 Game history
             </Button>
             <Button
-                Style="{StaticResource MenuButton}"
+                Width="auto"
                 Command="{Binding ShowSettingsCommand}">
                 Settings
             </Button>
             <Button
-                Style="{StaticResource MenuButton}"
+                Width="auto"
                 Command="{Binding QuitCommand}">
                 Quit
             </Button>
         </StackPanel>
+        <Image
+            Source="../Resources/logo.png"
+            Stretch="None"
+            HorizontalAlignment="Center"
+            VerticalAlignment="Center"/>
     </DockPanel>
 </UserControl>

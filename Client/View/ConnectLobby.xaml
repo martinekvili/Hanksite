@@ -43,8 +43,9 @@
                                     </DataTemplate>
                                 </GridViewColumn.CellTemplate>
                                 <GridViewColumn.Header>
-                                    <Label
-                                        Content="Name" />
+                                    <GridViewColumnHeader
+                                        Width="100"
+                                        Content="Name"/>
                                 </GridViewColumn.Header>
                             </GridViewColumn>
                             <GridViewColumn>
@@ -55,7 +56,8 @@
                                     </DataTemplate>
                                 </GridViewColumn.CellTemplate>
                                 <GridViewColumn.Header>
-                                    <Label
+                                    <GridViewColumnHeader
+                                        Width="100"
                                         Content="Max players" />
                                 </GridViewColumn.Header>
                             </GridViewColumn>
@@ -67,8 +69,9 @@
                                     </DataTemplate>
                                 </GridViewColumn.CellTemplate>
                                 <GridViewColumn.Header>
-                                    <Label
-                                        Content="Connected players" />
+                                    <GridViewColumnHeader
+                                        Width="130"
+                                        Content="Connected players"/>
                                 </GridViewColumn.Header>
                             </GridViewColumn>
                             <GridViewColumn>
@@ -86,8 +89,9 @@
                                     </DataTemplate>
                                 </GridViewColumn.CellTemplate>
                                 <GridViewColumn.Header>
-                                    <Label
-                                        Content="Bots" />
+                                    <GridViewColumnHeader
+                                        Width="70"
+                                        Content="Bots"/>
                                 </GridViewColumn.Header>
                             </GridViewColumn>
                             <GridViewColumn>
@@ -109,8 +113,9 @@
                                     </DataTemplate>
                                 </GridViewColumn.CellTemplate>
                                 <GridViewColumn.Header>
-                                    <Label
-                                        Content="Free spaces" />
+                                    <GridViewColumnHeader
+                                        Width="100"
+                                        Content="Free spaces"/>
                                 </GridViewColumn.Header>
                             </GridViewColumn>
                             <GridViewColumn>
@@ -121,8 +126,9 @@
                                     </DataTemplate>
                                 </GridViewColumn.CellTemplate>
                                 <GridViewColumn.Header>
-                                    <Label
-                                        Content="Colours" />
+                                    <GridViewColumnHeader
+                                        Width="80"
+                                        Content="Colours"/>
                                 </GridViewColumn.Header>
                             </GridViewColumn>
                         </GridView.Columns>

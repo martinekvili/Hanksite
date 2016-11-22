@@ -13,31 +13,35 @@
     <UserControl.DataContext>
         <viewmodel:RegistrationViewModel />
     </UserControl.DataContext>
-    <StackPanel
-        Style="{StaticResource MenuStyle}">
-        <TextBlock
-            Style="{StaticResource TitleStyle}">
-            Registration
-        </TextBlock>
+    <Grid
+        Height="400">
         <StackPanel
-            Margin="4">
-            <Label>Username</Label>
-            <TextBox
-                Text="{Binding Username}" />
-            <Label>Password</Label>
-            <PasswordBox
-                Name="passwordBox" />
-            <Label>Confirm password</Label>
-            <PasswordBox
-                Name="confirmedPasswordBox" />
+            VerticalAlignment="Bottom"
+            Style="{StaticResource MenuStyle}">
+            <TextBlock
+                Style="{StaticResource TitleStyle}">
+            Registration
+            </TextBlock>
+            <StackPanel
+                Margin="4">
+                <Label>Username</Label>
+                <TextBox
+                    Text="{Binding Username}" />
+                <Label>Password</Label>
+                <PasswordBox
+                    Name="passwordBox" />
+                <Label>Confirm password</Label>
+                <PasswordBox
+                    Name="confirmedPasswordBox" />
+            </StackPanel>
+            <Button
+                Command="{Binding CreateAccountCommand}">
+                Sign Up
+            </Button>
+            <Button
+                Command="{Binding BackCommand}">
+                Back
+            </Button>
         </StackPanel>
-        <Button
-            Command="{Binding CreateAccountCommand}">
-            Sign Up
-        </Button>
-        <Button
-            Command="{Binding BackCommand}">
-            Back
-        </Button>
-    </StackPanel>
+    </Grid>
 </UserControl>

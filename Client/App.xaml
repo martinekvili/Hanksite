@@ -7,23 +7,60 @@
         <Style x:Key="MenuStyle" TargetType="StackPanel">
             <Setter Property="Orientation" Value="Vertical"/>
             <Setter Property="HorizontalAlignment" Value="Center"/>
-            <Setter Property="VerticalAlignment" Value="Top"/>
-            <Setter Property="Margin" Value="0, 48, 0, 0"/>
-            <Setter Property="Width" Value="160"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="Margin" Value="12, 12, 12, 0"/>
+            <Setter Property="Width" Value="180"/>
         </Style>
         <Style x:Key="TitleStyle" TargetType="TextBlock">
             <Setter Property="HorizontalAlignment" Value="Center"/>
-            <Setter Property="FontSize" Value="24"/>
+            <Setter Property="FontFamily" Value="Segoe UI Semibold"/>
+            <Setter Property="FontSize" Value="32"/>
             <Setter Property="Margin" Value="0, 0, 0, 12"/>
-        </Style>
-        <Style x:Key="MenuButton" TargetType="Button">
-            <Setter Property="Padding" Value="4"/>
-            <Setter Property="Margin" Value="4"/>
         </Style>
         <Style TargetType="Button">
             <Setter Property="Padding" Value="4"/>
             <Setter Property="Margin" Value="4"/>
             <Setter Property="Width" Value="80"/>
+            <Setter Property="Height" Value="36"/>
+            <Setter Property="Background" Value="Black"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="FontFamily" Value="Segoe UI Semibold"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="BorderThickness" Value="0"/>
+        </Style>
+        <Style TargetType="Label">
+            <Setter Property="FontFamily" Value="Segoe UI Semibold"/>
+            <Setter Property="FontSize" Value="14"/>
+        </Style>
+        <Style TargetType="TextBox">
+            <Setter Property="Height" Value="36"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="Background" Value="Black"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="FontFamily" Value="Segoe UI Semibold"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="BorderThickness" Value="0"/>
+        </Style>
+        <Style TargetType="PasswordBox">
+            <Setter Property="Height" Value="36"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="Background" Value="Black"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="FontFamily" Value="Segoe UI Semibold"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="BorderThickness" Value="0"/>
+        </Style>
+        <Style TargetType="GridViewColumnHeader">
+            <Setter Property="IsHitTestVisible" Value="False"/>
+            <Setter Property="FontFamily" Value="Segoe UI Semibold"/>
+            <Setter Property="FontSize" Value="14"/>
+        </Style>
+        <Style TargetType="ComboBox">
+            <Setter Property="Height" Value="36"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="FontFamily" Value="Segoe UI Semibold"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="BorderThickness" Value="0"/>
         </Style>
         <BooleanToVisibilityConverter
             x:Key="BooleanToVisibility" />
