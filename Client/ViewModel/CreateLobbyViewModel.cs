@@ -391,7 +391,7 @@ namespace Client.ViewModel
         public void SendLobbyClosed()
         {
             string message = "The lobby you connected to has closed.";
-            MessageBox.Show(message, "Hanksite", MessageBoxButton.OK);
+            MessageBox.Show(Application.Current.MainWindow, message, "Hanksite", MessageBoxButton.OK);
 
             try
             {
