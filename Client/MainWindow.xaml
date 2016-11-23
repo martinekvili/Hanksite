@@ -25,15 +25,22 @@
                 VerticalAlignment="Center">
                 Server:
             </Label>
-            <Label
-                Content="{Binding CurrentServer}"
+            <TextBox
+                Text="{Binding CurrentServer}"
+                IsEnabled="{Binding IsCurrentServerEnabled}"
                 Width="120"
                 VerticalAlignment="Center" />
             <Button
-                Command="{Binding OpenChangeServerDialogCommand}"
+                Command="{Binding ChangeServerCommand}"
                 Visibility="{Binding IsChangeServerButtonVisible, Converter={StaticResource BooleanToVisibility}}"
                 VerticalAlignment="Center">
                 Change
+            </Button>
+            <Button
+                Command="{Binding ConfirmServerCommand}"
+                Visibility="{Binding IsConfirmServerButtonVisible, Converter={StaticResource BooleanToVisibility}}"
+                VerticalAlignment="Center">
+                OK
             </Button>
         </StackPanel>
         <StackPanel>

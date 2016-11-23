@@ -13,8 +13,9 @@ namespace Client.ViewModel
         public event PropertyChangedEventHandler PropertyChanged;
 
         public DependencyObject View { get; set; }
-
-        public ICommand OpenChangeServerDialogCommand { get; set; }
+        
+        public ICommand ChangeServerCommand { get; set; }
+        public ICommand ConfirmServerCommand { get; set; }
         public ICommand QuitCommand { get; set; }
 
         public bool IsFrameEnabled => currentServer != "";
@@ -26,14 +27,44 @@ namespace Client.ViewModel
             set { currentServer = value; NotifyPropertyChanged("CurrentServer"); NotifyPropertyChanged("IsFrameEnabled"); }
         }
 
-        private bool isChangeServerButtonVisible;
+        private bool isCurrentServerEnabled = false;
+        public bool IsCurrentServerEnabled
+        {
+            get { return isCurrentServerEnabled; }
+            set
+            {
+                isCurrentServerEnabled = value;
+
+                if (isCurrentServerEnabled)
+                {
+                    IsChangeServerButtonVisible = false;
+                    IsConfirmServerButtonVisible = true;
+                }
+                else
+                {
+                    IsChangeServerButtonVisible = true;
+                    IsConfirmServerButtonVisible = false;
+                }
+
+                NotifyPropertyChanged(nameof(IsCurrentServerEnabled));
+            }
+        }
+
+        private bool isChangeServerButtonVisible = true;
         public bool IsChangeServerButtonVisible
         {
             get { return isChangeServerButtonVisible; }
             set { isChangeServerButtonVisible = value; NotifyPropertyChanged("IsChangeServerButtonVisible"); }
         }
 
-        private bool isQuitButtonVisible;
+        private bool isConfirmServerButtonVisible = false;
+        public bool IsConfirmServerButtonVisible
+        {
+            get { return isConfirmServerButtonVisible; }
+            set { isConfirmServerButtonVisible = value; NotifyPropertyChanged(nameof(IsConfirmServerButtonVisible)); }
+        }
+
+        private bool isQuitButtonVisible = true;
         public bool IsQuitButtonVisible
         {
             get { return isQuitButtonVisible; }
@@ -42,25 +73,25 @@ namespace Client.ViewModel
 
         public MainWindowViewModel()
         {
-            OpenChangeServerDialogCommand = new CommandHandler(OpenChangeServerDialog);
+            ChangeServerCommand = new CommandHandler(ChangeServer);
+            ConfirmServerCommand = new CommandHandler(ConfirmServer);
             QuitCommand = new CommandHandler(Quit);
-            IsChangeServerButtonVisible = true;
-            IsQuitButtonVisible = true;
 
-            if(File.Exists("lastlogin.xml"))
+            if (File.Exists("lastlogin.xml"))
             {
                 LoginDataManager loginDataManager = new LoginDataManager();
                 CurrentServer = loginDataManager.LoadLastLogin().Server;
             }
         }
 
-        private void OpenChangeServerDialog()
+        private void ChangeServer()
         {
-            ChangeServerDialog dialog = new ChangeServerDialog((Window)View);
-            if (dialog.ShowDialog() == true)
-            {
-                CurrentServer = dialog.GetServer();
-            }
+            IsCurrentServerEnabled = true;
+        }
+
+        private void ConfirmServer()
+        {
+            IsCurrentServerEnabled = false;
         }
 
         private void Quit()
