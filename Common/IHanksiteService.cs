@@ -12,7 +12,10 @@ namespace Common
 {
     [ServiceContract(CallbackContract = typeof(IHanksiteServiceCallback))]
     public interface IHanksiteService : IUserService, ILobbyService, IGameService
-    { }
+    {
+        [OperationContract(IsOneWay = false)]
+        void Ping();
+    }
 
     public interface IHanksiteServiceCallback : ILobbyServiceCallback, IGameServiceCallback
     { }

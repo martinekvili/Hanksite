@@ -10,7 +10,9 @@ using Common;
 using Common.Lobby;
 using System.Security.Cryptography.X509Certificates;
 using System.ServiceModel.Security;
+using System.Threading;
 using Common.Users;
+using System.Windows;
 
 namespace Client.ServerConnection
 {
@@ -31,6 +33,7 @@ namespace Client.ServerConnection
         private ClientCallback callback;
         private DuplexChannelFactory<IHanksiteService> channelFactory;
         private IHanksiteService proxy;
+        private Timer pingTimer;
 
         private ClientProxyManager() { }
 
@@ -64,6 +67,9 @@ namespace Client.ServerConnection
             if (channelFactory == null)
                 return;
 
+            pingTimer?.Dispose();
+            pingTimer = null;
+
             try
             {
                 if (channelFactory.State != CommunicationState.Faulted)
@@ -91,7 +97,27 @@ namespace Client.ServerConnection
             this.user = connectedUser;
             this.password = password;
 
+            this.pingTimer = new Timer(pingServer, null, TimeSpan.FromSeconds(5), TimeSpan.FromSeconds(5));
+
             return true;
+        }
+
+        private void pingServer(object state)
+        {
+            try
+            {
+                proxy.Ping();
+            }
+            catch (Exception)
+            {
+                closeProxy();
+
+                Application.Current.Dispatcher.InvokeAsync(() =>
+                {
+                    MessageBox.Show(Application.Current.MainWindow, "Connection lost.", "Hanksite", MessageBoxButton.OK);
+                    Application.Current.Shutdown();
+                });
+            }
         }
 
         public Task<bool> CreateAccount(string serverUrl, string username, string password)

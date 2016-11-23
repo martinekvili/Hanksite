@@ -17,7 +17,7 @@ namespace Server.Game
 {
     public class GameManager
     {
-        private static readonly TimeSpan timeOutForPlayerChoice = TimeSpan.FromSeconds(15);
+        private static readonly TimeSpan timeOutForPlayerChoice = TimeSpan.FromSeconds(15.5);
 
         private static int gameManagerCounter = 0;
 

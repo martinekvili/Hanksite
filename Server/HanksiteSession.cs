@@ -26,6 +26,8 @@ namespace Server
             OperationContext.Current.InstanceContext.Closed += InstanceContext_Closed;
         }
 
+        public void Ping() { }
+
         private void log(string message)
         {
             logger.Info($"Client '{user?.UserName ?? "unknown"}' {message}.");
