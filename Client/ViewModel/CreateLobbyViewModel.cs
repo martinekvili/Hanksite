@@ -1,6 +1,5 @@
 ﻿using Client.Helper;
 using Client.Model;
-using Client.Model.Dummy;
 using Client.Model.Interfaces;
 using Client.View;
 using System;
@@ -98,7 +97,6 @@ namespace Client.ViewModel
         #endregion
 
         #region connected player properties
-        private IConnectedPlayerProvider connectedPlayerProvider;
         private List<Player> connectedPlayerAdapter;
         private ObservableCollection<Player> connectedPlayers;
         public ObservableCollection<Player> ConnectedPlayers
@@ -153,8 +151,6 @@ namespace Client.ViewModel
             {
                 NumberOfPlayers[i] = i + 2;
             }
-
-            connectedPlayerProvider = new Players();
 
             ReadyCommand = new CommandHandler(Ready);
             CancelCommand = new CommandHandler(Cancel);

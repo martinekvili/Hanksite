@@ -10,13 +10,6 @@ namespace Client.Model
         public int Y { get; }
         public int Colour { get; }
 
-        public Field(int OwnerId, int x, int y, int colour)
-        {
-            X = x;
-            Y = y;
-            Colour = colour;
-        }
-
         public Field(Hexagon hexagon)
         {
             OwnerId = hexagon.OwnerID;

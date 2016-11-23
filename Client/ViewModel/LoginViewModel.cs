@@ -1,5 +1,4 @@
 ﻿using Client.Model;
-using Client.Model.Dummy;
 using System.ComponentModel;
 using System.Windows.Input;
 using System.Windows.Navigation;

@@ -75,7 +75,6 @@
     <Compile Include="Model\LoginDataManager.cs" />
     <Compile Include="Model\MapAttributes.cs" />
     <Compile Include="Model\MapConverter.cs" />
-    <Compile Include="Model\Server.cs" />
     <Compile Include="ServerConnection\ClientProxyManager.Game.cs" />
     <Compile Include="ServerConnection\ClientCallback.cs" />
     <Compile Include="ServerConnection\ClientCallback.Game.cs" />
@@ -110,7 +109,6 @@
       <DependentUpon>Login.xaml</DependentUpon>
     </Compile>
     <Compile Include="Model\BotDifficulty.cs" />
-    <Compile Include="Model\Dummy\Players.cs" />
     <Compile Include="Model\GameInfo.cs" />
     <Compile Include="Model\Interfaces\IGameInfoProvider.cs" />
     <Compile Include="Model\Interfaces\IAccountProvider.cs" />

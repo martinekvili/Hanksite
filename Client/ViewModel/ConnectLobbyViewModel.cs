@@ -1,6 +1,5 @@
 ﻿using Client.Helper;
 using Client.Model;
-using Client.Model.Dummy;
 using Client.Model.Interfaces;
 using System.Collections.Generic;
 using System.ComponentModel;

@@ -64,18 +64,6 @@ namespace Client.Model
             return attributes;
         }
 
-        public List<Field> ConvertToFields(Hexagon[] map)
-        {
-            List<Field> fields = new List<Field>();
-
-            foreach (var hexagon in map)
-            {
-                fields.Add(new Field(hexagon));
-            }
-
-            return fields;
-        }
-
         private int GetMapSize(List<Field> map)
         {
             int mapSize = 0;
