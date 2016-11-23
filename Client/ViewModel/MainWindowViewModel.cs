@@ -18,7 +18,12 @@ namespace Client.ViewModel
         public ICommand ConfirmServerCommand { get; set; }
         public ICommand QuitCommand { get; set; }
 
-        public bool IsFrameEnabled => currentServer != "";
+        private bool isFrameEnabled = true;
+        public bool IsFrameEnabled
+        {
+            get { return (currentServer != "") && isFrameEnabled; }
+            set { isFrameEnabled = value; NotifyPropertyChanged(nameof(IsFrameEnabled)); }
+        }
 
         private string currentServer = "";
         public string CurrentServer
@@ -39,11 +44,13 @@ namespace Client.ViewModel
                 {
                     IsChangeServerButtonVisible = false;
                     IsConfirmServerButtonVisible = true;
+                    IsFrameEnabled = false;
                 }
                 else
                 {
                     IsChangeServerButtonVisible = true;
                     IsConfirmServerButtonVisible = false;
+                    IsFrameEnabled = true;
                 }
 
                 NotifyPropertyChanged(nameof(IsCurrentServerEnabled));

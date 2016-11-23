@@ -20,7 +20,8 @@
             DockPanel.Dock="Bottom"
             Orientation="Horizontal"
             HorizontalAlignment="Right"
-            Height="50">
+            Height="50"
+            Margin="0, 0, 16, 0">
             <Label
                 VerticalAlignment="Center">
                 Server:
