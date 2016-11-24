@@ -54,8 +54,6 @@ namespace Client.ServerConnection
                 new EndpointAddress(new Uri($"net.tcp://{serverUrl}/HanksiteService/"), identity)
             );
 
-            var certificate = CertificateManager.GetCertificate();
-            channelFactory.Credentials.ClientCertificate.Certificate = certificate;
             channelFactory.Credentials.ServiceCertificate.Authentication.CertificateValidationMode =
                 X509CertificateValidationMode.None;
 

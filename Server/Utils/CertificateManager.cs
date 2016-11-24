@@ -7,14 +7,14 @@ using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Common
+namespace Server.Utils
 {
     public static class CertificateManager
     {
         public static X509Certificate2 GetCertificate()
         {
             byte[] certBytes;
-            using (var certFile = Assembly.ReflectionOnlyLoad("Common").GetManifestResourceStream("Common.HanksiteCertificate.pfx"))
+            using (var certFile = Assembly.GetExecutingAssembly().GetManifestResourceStream("Server.HanksiteCertificate.pfx"))
             using (var stream = new MemoryStream())
             {
                 certFile.CopyTo(stream);

@@ -76,6 +76,7 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Utils\CertificateManager.cs" />
     <Compile Include="Game\Board\BreadthFirstSearch.cs" />
     <Compile Include="Game\GameManager.cs" />
     <Compile Include="Game\Board\Coord.cs" />
@@ -104,6 +105,7 @@
     <None Include="App.config">
       <SubType>Designer</SubType>
     </None>
+    <EmbeddedResource Include="HanksiteCertificate.pfx" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>

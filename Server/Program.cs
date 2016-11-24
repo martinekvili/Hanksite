@@ -6,8 +6,7 @@ using System.ServiceModel;
 using System.Text;
 using System.Threading.Tasks;
 using log4net;
-using System.ServiceModel.Security;
-using Common;
+using Server.Utils;
 
 namespace Server
 {
@@ -21,7 +20,6 @@ namespace Server
             {
                 var certificate = CertificateManager.GetCertificate();
                 host.Credentials.ServiceCertificate.Certificate = certificate;
-                host.Credentials.ClientCertificate.Authentication.CertificateValidationMode = X509CertificateValidationMode.None;
 
                 host.Open();
 
