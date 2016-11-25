@@ -1,17 +1,13 @@
-﻿using Server.Game.Player;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using Common.Game;
-using Common.Lobby;
 using Server.DAL;
-using Server.Game.Board;
 using Server.Utils;
-using AIPlayer = Server.Game.Player.AIPlayer;
-using Hexagon = Server.Game.Board.Hexagon;
+using Server.Game.Player;
+using Server.Game.Board;
 
 namespace Server.Game
 {
@@ -38,26 +34,26 @@ namespace Server.Game
 
         public Map Map => map;
 
-        public GameSnapshot Snapshot => new GameSnapshot
+        public Common.Game.GameSnapshot Snapshot => new Common.Game.GameSnapshot
         {
             Name = name,
             Map = map.ToDto(),
             Players = players.Select(player => player.ToDto()).ToArray()
         };
 
-        public GameSnapshotForDisconnected SnapshotForDisconnected => new GameSnapshotForDisconnected
+        public Common.Game.GameSnapshotForDisconnected SnapshotForDisconnected => new Common.Game.GameSnapshotForDisconnected
         {
             ID = id,
             Name = name,
             Players = players.Select(player => player.User).ToArray()
         };
 
-        public GamePlayersSnapshot PlayersSnapshot => new GamePlayersSnapshot
+        public Common.Game.GamePlayersSnapshot PlayersSnapshot => new Common.Game.GamePlayersSnapshot
         {
             Players = players.Select(player => player.ToDto()).ToArray()
         };
 
-        public GameManager(List<HanksiteSession> realPlayers, LobbySettings settings)
+        public GameManager(List<HanksiteSession> realPlayers, Common.Lobby.LobbySettings settings)
         {
             this.id = Interlocked.Increment(ref gameManagerCounter);
             this.startTime = DateTime.Now;
@@ -86,7 +82,7 @@ namespace Server.Game
             }
         }
 
-        private void initializePlayers(List<HanksiteSession> realPlayers, LobbySettings settings)
+        private void initializePlayers(List<HanksiteSession> realPlayers, Common.Lobby.LobbySettings settings)
         {
             players.AddRange(realPlayers.Select(realPlayer => new RealPlayer(realPlayer, this)));
 
@@ -247,7 +243,7 @@ namespace Server.Game
             }
         }
 
-        public GameSnapshot ReconnectToGame(HanksiteSession hanksiteSession)
+        public Common.Game.GameSnapshot ReconnectToGame(HanksiteSession hanksiteSession)
         {
             lock (syncObject)
             {
